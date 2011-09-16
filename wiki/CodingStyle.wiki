@@ -1,0 +1,28 @@
+#summary Define the coding style.
+#labels Phase-Design,Phase-Implementation
+
+= Coding style =
+
+ * Encoding : UTF-8
+ * Tabs : real tabs, no spaces
+ * Spaces around binary operators
+ * Line size limit : 120 chars
+ * Code documentation : Doxygen style
+ * Naming convention : everything_in_lower_case_with_underscores except the FreeOCL namespace.
+
+= Small sample =
+{{{
+/** \brief function returning 0
+  * \return 0
+  */
+int function_name()
+{
+	for(size_t i = 0 ; i < 10 ; ++i)
+	{
+		if (i == 9)
+			break;
+	}
+	// Internal comment
+	return 0 * (1 + 0);
+}
+}}}
