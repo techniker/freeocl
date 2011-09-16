@@ -8,6 +8,7 @@
  * Spaces around binary operators
  * Line size limit : 120 chars
  * Code documentation : Doxygen style
+ * Macro and define names : in upper case
  * Naming convention : everything_in_lower_case_with_underscores except the FreeOCL namespace.
 
 = Small sample =
