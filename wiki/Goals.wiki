@@ -1,0 +1,16 @@
+#summary Project goals
+#labels Featured,Phase-Implementation
+
+= Introduction =
+
+FreeOCL's goal is to provide a portable, full-featured and reliable implementation of the Open Computing Language 1.1 specifications targeting CPU devices.
+Performance is important but not the top priority.
+
+= Details =
+
+FreeOCL relies on an external C++ compiler to build kernels which means a platform is identifier by its OS, CPU and compiler. Primary goal is to be portable starting with the following major platforms:
+  * Linux - x86, x86_64, ARM, PPC64
+  * GCC >= 4.4
+  * ICC
+  * LLVM >= 2.8
+  * armcc
