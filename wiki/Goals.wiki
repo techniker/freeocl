@@ -8,7 +8,7 @@ Performance is important but not the top priority.
 
 = Details =
 
-FreeOCL relies on an external C++ compiler to build kernels which means a platform is identifier by its OS, CPU and compiler. It relies on some [http://en.wikipedia.org/wiki/C++11 C++11] features.
+FreeOCL relies on an external C++ compiler to build kernels which means a platform is identifier by its OS, CPU and compiler. With C++11 compilers it can use some [http://en.wikipedia.org/wiki/C++11 C++11] features (hash containers instead of binary trees).
 
 Primary goal is to be portable starting with the following major platforms:
 
