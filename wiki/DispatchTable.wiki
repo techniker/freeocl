@@ -7,12 +7,14 @@ The dispatch table is a function table (very similar to a C++ vtable) which is a
 
 = Details =
 
-The dispatch table is made of chunks of 80 functions ordered by API version. If there is less than 80 functions in a version chunk, the end of the chunk is filled with stub pointers. It seems functions are listed in the same order they appear in *cl.h*.
+The dispatch table is made of chunks of functions ordered by API version. The end of the chunks is filled with stub pointers. It seems functions are listed in the same order they appear in *cl.h*.
 
 The structure looks like:
  * functions in OpenCL 1.0 API
- * stubs
+ * 16 stubs
  * functions in OpenCL 1.1 API which are not in 1.0 API
+ * 4 stubs
+ * functions in OpenCL 1.2 API which are not in 1.1 API
  * ...
 
-*NB: this is known to be valid for OpenCL 1.1, it still has to be checked for OpenCL 1.2 functions.*
+*NB: this is known to be valid up to OpenCL 1.2.*
