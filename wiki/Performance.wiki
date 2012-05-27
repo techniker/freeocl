@@ -1,0 +1,34 @@
+#labels Featured
+The main goal of FreeOCL is portability, not performance however it's always interesting to see how it compares to other implementations.
+
+<wiki:toc max_depth="3" />
+
+= Introduction =
+
+This page compares FreeOCL to other OpenCL implementations when running various softwares.
+
+= Benchmarks =
+
+== Raytracing ==
+
+=== ratGPU ===
+[http://www.ratgpu.com/ ratGPU] is a raytracer with a built-in benchmark. It allows to compare the performance of all installed OpenCL implementations. There is also a C++ renderer which can be used as a reference for CPU implementations.
+
+The test machine is an Intel Core i7 2700K @ 4.2GHz with an Nvidia GTX 480 GPU running Kubuntu 12.04. Tests were ran with the following implementations:
+ * the C++ reference implementation
+ * Intel OpenCL
+ * FreeOCL (r173)
+ * NVidia OpenCL
+
+The relative rendering times (lower is better) give the following chart:
+
+[http://chart.apis.google.com/chart?chs=200x125&chd=t:5.010,26.59,29.794,43.732&cht=bvg&nonsense=something_that_ends_with.png]
+
+From left to right: NVidia, C++, Intel, FreeOCL. Not that bad without explicit kernel vectorization ;).
+
+Snapshots of all the scores:
+
+[http://freeocl.googlecode.com/svn/wiki/ratgpu_nvidia.png]
+[http://freeocl.googlecode.com/svn/wiki/ratgpu_cxx.png]
+[http://freeocl.googlecode.com/svn/wiki/ratgpu_intel.png]
+[http://freeocl.googlecode.com/svn/wiki/ratgpu_freeocl.png]
