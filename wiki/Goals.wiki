@@ -3,7 +3,7 @@
 
 = Introduction =
 
-FreeOCL's goal is to provide a portable, full-featured and reliable implementation of the Open Computing Language 1.2 specifications targeting CPU devices.
+FreeOCL's goal is to provide a portable, full-featured and reliable implementation of OpenCL 1.2 specifications targeting CPU devices.
 Performance is important but not the top priority.
 
 = Details =
