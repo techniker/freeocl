@@ -16,15 +16,16 @@ This page compares FreeOCL to other OpenCL implementations when running various 
 
 The test machine is an Intel Core i7 2700K @ 4.2GHz with an Nvidia GTX 480 GPU running Kubuntu 12.04. Tests were ran with the following implementations:
  * the C++ reference implementation
- * Intel OpenCL
- * FreeOCL (r173)
- * NVidia OpenCL
+ * Intel OpenCL 1.1 (Build 31360.31426)
+ * FreeOCL/GCC (r173)
+ * FreeOCL/Clang (r224)
+ * Nvidia OpenCL 1.1 CUDA 4.2.1
 
 The relative rendering times (lower is better) give the following chart:
 
-[http://chart.apis.google.com/chart?chs=200x125&chd=t:5.010,26.59,29.794,43.732&cht=bvg&nonsense=something_that_ends_with.png]
+[http://chart.apis.google.com/chart?chs=200x125&chd=t:5.010,26.59,29.499,29.794,43.732&cht=bvg&nonsense=something_that_ends_with.png]
 
-From left to right: NVidia, C++, Intel, FreeOCL. Not that bad without explicit kernel vectorization ;).
+From left to right: NVidia, C++, FreeOCL/Clang, Intel, FreeOCL/GCC. Not that bad without explicit kernel vectorization ;).
 
 Snapshots of all the scores:
 
@@ -32,3 +33,4 @@ Snapshots of all the scores:
 [http://freeocl.googlecode.com/svn/wiki/ratgpu_cxx.png]
 [http://freeocl.googlecode.com/svn/wiki/ratgpu_intel.png]
 [http://freeocl.googlecode.com/svn/wiki/ratgpu_freeocl.png]
+[http://freeocl.googlecode.com/svn/wiki/ratgpu_freeocl_clang.png]
