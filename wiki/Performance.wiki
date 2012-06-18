@@ -18,7 +18,7 @@ The test machine is an Intel Core i7 2700K @ 4.2GHz with an Nvidia GTX 480 GPU r
  * the C++ reference implementation
  * Intel OpenCL 1.1 (Build 31360.31426)
  * FreeOCL/GCC (r173)
- * FreeOCL/Clang (r224)
+ * FreeOCL/Clang (r224) (Clang 3.2 trunk r158419)
  * Nvidia OpenCL 1.1 CUDA 4.2.1
 
 The relative rendering times (lower is better) give the following chart:
