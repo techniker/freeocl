@@ -1,0 +1,12 @@
+#labels Featured,Phase-Deploy
+FreeOCL behavior can be changed using environment variables.
+
+= Environment variables =
+
+== C++ compiler ==
+
+FreeOCL builds OpenCL kernels using a C++ compiler. By default FreeOCL will use the compiler it has been built with but you can override this with the *FREEOCL_CXX_COMPILER* environment variable.
+
+Depending on your compiler you may have to change compiler flags too. This can be done with the *FREEOCL_CXX_FLAGS* environment variable. Beware the compiler must be told to build a shared library and to explicitly parse C++ code. The default flags for GCC are:
+
+_-shared -fPIC -pipe -I./include -g -O3 -fomit-frame-pointer -ftree-vectorize -funroll-loops -fno-math-errno -fno-trapping-math -rdynamic -fno-exceptions -fno-rtti -x c++ -Wall -Wextra_ (as of r230)
