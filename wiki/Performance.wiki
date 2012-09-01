@@ -26,7 +26,7 @@ The test machine is an Intel Core i7 2700K @ 4.2GHz with an Nvidia GTX 480 GPU r
 
 The relative rendering times (lower is better) give the following chart:
 
-[http://chart.apis.google.com/chart?chs=200x125&chd=t:5.010,26.38,26.59,26.61,27.80,29.499,29.794,43.732&cht=bvg&nonsense=something_that_ends_with.png]
+[http://chart.apis.google.com/chart?chs=260x125&chd=t:5.010,26.38,26.59,26.61,27.80,29.499,29.794,43.732&cht=bvg&nonsense=something_that_ends_with.png]
 
 From left to right: NVidia, FreeOCL/GCC-4.6.3 (r262), C++, FreeOCL/Clang (r262), FreeOCL/Clang (r233), FreeOCL/Clang (r224), Intel, FreeOCL/GCC. Not that bad without explicit kernel vectorization ;).
 
