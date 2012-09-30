@@ -35,6 +35,8 @@ namespace FreeOCL
 		virtual bool has_references_to(const std::string &function_name) const;
 
         virtual const char *get_node_type() const;
+
+		virtual llvm::Value *to_IR(vm *p_vm) const;
     private:
 		smartptr<type> p_type;
 		smartptr<node> n0, n1;

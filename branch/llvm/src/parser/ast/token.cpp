@@ -37,4 +37,9 @@ namespace FreeOCL
     {
         return "token";
     }
+
+	llvm::Value *token::to_IR(vm *p_vm) const
+	{
+		return NULL;
+	}
 }

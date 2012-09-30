@@ -495,7 +495,7 @@ namespace FreeOCL
 				if (decl)
 					symbols->insert(name, new type_def(name, l_type));
 				else
-					symbols->insert(name, new var(name, l_type));
+					symbols->insert(name, new var(name, l_type, b_in_function_body));
 
 				if (d_val__.as<chunk>()->size() == 3)		// Check initializer
 				{
@@ -854,7 +854,7 @@ namespace FreeOCL
 				const std::string &enum_name = p_chunk
 											   ? p_chunk->front().as<token>()->get_string()
 											   : values.back().as<token>()->get_string();
-				symbols->insert(enum_name, new var(enum_name, native_type::t_int));
+				symbols->insert(enum_name, new var(enum_name, native_type::t_int, b_in_function_body));
 			}
 			d_val__ = new enum_type(std::string(), values, false, type::PRIVATE);
 			return 1;
@@ -872,7 +872,7 @@ namespace FreeOCL
 											   ? p_chunk->front().as<token>()->get_string()
 											   : values.back().as<token>()->get_string();
 				warning(FreeOCL::to_string(i) + ":" + enum_name);
-				symbols->insert(enum_name, new var(enum_name, native_type::t_int));
+				symbols->insert(enum_name, new var(enum_name, native_type::t_int, b_in_function_body));
 			}
 			d_val__ = new enum_type(N[1].as<token>()->get_string(), values, false, type::PRIVATE);
 			return 1;

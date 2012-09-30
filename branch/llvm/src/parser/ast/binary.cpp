@@ -16,8 +16,8 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 #include "binary.h"
-#include "parser.h"
 #include "native_type.h"
+#include "../parser.h"
 
 namespace FreeOCL
 {

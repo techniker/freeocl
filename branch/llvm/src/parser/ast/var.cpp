@@ -17,6 +17,8 @@
 */
 #include "var.h"
 #include <vm/vm.h>
+#include <llvm/GlobalVariable.h>
+#include <llvm/Function.h>
 
 namespace FreeOCL
 {
@@ -65,9 +67,9 @@ namespace FreeOCL
                 v = new_local_variable(p_vm, p_type, get_name());
             else
             {
-                llvm::GlobalVariable *var = new llvm::GlobalVariable(*(p_vm->get_module()), p_type->toLLVMtype(p_vm), false, llvm::GlobalVariable::ExternalLinkage, NULL, get_name());
+				llvm::GlobalVariable *var = new llvm::GlobalVariable(*(p_vm->get_module()), p_type->to_LLVM_type(p_vm), false, llvm::GlobalVariable::ExternalLinkage, NULL, get_name());
 //                if (!b_extern)
-                    var->setInitializer(llvm::ConstantAggregateZero::get(p_type->toLLVMtype(p_vm)));
+					var->setInitializer(llvm::ConstantAggregateZero::get(p_type->to_LLVM_type(p_vm)));
                 v = var;
             }
         }
@@ -83,10 +85,10 @@ namespace FreeOCL
     {
         llvm::Function *fn = p_vm->get_builder()->GetInsertBlock()->getParent();
         Builder tmp(&fn->getEntryBlock(), fn->getEntryBlock().begin());
-        return tmp.CreateAlloca(p_type->toLLVMtype(p_vm), 0, name.c_str());
+		return tmp.CreateAlloca(p_type->to_LLVM_type(p_vm), 0, name.c_str());
     }
 
-    llvm::Value *var::get_value(vm *p_vm) const
+	llvm::Value *var::get_ptr(vm *p_vm) const
     {
         allocate(p_vm);
         return v;

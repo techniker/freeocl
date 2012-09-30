@@ -28,6 +28,8 @@ namespace FreeOCL
 		virtual smartptr<type> get_type() const = 0;
 
 		virtual uint32_t eval_as_uint() const = 0;
+
+		virtual llvm::Value *get_ptr(vm *p_vm) const = 0;
 	};
 }
 

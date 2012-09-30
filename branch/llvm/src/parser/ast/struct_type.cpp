@@ -18,6 +18,7 @@
 #include "struct_type.h"
 #include "typedef.h"
 #include <algorithm>
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -144,4 +145,15 @@ namespace FreeOCL
     {
         return "struct_type";
     }
+
+	llvm::Type *struct_type::to_LLVM_type(vm *p_vm) const
+	{
+		if (root)
+			return root->to_LLVM_type(p_vm);
+
+		std::vector<llvm::Type*> elements;
+		for(std::vector<std::pair<std::string, smartptr<type> > >::const_iterator i = members.begin() ; i != members.end() ; ++i)
+			elements.push_back(i->second->to_LLVM_type(p_vm));
+		return llvm::StructType::get(p_vm->get_context(), elements, false);
+	}
 }

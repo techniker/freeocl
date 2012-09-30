@@ -1,4 +1,7 @@
 #include "vm.h"
+#include <llvm/Module.h>
+#include <llvm/LLVMContext.h>
+#include <llvm/Support/TargetSelect.h>
 
 namespace FreeOCL
 {

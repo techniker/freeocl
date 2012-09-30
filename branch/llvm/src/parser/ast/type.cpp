@@ -18,6 +18,7 @@
 #include "type.h"
 #include "native_type.h"
 #include "pointer_type.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -81,8 +82,17 @@ namespace FreeOCL
 		return get_name();
 	}
 
-	llvm::Value *to_IR(vm *p_vm) const
+	llvm::Value *type::to_IR(vm *p_vm) const
 	{
 		return NULL;
+	}
+
+	llvm::Value *type::cast_to_bool(vm *p_vm, llvm::Value *v)
+	{
+		if (v->getType()->isPointerTy())
+			return p_vm->get_builder()->CreateICmpNE(v, llvm::ConstantPointerNull::get(v->getType(), "not_null"));
+		if (v->getType()->isFloatingPointTy())
+			return p_vm->get_builder()->CreateFCmpONE(v, llvm::ConstantFP::get(p_vm->getContext(), llvm::APFloat(0.0f)));
+		return p_vm->get_builder()->CreateICmpNE(v, v->getType(), "not_0");
 	}
 }

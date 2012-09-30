@@ -16,7 +16,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 #include "ternary.h"
-#include "parser.h"
 #include "native_type.h"
 
 namespace FreeOCL

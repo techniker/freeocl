@@ -18,6 +18,7 @@
 #include "pointer_type.h"
 #include "native_type.h"
 #include "typedef.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -92,4 +93,9 @@ namespace FreeOCL
     {
         return "pointer_type";
     }
+
+	llvm::Type *pointer_type::to_LLVM_type(vm *p_vm) const
+	{
+		return llvm::PointerType::get(base_type->to_LLVM_type(p_vm), 0);
+	}
 }

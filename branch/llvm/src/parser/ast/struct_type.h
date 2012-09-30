@@ -49,6 +49,8 @@ namespace FreeOCL
 		struct_type &operator<<(const std::pair<std::string, smartptr<type> > &member);
 
         virtual const char *get_node_type() const;
+
+		virtual llvm::Type *to_LLVM_type(vm *p_vm) const;
     protected:
 		virtual aggregate_type get_aggregate_type() const;
 

@@ -55,6 +55,11 @@ namespace FreeOCL
         return "type_def";
     }
 
+	llvm::Type *type_def::to_LLVM_type(vm *p_vm) const
+	{
+		return p_type->to_LLVM_type(p_vm);
+	}
+
 	void type_decl::write(std::ostream& out) const
 	{
 		out << "typedef ";

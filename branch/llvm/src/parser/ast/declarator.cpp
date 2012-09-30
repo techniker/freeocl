@@ -47,4 +47,9 @@ namespace FreeOCL
     {
         return "declarator";
     }
+
+	llvm::Value *declarator::to_IR(vm *p_vm) const
+	{
+		return n0->to_IR(p_vm);
+	}
 }

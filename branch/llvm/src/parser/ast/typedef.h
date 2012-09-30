@@ -39,6 +39,8 @@ namespace FreeOCL
 			return p_type;
 		}
 
+		virtual llvm::Type *to_LLVM_type(vm *p_vm) const;
+
 	protected:
 		const std::string name;
 		const smartptr<type> p_type;

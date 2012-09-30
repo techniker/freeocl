@@ -29,6 +29,7 @@ namespace FreeOCL
 		virtual uint32_t get_as_uint() const = 0;
 		virtual uint32_t eval_as_uint() const;
 		virtual bool has_references_to(const std::string &function_name) const;
+		virtual llvm::Value *get_ptr() const;
 	};
 
 	template<class T>
@@ -50,6 +51,8 @@ namespace FreeOCL
 		}
 
         virtual const char *get_node_type() const;
+
+		virtual llvm::Value *to_IR(vm *p_vm) const;
     private:
 		const T v;
 	};

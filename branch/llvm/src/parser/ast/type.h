@@ -53,12 +53,15 @@ namespace FreeOCL
 		virtual bool has_references_to(const std::string &function_name) const;
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
+
+		virtual llvm::Type *to_LLVM_type(vm *p_vm) const = 0;
 	private:
 		const bool b_const;
 		const address_space addr_space;
 
 	public:
 		static smartptr<type> compute_resulting_type(const smartptr<type> &t0, const smartptr<type> &t1);
+		static llvm::Value *cast_to_bool(vm *p_vm, llvm::Value *v);
 	};
 }
 

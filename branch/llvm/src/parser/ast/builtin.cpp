@@ -1,10 +1,10 @@
 #include "builtin.h"
-#include "parser.h"
 #include "native_type.h"
-#include "symbol_table.h"
+#include "../symbol_table.h"
 #include "overloaded_builtin.h"
 #include "var.h"
 #include "printf.h"
+#include "../parser.h"
 
 namespace FreeOCL
 {
@@ -397,43 +397,6 @@ namespace FreeOCL
 //		REGISTER_OVERLOADED("int shuffle2(gentype)", gentype_half);
 
 		// Image read and write functions
-		REGISTER_VAR(uint, CLK_NORMALIZED_COORDS_FALSE);
-		REGISTER_VAR(uint, CLK_NORMALIZED_COORDS_TRUE);
-		REGISTER_VAR(uint, CLK_ADDRESS_NONE);
-		REGISTER_VAR(uint, CLK_ADDRESS_CLAMP_TO_EDGE);
-		REGISTER_VAR(uint, CLK_ADDRESS_REPEAT);
-		REGISTER_VAR(uint, CLK_ADDRESS_CLAMP);
-		REGISTER_VAR(uint, CLK_ADDRESS_MIRRORED_REPEAT);
-		REGISTER_VAR(uint, CLK_FILTER_NEAREST);
-		REGISTER_VAR(uint, CLK_FILTER_LINEAR);
-		REGISTER_VAR(uint, CLK_R);
-		REGISTER_VAR(uint, CLK_A);
-		REGISTER_VAR(uint, CLK_RG);
-		REGISTER_VAR(uint, CLK_RA);
-		REGISTER_VAR(uint, CLK_RGB);
-		REGISTER_VAR(uint, CLK_RGBA);
-		REGISTER_VAR(uint, CLK_BGRA);
-		REGISTER_VAR(uint, CLK_ARGB);
-		REGISTER_VAR(uint, CLK_INTENSITY);
-		REGISTER_VAR(uint, CLK_LUMINANCE);
-		REGISTER_VAR(uint, CLK_Rx);
-		REGISTER_VAR(uint, CLK_RGx);
-		REGISTER_VAR(uint, CLK_RGBx);
-		REGISTER_VAR(uint, CLK_SNORM_INT8);
-		REGISTER_VAR(uint, CLK_SNORM_INT16);
-		REGISTER_VAR(uint, CLK_UNORM_INT8);
-		REGISTER_VAR(uint, CLK_UNORM_INT16);
-		REGISTER_VAR(uint, CLK_UNORM_SHORT_565);
-		REGISTER_VAR(uint, CLK_UNORM_SHORT_555);
-		REGISTER_VAR(uint, CLK_UNORM_INT_101010);
-		REGISTER_VAR(uint, CLK_SIGNED_INT8);
-		REGISTER_VAR(uint, CLK_SIGNED_INT16);
-		REGISTER_VAR(uint, CLK_SIGNED_INT32);
-		REGISTER_VAR(uint, CLK_UNSIGNED_INT8);
-		REGISTER_VAR(uint, CLK_UNSIGNED_INT16);
-		REGISTER_VAR(uint, CLK_UNSIGNED_INT32);
-		REGISTER_VAR(uint, CLK_HALF_FLOAT);
-		REGISTER_VAR(uint, CLK_FLOAT);
 		REGISTER_OVERLOADED("float4 read_imagef(image2d_t,sampler_t,int2)", gentype_single);
 		REGISTER_OVERLOADED("float4 read_imagef(image2d_t,sampler_t,float2)", gentype_single);
 		REGISTER_OVERLOADED("int4 read_imagei(image2d_t,sampler_t,int2)", gentype_single);

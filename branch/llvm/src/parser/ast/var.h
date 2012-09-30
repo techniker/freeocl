@@ -46,7 +46,7 @@ namespace FreeOCL
 
         static llvm::AllocaInst *new_local_variable(vm *p_vm, const smartptr<type> &p_type, const std::string &name);
 
-        llvm::Value *get_value(vm *p_vm) const;
+		virtual llvm::Value *get_ptr(vm *p_vm) const;
     private:
 		const std::string name;
 		const smartptr<type> p_type;

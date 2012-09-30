@@ -19,6 +19,8 @@
 #include "chunk.h"
 #include "type.h"
 #include "overloaded_builtin.h"
+#include "native_type.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -124,25 +126,26 @@ namespace FreeOCL
 		return true;
 	}
 
-	llvm::Value *function::toIR(vm *p_vm) const
+	llvm::Value *function::to_IR(vm *p_vm) const
 	{
-		fn = getCallee(vm);
+		fn = getCallee(p_vm);
 		if (body)
 		{
-			llvm::BasicBlock *BB = llvm::BasicBlock::Create(vm->getContext(), "fonction_entry", fn);
-			vm->getBuilder()->SetInsertPoint(BB);
+			llvm::BasicBlock *BB = llvm::BasicBlock::Create(p_vm->get_context(), "fonction_entry", fn);
+			p_vm->get_builder()->SetInsertPoint(BB);
 			size_t var_id = 0;
-			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < arguments.size() ; ++arg, ++var_id)
+			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < arguments->size() ; ++arg, ++var_id)
 			{
-				llvm::Value *p = (*var)->getValue(vm);
-				vm->getBuilder()->CreateStore(arg, p);
+				llvm::Value *p = (*var)->get_value(p_vm);
+				p_vm->get_builder()->CreateStore(arg, p);
 			}
-			root->body->toIR(vm);
-			if (_t.constify() == Type(ASNode::Void).constify())
-				vm->getBuilder()->CreateRetVoid();
+			body->to_IR(p_vm);
+			if (*return_type == native_type::t_void)
+				p_vm->get_builder()->CreateRetVoid();
 			llvm::verifyFunction(*fn);
 
-			vm->getFunctionPassManager()->run(*fn);
+			//! TODO: implement optimization passes
+//			vm->getFunctionPassManager()->run(*fn);
 		}
 		return fn;
 	}

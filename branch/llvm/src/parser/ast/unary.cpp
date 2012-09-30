@@ -16,9 +16,10 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 #include "unary.h"
-#include "parser.h"
 #include "native_type.h"
 #include "pointer_type.h"
+#include "../parser.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -107,4 +108,74 @@ namespace FreeOCL
     {
         return "unary";
     }
+
+	llvm::Value *unary::to_IR(vm *p_vm) const
+	{
+		Builder *builder = p_vm->get_builder();
+		llvm::Value *t = exp->to_IR(p_vm);
+
+		switch(op)
+		{
+		case parser::INC_OP:
+			{
+				llvm::Value *v;
+				if (t->getType()->isFloatingPointTy())
+					v = builder->CreateFAdd(t, llvm::ConstantFP::get(p_vm->getContext(), llvm::APFloat(1.0f)));
+				else if (t->getType()->isIntegerTy())
+					v = builder->CreateAdd(t, builder->getInt32(1));
+				else
+					v = builder->CreateGEP(t, builder->getInt32(1));
+				builder->CreateStore(v, exp->get_ptr(p_vm));
+				if (b_postfix)
+					return t;
+				return v;
+			}
+			break;
+		case parser::DEC_OP:
+			{
+				llvm::Value *v;
+				if (t->getType()->isFloatingPointTy())
+					v = builder->CreateFSub(t, llvm::ConstantFP::get(p_vm->getContext(), llvm::APFloat(1.0f)));
+				else if (t->getType()->isIntegerTy())
+					v = builder->CreateSub(t, builder->getInt32(1));
+				else
+					v = builder->CreateGEP(t, builder->getInt32(-1));
+				builder->CreateStore(v, exp->get_ptr(p_vm));
+				if (b_postfix)
+					return t;
+				return v;
+			}
+			break;
+		case '!':
+			return builder->CreateNot(type::cast_to_bool(p_vm, t), "lnot");
+		case '~':
+			return builder->CreateNot(t, "not");
+		case '-':
+			return t->getType()->isFloatingPointTy() ? builder->CreateFNeg(t, "fneg") : builder->CreateNeg(t, "neg");
+		case '+':
+			return t;
+		case '*':
+			//! \todo implement volatile pointers
+			return builder->CreateLoad(t, false, "load");
+		case '&':
+			return exp->get_ptr(p_vm);
+		}
+	}
+
+	llvm::Value *unary::get_ptr(vm *p_vm) const
+	{
+		switch(op)
+		{
+		case parser::INC_OP:
+		case parser::DEC_OP:
+			if (!b_postfix)
+				return exp->get_ptr(p_vm);
+			break;
+		case '+':
+			return exp->get_ptr(p_vm);
+		case '*':
+			return exp->to_IR(p_vm);
+		}
+		return NULL;
+	}
 }

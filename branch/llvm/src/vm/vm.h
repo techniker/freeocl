@@ -19,6 +19,8 @@
 #define __FREEOCL_VM_VM_H__
 
 #include <llvm/Support/IRBuilder.h>
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
+#include <llvm/PassManager.h>
 #include <utils/smartptr.h>
 
 namespace FreeOCL
@@ -40,7 +42,7 @@ namespace FreeOCL
 //		void add_lib_dir(const std::string &path);
 
         llvm::IRBuilder<> *get_builder() {	return builder;	}
-        llvm::Module *get_module() {	return modules.back();	}
+		llvm::Module *get_module() {	return module;	}
         llvm::LLVMContext &get_context() {	return *context;	}
 
 	private:

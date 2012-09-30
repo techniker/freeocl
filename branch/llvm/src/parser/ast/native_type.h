@@ -45,6 +45,8 @@ namespace FreeOCL
 		virtual smartptr<type> clone(const bool b_const, const address_space addr_space) const;
         virtual const char *get_node_type() const;
 
+		virtual llvm::Type *to_LLVM_type(vm *p_vm) const;
+
 		type_id get_type_id() const	{	return id;	}
 		int get_dim() const;
 		bool is_vector() const	{	return get_dim() > 1;	}

@@ -17,6 +17,7 @@
 */
 #include "native_type.h"
 #include "typedef.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -648,4 +649,99 @@ namespace FreeOCL
     {
         return "native_type";
     }
+
+	llvm::Type *native_type::to_LLVM_type(vm *p_vm) const
+	{
+		switch(id)
+		{
+//		SAMPLER_T, EVENT_T,
+//		IMAGE1D_T, IMAGE1D_BUFFER_T, IMAGE1D_ARRAY_T, IMAGE2D_T, IMAGE2D_ARRAY_T, IMAGE3D_T,
+		case SIZE_T:
+			return sizeof(void*) == 8 ? llvm::Type::getInt64Ty(p_vm->get_context()) : llvm::Type::getInt32Ty(p_vm->get_context());
+		case ULONG2:
+		case ULONG3:
+		case ULONG4:
+		case ULONG8:
+		case ULONG16:
+		case LONG2:
+		case LONG3:
+		case LONG4:
+		case LONG8:
+		case LONG16:
+			return llvm::VectorType::get( llvm::Type::getInt64Ty(p_vm->get_context()), get_dim() );
+		case ULONG:
+		case LONG:
+			return llvm::Type::getInt64Ty(p_vm->get_context());
+		case UINT2:
+		case UINT3:
+		case UINT4:
+		case UINT8:
+		case UINT16:
+		case INT2:
+		case INT3:
+		case INT4:
+		case INT8:
+		case INT16:
+			return llvm::VectorType::get( llvm::Type::getInt32Ty(p_vm->get_context()), get_dim() );
+		case UINT:
+		case INT:
+			return llvm::Type::getInt32Ty(p_vm->get_context());
+		case USHORT2:
+		case USHORT3:
+		case USHORT4:
+		case USHORT8:
+		case USHORT16:
+		case SHORT2:
+		case SHORT3:
+		case SHORT4:
+		case SHORT8:
+		case SHORT16:
+			return llvm::VectorType::get( llvm::Type::getInt16Ty(p_vm->get_context()), get_dim() );
+		case USHORT:
+		case SHORT:
+			return llvm::Type::getInt16Ty(p_vm->get_context());
+		case UCHAR2:
+		case UCHAR3:
+		case UCHAR4:
+		case UCHAR8:
+		case UCHAR16:
+		case CHAR2:
+		case CHAR3:
+		case CHAR4:
+		case CHAR8:
+		case CHAR16:
+			return llvm::VectorType::get( llvm::Type::getInt8Ty(p_vm->get_context()), get_dim() );
+		case UCHAR:
+		case CHAR:
+			return llvm::Type::getInt8Ty(p_vm->get_context());
+		case HALF2:
+		case HALF3:
+		case HALF4:
+		case HALF8:
+		case HALF16:
+			return llvm::VectorType::get( llvm::Type::getHalfTy(p_vm->get_context()), get_dim() );
+		case HALF:
+			return llvm::Type::getHalfTy(p_vm->get_context());
+		case FLOAT2:
+		case FLOAT3:
+		case FLOAT4:
+		case FLOAT8:
+		case FLOAT16:
+			return llvm::VectorType::get( llvm::Type::getFloatTy(p_vm->get_context()), get_dim() );
+		case FLOAT:
+			return llvm::Type::getFloatTy(p_vm->get_context());
+		case DOUBLE2:
+		case DOUBLE3:
+		case DOUBLE4:
+		case DOUBLE8:
+		case DOUBLE16:
+			return llvm::VectorType::get( llvm::Type::getDoubleTy(p_vm->get_context()), get_dim() );
+		case DOUBLE:
+			return llvm::Type::getDoubleTy(p_vm->get_context());
+		case BOOL:
+			return llvm::Type::getInt1Ty(p_vm->get_context());
+		case VOID:
+			return llvm::Type::getVoidTy(p_vm->get_context());
+		}
+	}
 }

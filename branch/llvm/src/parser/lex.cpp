@@ -20,8 +20,8 @@
 #include <utils/string.h>
 #include <cmath>
 #include <sstream>
-#include "value.h"
-#include "token.h"
+#include "ast/value.h"
+#include "ast/token.h"
 #include "symbol_table.h"
 #include <stdint.h>
 #include "macros.h"

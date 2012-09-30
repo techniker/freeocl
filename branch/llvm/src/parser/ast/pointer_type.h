@@ -40,6 +40,8 @@ namespace FreeOCL
         virtual const char *get_node_type() const;
 
         void set_root_type(const smartptr<type> &root_type);
+
+		virtual llvm::Type *to_LLVM_type(vm *p_vm) const;
 	protected:
 		smartptr<type> base_type;
 

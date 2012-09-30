@@ -16,8 +16,8 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 #include "symbol_table.h"
-#include "overloaded_builtin.h"
-#include "overloaded_function.h"
+#include "ast/overloaded_builtin.h"
+#include "ast/overloaded_function.h"
 
 namespace FreeOCL
 {
