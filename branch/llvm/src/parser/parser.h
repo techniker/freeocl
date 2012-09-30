@@ -148,6 +148,7 @@ namespace FreeOCL
 		size_t line;
 		std::string current_line;
 		std::string current_file;
+        bool b_in_function_body;
 		bool b_errors;
 		smartptr<node> root;
 

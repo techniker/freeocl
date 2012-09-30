@@ -25,7 +25,7 @@ namespace FreeOCL
 	class var : public expression
 	{
 	public:
-		var(const std::string &name, const smartptr<type> &p_type);
+        var(const std::string &name, const smartptr<type> &p_type, const bool b_local);
 		virtual ~var();
 		virtual smartptr<type> get_type() const;
 		virtual void write(std::ostream& out) const;
@@ -37,9 +37,21 @@ namespace FreeOCL
 		virtual bool has_references_to(const std::string &function_name) const;
 
         virtual const char *get_node_type() const;
+
+        bool is_local() const   {   return b_local; }
+
+        virtual llvm::Value *to_IR(vm *p_vm) const;
+
+        void allocate(vm *p_vm) const;
+
+        static llvm::AllocaInst *new_local_variable(vm *p_vm, const smartptr<type> &p_type, const std::string &name);
+
+        llvm::Value *get_value(vm *p_vm) const;
     private:
 		const std::string name;
 		const smartptr<type> p_type;
+        const bool b_local;
+        mutable llvm::Value *v;
 	};
 }
 

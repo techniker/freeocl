@@ -37,11 +37,11 @@ namespace FreeOCL
 
 //		void load(const std::string &filename);
 
-//		void addLibDir(const std::string &path);
+//		void add_lib_dir(const std::string &path);
 
-		llvm::IRBuilder<> *getBuilder() {	return builder;	}
-		llvm::Module *getModule() {	return modules.back();	}
-		llvm::LLVMContext &getContext() {	return *context;	}
+        llvm::IRBuilder<> *get_builder() {	return builder;	}
+        llvm::Module *get_module() {	return modules.back();	}
+        llvm::LLVMContext &get_context() {	return *context;	}
 
 	private:
 		llvm::IRBuilder<> *builder;

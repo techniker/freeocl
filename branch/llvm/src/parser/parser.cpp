@@ -98,6 +98,7 @@ namespace FreeOCL
 		tokens.clear();
 		b_errors = false;
 		symbols = new symbol_table;
+        b_in_function_body = false;
 		register_builtin();
 		try
 		{
@@ -230,7 +231,7 @@ namespace FreeOCL
 					else if (cur->back().as<token>())
 						name = cur->back().as<token>()->get_string();
                     arg_types.push_back(p_type);
-					symbols->insert(name, new var(name, p_type));
+                    symbols->insert(name, new var(name, p_type, b_in_function_body));
 				}
 			}
 
@@ -238,9 +239,11 @@ namespace FreeOCL
 			const size_t line_bak = line;
 
 			__declaration_list();		// Ignore it for now
+            b_in_function_body = true;
 			if (__compound_statement())
 			{
-				symbols->pop();
+                b_in_function_body = false;
+                symbols->pop();
 				smartptr<node> statement = d_val__;
 				if (b_qualifier && qualifiers->is_set<qualifier::KERNEL>())
 				{
@@ -269,7 +272,8 @@ namespace FreeOCL
 					d_val__ = new chunk(qualifiers, d_val__);
 				return 1;
 			}
-			symbols->pop();
+            b_in_function_body = false;
+            symbols->pop();
 
 			// Function declaration
 			if (__token<';'>())
