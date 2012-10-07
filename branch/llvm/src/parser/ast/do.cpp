@@ -49,8 +49,8 @@ namespace FreeOCL
 		Builder *builder = p_vm->get_builder();
 		llvm::Function *fn = builder->GetInsertBlock()->getParent();
 
-		llvm::BasicBlock *blockBody = llvm::BasicBlock::Create(p_vm->get_context(), "while_body", fn);
-		llvm::BasicBlock *blockEnd = llvm::BasicBlock::Create(p_vm->get_context(), "while_end", fn);
+		llvm::BasicBlock *blockBody = llvm::BasicBlock::Create(p_vm->get_context(), "do_body", fn);
+		llvm::BasicBlock *blockEnd = llvm::BasicBlock::Create(p_vm->get_context(), "do_end", fn);
 
 		builder->CreateBr(blockBody);
 

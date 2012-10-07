@@ -138,7 +138,7 @@ namespace FreeOCL
 			size_t var_id = 0;
 			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < arguments->size() ; ++arg, ++var_id)
 			{
-				llvm::Value *p = (*var)->get_value(p_vm);
+				llvm::Value *p = variable_args[var_id]->get_ptr(p_vm);
 				p_vm->get_builder()->CreateStore(arg, p);
 			}
 			body->to_IR(p_vm);
@@ -163,5 +163,10 @@ namespace FreeOCL
 		llvm::FunctionType *fntype = llvm::FunctionType::get(return_type->to_LLVM_type(p_vm), params, false);
 		fn = llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
 		return fn;
+	}
+
+	void function::push_arg(const smartptr<var> &arg)
+	{
+		variable_args.push_back(arg);
 	}
 }

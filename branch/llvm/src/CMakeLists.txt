@@ -43,6 +43,10 @@ set(PARSER_SOURCES
     parser/ast/if.h             parser/ast/if.cpp
     parser/ast/do.h             parser/ast/do.cpp
     parser/ast/while.h          parser/ast/while.cpp
+    parser/ast/for.h            parser/ast/for.cpp
+    parser/ast/switch.h         parser/ast/switch.cpp
+    parser/ast/noop.h           parser/ast/noop.cpp
+    parser/ast/return.h         parser/ast/return.cpp
     )
 
 set(VM_SOURCES

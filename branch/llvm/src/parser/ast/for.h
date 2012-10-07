@@ -15,46 +15,33 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
-#ifndef __FREEOCL_PARSER_VALUE_H__
-#define __FREEOCL_PARSER_VALUE_H__
+#ifndef __FREEOCL_PARSER_FOR_H__
+#define __FREEOCL_PARSER_FOR_H__
 
 #include "expression.h"
-#include <stdint.h>
 
 namespace FreeOCL
 {
-	class generic_value : public expression
+	class _for : public node
 	{
 	public:
-		virtual uint32_t get_as_uint() const = 0;
-		virtual uint32_t eval_as_uint() const;
+		_for(const smartptr<expression> &init,
+			 const smartptr<expression> &test,
+			 const smartptr<expression> &step,
+			 const smartptr<node> &stmt);
+
+		virtual void write(std::ostream& out) const;
+
 		virtual bool has_references_to(const std::string &function_name) const;
-		virtual llvm::Value *get_ptr(vm *p_vm) const;
-	};
 
-	template<class T>
-	class value : public generic_value
-	{
-	public:
-		value(const T &v) : v(v)	{}
-		virtual ~value()	{}
-
-		const T &get_value() const	{	return v;	}
-
-		virtual uint32_t get_as_uint() const;
-
-		virtual smartptr<type> get_type() const;
-
-		virtual void write(std::ostream& out) const
-		{
-			out << v << ' ';
-		}
-
-        virtual const char *get_node_type() const;
+		virtual const char *get_node_type() const;
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
-    private:
-		const T v;
+	private:
+		const smartptr<expression> init;
+		const smartptr<expression> test;
+		const smartptr<expression> step;
+		const smartptr<node> stmt;
 	};
 }
 

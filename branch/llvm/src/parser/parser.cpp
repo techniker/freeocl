@@ -53,6 +53,9 @@
 #include "ast/do.h"
 #include "ast/while.h"
 #include "ast/overloaded_function.h"
+#include "ast/for.h"
+#include "ast/noop.h"
+#include "ast/return.h"
 
 namespace FreeOCL
 {
@@ -183,6 +186,7 @@ namespace FreeOCL
 				END();
 			if (!args->front().as<token>() || args->front().as<token>()->get_id() != '(')
 				END();
+			std::vector<smartptr<var> > variable_args;
             std::deque<smartptr<type> > arg_types;
 			if (args->size() == 3)
 			{
@@ -231,7 +235,9 @@ namespace FreeOCL
 					else if (cur->back().as<token>())
 						name = cur->back().as<token>()->get_string();
                     arg_types.push_back(p_type);
-                    symbols->insert(name, new var(name, p_type, b_in_function_body));
+					smartptr<var> v = new var(name, p_type, b_in_function_body);
+					variable_args.push_back(v);
+					symbols->insert(name, v);
 				}
 			}
 
@@ -240,6 +246,7 @@ namespace FreeOCL
 
 			__declaration_list();		// Ignore it for now
             b_in_function_body = true;
+			current_function_return_type = p_type;
 			if (__compound_statement())
 			{
                 b_in_function_body = false;
@@ -265,6 +272,8 @@ namespace FreeOCL
 					line = line_bak;
 					ERROR("error: conflicting function declarations!");
 				}
+				for(size_t i = 0 ; i < variable_args.size() ; ++i)
+					d_val__.as<function>()->push_arg(variable_args[i]);
 				symbols->insert(function_name, d_val__);
 				if (b_qualifier
 						&& !qualifiers->is_set<qualifier::KERNEL>()
@@ -272,6 +281,7 @@ namespace FreeOCL
 					d_val__ = new chunk(qualifiers, d_val__);
 				return 1;
 			}
+			current_function_return_type = NULL;
             b_in_function_body = false;
             symbols->pop();
 
@@ -1408,8 +1418,18 @@ namespace FreeOCL
 			CHECK(1, "syntax error, ';' expected");
 			break;
 		case RETURN:
-			RULE2(token<RETURN>, token<';'>);
-			RULE3(token<RETURN>, expression, token<';'>);
+			MATCH2(token<RETURN>, token<';'>)
+			{
+				d_val__ = new _return(current_function_return_type);
+				return 1;
+			}
+
+			MATCH3(token<RETURN>, expression, token<';'>)
+			{
+				d_val__ = new _return(current_function_return_type, N[1]);
+				return 1;
+			}
+
 			CHECK(1, "syntax error");
 			break;
 		}
@@ -1454,12 +1474,12 @@ namespace FreeOCL
 				const smartptr<node> N3 = N[3];
 				MATCH2(token<')'>, statement)
 				{
-					d_val__ = new chunk(N0,N1,N2,N3,N[0],N[1]);
+					d_val__ = new _for(N2.as<chunk>()->front(), N3.as<chunk>()->front(), new noop, N[1]);
 					return 1;
 				}
 				MATCH3(expression, token<')'>, statement)
 				{
-					d_val__ = new chunk(N0,N1,N2,N3,N[0],N[1],N[2]);
+					d_val__ = new _for(N2.as<chunk>()->front(), N3.as<chunk>()->front(), N[0], N[2]);
 					return 1;
 				}
 				ERROR("syntax error");
@@ -1472,12 +1492,12 @@ namespace FreeOCL
 				const smartptr<node> N3 = N[3];
 				MATCH2(token<')'>, statement)
 				{
-					d_val__ = new chunk(N0,N1,N2,N3,N[0],N[1]);
+					d_val__ = new _for(N2.as<chunk>()->front(), N3.as<chunk>()->front(), new noop, N[1]);
 					return 1;
 				}
 				MATCH3(expression, token<')'>, statement)
 				{
-					d_val__ = new chunk(N0,N1,N2,N3,N[0],N[1],N[2]);
+					d_val__ = new _for(N2.as<chunk>()->front(), N3.as<chunk>()->front(), N[0], N[2]);
 					return 1;
 				}
 				ERROR("syntax error");

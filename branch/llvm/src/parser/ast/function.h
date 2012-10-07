@@ -23,6 +23,7 @@
 #include "chunk.h"
 #include "type.h"
 #include "callable.h"
+#include "var.h"
 
 namespace FreeOCL
 {
@@ -47,6 +48,8 @@ namespace FreeOCL
 		smartptr<chunk> get_arguments() const	{	return arguments;	}
 		smartptr<chunk> get_body() const	{	return body;	}
 
+		void push_arg(const smartptr<var> &arg);
+
 		virtual bool has_references_to(const std::string &function_name) const;
 
         virtual const char *get_node_type() const;
@@ -59,6 +62,7 @@ namespace FreeOCL
 		smartptr<chunk>	arguments;
 		smartptr<chunk>	body;
         std::deque<smartptr<type> > arg_types;
+		std::vector<smartptr<var> > variable_args;
 		mutable llvm::Function *fn;
 	};
 }

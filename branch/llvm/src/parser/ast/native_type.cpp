@@ -744,4 +744,21 @@ namespace FreeOCL
 			return llvm::Type::getVoidTy(p_vm->get_context());
 		}
 	}
+
+	std::string native_type::mangled_name() const
+	{
+		static const char *mangled_names[] = {
+			"v", "b", "Dh", "u2sz", "u2sa", "u2ev",
+			"u3i1d", "u3i1b", "u3i1a", "u3i2d", "u3i2a", "u3i3d",
+			"c", "s", "i", "l", "h", "t", "j", "m", "f", "d",
+			"u2v2c", "u2v2s", "u2v2i", "u2v2l", "u2v2h", "u2v2t", "u2v2j", "u2v2m", "u2v2f", "u2v2d",
+			"u2v3c", "u2v3s", "u2v3i", "u2v3l", "u2v3h", "u2v3t", "u2v3j", "u2v3m", "u2v3f", "u2v3d",
+			"u2v4c", "u2v4s", "u2v4i", "u2v4l", "u2v4h", "u2v4t", "u2v4j", "u2v4m", "u2v4f", "u2v4d",
+			"u2v8c", "u2v8s", "u2v8i", "u2v8l", "u2v8h", "u2v8t", "u2v8j", "u2v8m", "u2v8f", "u2v8d",
+			"u3v16c", "u3v16s", "u3v16i", "u3v16l", "u3v16h", "u3v16t", "u3v16j", "u3v16m", "u3v16f", "u3v16d",
+			"u2v2Dh", "u2v3Dh", "u2v4Dh", "u2v8Dh", "u3v16Dh"
+		};
+
+		return mangled_names[id];
+	}
 }

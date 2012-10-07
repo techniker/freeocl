@@ -154,6 +154,8 @@ namespace FreeOCL
 
 		smartptr<node> d_val__;
 
+		smartptr<type> current_function_return_type;
+
 		FreeOCL::map<std::string, smartptr<kernel> >	kernels;
 		std::vector<std::pair<int, smartptr<node> > >	tokens;
 		std::vector<std::pair<int, smartptr<node> > >	processed;

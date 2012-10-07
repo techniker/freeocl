@@ -143,7 +143,7 @@ namespace FreeOCL
 		return p_vm->get_builder()->CreatePointerCast(str, llvm::Type::getInt8PtrTy(p_vm->get_context()));
 	}
 
-	llvm::Value *generic_value::get_ptr() const
+	llvm::Value *generic_value::get_ptr(vm *p_vm) const
 	{
 		return NULL;
 	}
