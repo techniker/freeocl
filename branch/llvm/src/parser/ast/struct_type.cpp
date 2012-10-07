@@ -99,6 +99,16 @@ namespace FreeOCL
 		return false;
 	}
 
+	size_t struct_type::get_member_id(const std::string &name) const
+	{
+		if (root)
+			return root->get_member_id(name);
+		for(size_t i = 0 ; i < members.size() ; ++i)
+			if (members[i].first == name)
+				return i;
+		return -1;
+	}
+
 	smartptr<type> struct_type::get_type_of_member(const std::string &name) const
 	{
 		if (root)

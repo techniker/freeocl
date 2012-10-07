@@ -16,6 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 #include "if.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -46,4 +47,33 @@ namespace FreeOCL
     {
         return "_if";
     }
+
+	llvm::Value *_if::to_IR(vm *p_vm) const
+	{
+		Builder *builder = p_vm->get_builder();
+		llvm::Function *fn = builder->GetInsertBlock()->getParent();
+
+		llvm::Value *t = test->to_IR(p_vm);
+		t = type::cast_to_bool(p_vm, t);
+		llvm::BasicBlock *blockPass = llvm::BasicBlock::Create(p_vm->get_context(), "pass", fn);
+		llvm::BasicBlock *blockFail = if_false ? llvm::BasicBlock::Create(p_vm->get_context(), "fail", fn) : NULL;
+		llvm::BasicBlock *blockMerge = llvm::BasicBlock::Create(p_vm->get_context(), "merge", fn);
+
+		builder->CreateCondBr(t, blockPass, blockFail ? blockFail : blockMerge);
+
+		builder->SetInsertPoint(blockPass);
+		if_true->to_IR(p_vm);
+		builder->CreateBr(blockMerge);
+
+		if (if_false)
+		{
+			builder->SetInsertPoint(blockFail);
+			if_false->to_IR(p_vm);
+			builder->CreateBr(blockMerge);
+		}
+
+		builder->SetInsertPoint(blockMerge);
+
+		return t;
+	}
 }

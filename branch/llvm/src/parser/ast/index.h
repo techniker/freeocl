@@ -39,6 +39,9 @@ namespace FreeOCL
 
         void enable_boundary_check(bool b_check_bounds);
 		void set_ref_string(const std::string &ref);
+
+		virtual llvm::Value *to_IR(vm *p_vm) const;
+		virtual llvm::Value *get_ptr(vm *p_vm) const;
 	private:
 		const smartptr<expression> ptr;
 		const smartptr<expression> idx;

@@ -101,4 +101,14 @@ namespace FreeOCL
     {
         return "cast";
     }
+
+	llvm::Value *cast::to_IR(vm *p_vm) const
+	{
+		return type::cast_to(p_vm, exp->get_type(), p_type, exp->to_IR(p_vm));
+	}
+
+	llvm::Value *cast::get_ptr(vm *p_vm) const
+	{
+		return NULL;
+	}
 }

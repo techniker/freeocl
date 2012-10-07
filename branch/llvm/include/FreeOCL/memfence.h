@@ -21,6 +21,9 @@
 #include "sync.h"
 #include "atomic_ops.h"
 
+#define CLK_LOCAL_MEM_FENCE		0x0
+#define CLK_GLOBAL_MEM_FENCE	0x1
+
 // Built-in memory fence functions
 
 static inline void mem_fence(cl_mem_fence_flags /*flags*/)

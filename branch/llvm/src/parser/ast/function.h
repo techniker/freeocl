@@ -52,13 +52,14 @@ namespace FreeOCL
         virtual const char *get_node_type() const;
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
+		virtual llvm::Function *get_callee(vm *p_vm) const;
     private:
 		const std::string name;
 		smartptr<type>	return_type;
 		smartptr<chunk>	arguments;
 		smartptr<chunk>	body;
         std::deque<smartptr<type> > arg_types;
-		llvm::Function *fn;
+		mutable llvm::Function *fn;
 	};
 }
 

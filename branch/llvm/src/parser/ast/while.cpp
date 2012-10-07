@@ -16,6 +16,8 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 #include "while.h"
+#include <vm/vm.h>
+#include "type.h"
 
 namespace FreeOCL
 {
@@ -40,4 +42,28 @@ namespace FreeOCL
     {
         return "_while";
     }
+
+	llvm::Value *_while::to_IR(vm *p_vm) const
+	{
+		Builder *builder = p_vm->get_builder();
+		llvm::Function *fn = builder->GetInsertBlock()->getParent();
+
+		llvm::BasicBlock *blockBody = llvm::BasicBlock::Create(p_vm->get_context(), "while_body", fn);
+		llvm::BasicBlock *blockEnd = llvm::BasicBlock::Create(p_vm->get_context(), "while_end", fn);
+
+		llvm::Value *c = test->to_IR(p_vm);
+		c = type::cast_to_bool(p_vm, c);
+		builder->CreateCondBr(c, blockBody, blockEnd);
+
+		builder->SetInsertPoint(blockBody);
+		stmt->to_IR(p_vm);
+
+		c = test->to_IR(p_vm);
+		c = type::cast_to_bool(p_vm, c);
+		builder->CreateCondBr(c, blockBody, blockEnd);
+
+		builder->SetInsertPoint(blockEnd);
+
+		return NULL;
+	}
 }

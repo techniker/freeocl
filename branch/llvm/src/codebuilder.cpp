@@ -365,6 +365,9 @@ namespace FreeOCL
 		preproc.define("CLK_HALF_FLOAT", "0x10DD");
 		preproc.define("CLK_FLOAT", "0x10DE");
 
+		preproc.define("CLK_LOCAL_MEM_FENCE", "0x0");
+		preproc.define("CLK_GLOBAL_MEM_FENCE", "0x1");
+
 		std::stringstream _code(preprocessor::fix_end_of_lines(code));
 		try
 		{

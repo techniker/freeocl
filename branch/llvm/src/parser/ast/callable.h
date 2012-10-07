@@ -32,6 +32,8 @@ namespace FreeOCL
 		virtual bool check_num_params(const size_t n) const;
 		virtual bool is_defined() const;
         virtual std::deque<smartptr<type> > get_arg_types(const std::deque<smartptr<type> > &param_types) const = 0;
+		virtual llvm::Value *to_IR(vm *p_vm) const;
+		virtual llvm::Function *get_callee(vm *p_vm) const = 0;
 	};
 }
 

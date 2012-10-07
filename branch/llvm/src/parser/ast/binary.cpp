@@ -18,6 +18,7 @@
 #include "binary.h"
 #include "native_type.h"
 #include "../parser.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -186,4 +187,72 @@ namespace FreeOCL
     {
         return "binary";
     }
+
+	llvm::Value *binary::to_IR(vm *p_vm) const
+	{
+		Builder *builder = p_vm->get_builder();
+		llvm::Value *vl = NULL;
+		switch(op)
+		{
+		case '=':
+		case parser::MUL_ASSIGN:
+		case parser::DIV_ASSIGN:
+		case parser::MOD_ASSIGN:
+		case parser::ADD_ASSIGN:
+		case parser::SUB_ASSIGN:
+		case parser::LEFT_ASSIGN:
+		case parser::RIGHT_ASSIGN:
+		case parser::AND_ASSIGN:
+		case parser::XOR_ASSIGN:
+		case parser::OR_ASSIGN:
+			vl = left->get_ptr(p_vm);
+			break;
+		default:
+			vl = left->to_IR(p_vm);
+		}
+
+		llvm::Value *vr = right->to_IR(p_vm);
+
+		switch(op)
+		{
+		case '+':	return builder->CreateAdd(vl, vr, "add");
+		case '-':	return builder->CreateSub(vl, vr, "sub");
+		case '*':	return builder->CreateMul(vl, vr, "mul");
+		case '/':	return builder->CreateUDiv(vl, vr, "div");
+		case '%':	return builder->CreateSRem(vl, vr, "smod");
+		case '|':	return builder->CreateOr(vl, vr, "or");
+		case '^':	return builder->CreateXor(vl, vr, "xor");
+		case '&':	return builder->CreateAnd(vl, vr, "and");
+		case '<':	return builder->CreateICmpSLT(vl, vr, "slt");
+		case '>':	return builder->CreateICmpSGT(vl, vr, "sgt");
+		case ',':	return vr;
+		case parser::LEFT_OP:	return builder->CreateShl(vl, vr, "ls");
+		case parser::RIGHT_OP:	return builder->CreateAShr(vl, vr, "rs");
+		case parser::EQ_OP:		return builder->CreateICmpEQ(vl, vr, "eq");
+		case parser::NE_OP:		return builder->CreateICmpNE(vl, vr, "ne");
+		case parser::LE_OP:		return builder->CreateICmpSLE(vl, vr, "le");
+		case parser::GE_OP:		return builder->CreateICmpSGE(vl, vr, "ge");
+		case parser::AND_OP:	return builder->CreateAnd(type::cast_to_bool(p_vm, vl), type::cast_to_bool(p_vm, vr), "land");
+		case parser::OR_OP:		return builder->CreateOr(type::cast_to_bool(p_vm, vl), type::cast_to_bool(p_vm, vr), "lor");
+
+		case '=':	return builder->CreateStore(vr, vl, "assign");
+		case parser::MUL_ASSIGN:	return builder->CreateStore(builder->CreateMul(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
+		case parser::DIV_ASSIGN:	return builder->CreateStore(builder->CreateUDiv(builder->CreateLoad(vl), vr, "div"), vl, "assign");
+		case parser::MOD_ASSIGN:	return builder->CreateStore(builder->CreateSRem(builder->CreateLoad(vl), vr, "smod"), vl, "assign");
+		case parser::ADD_ASSIGN:	return builder->CreateStore(builder->CreateAdd(builder->CreateLoad(vl), vr, "add"), vl, "assign");
+		case parser::SUB_ASSIGN:	return builder->CreateStore(builder->CreateSub(builder->CreateLoad(vl), vr, "sub"), vl, "assign");
+		case parser::LEFT_ASSIGN:	return builder->CreateStore(builder->CreateShl(builder->CreateLoad(vl), vr, "ls"), vl, "assign");
+		case parser::RIGHT_ASSIGN:	return builder->CreateStore(builder->CreateAShr(builder->CreateLoad(vl), vr, "rs"), vl, "assign");
+		case parser::AND_ASSIGN:	return builder->CreateStore(builder->CreateAnd(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
+		case parser::XOR_ASSIGN:	return builder->CreateStore(builder->CreateXor(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
+		case parser::OR_ASSIGN:		return builder->CreateStore(builder->CreateOr(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
+		}
+
+		return NULL;
+	}
+
+	llvm::Value *binary::get_ptr(vm *p_vm) const
+	{
+		return NULL;
+	}
 }

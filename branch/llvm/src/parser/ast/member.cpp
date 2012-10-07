@@ -19,6 +19,7 @@
 #include "pointer_type.h"
 #include "struct_type.h"
 #include "typedef.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -79,4 +80,30 @@ namespace FreeOCL
     {
         return "member";
     }
+
+	llvm::Value *member::to_IR(vm *p_vm) const
+	{
+		Builder *builder = p_vm->get_builder();
+		smartptr<pointer_type> ptr_type = base->get_type();
+		smartptr<struct_type> p_type = get_type();
+		llvm::Value *t = ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
+		if (!t)
+		{
+			std::vector<unsigned> idx;
+			idx.push_back(p_type->get_member_id(member_name));
+			t = builder->CreateExtractValue(base->to_IR(p_vm), idx);
+			return t;
+		}
+		std::vector<llvm::Value*> idx;
+		idx.push_back(builder->getInt32(0));
+		idx.push_back(builder->getInt32(p_type->get_member_id(member_name)));
+		t = builder->CreateGEP(t, idx, "member");
+		return builder->CreateLoad(t, false);
+	}
+
+	llvm::Value *member::get_ptr(vm *p_vm) const
+	{
+		smartptr<pointer_type> ptr_type = base->get_type();
+		return ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
+	}
 }

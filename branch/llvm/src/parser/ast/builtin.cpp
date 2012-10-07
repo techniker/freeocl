@@ -348,8 +348,6 @@ namespace FreeOCL
 		REGISTER_OVERLOADED("gentype select(gentype,gentype,ugentype)|gentype select(gentype,gentype,igentype)", gentype_all);
 
 		// Sync functions
-		REGISTER_VAR(int, CLK_LOCAL_MEM_FENCE);
-		REGISTER_VAR(int, CLK_GLOBAL_MEM_FENCE);
 		REGISTER(void, barrier, 1);
 
 		// Memory fence function

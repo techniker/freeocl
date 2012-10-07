@@ -28,4 +28,9 @@ namespace FreeOCL
 	{
 		return true;
 	}
+
+	llvm::Value *callable::to_IR(vm *p_vm) const
+	{
+		return NULL;
+	}
 }

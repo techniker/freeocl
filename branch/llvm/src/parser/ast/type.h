@@ -62,6 +62,7 @@ namespace FreeOCL
 	public:
 		static smartptr<type> compute_resulting_type(const smartptr<type> &t0, const smartptr<type> &t1);
 		static llvm::Value *cast_to_bool(vm *p_vm, llvm::Value *v);
+		static llvm::Value *cast_to(vm *p_vm, const smartptr<type> &from, const smartptr<type> &to, llvm::Value *in);
 	};
 }
 

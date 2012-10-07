@@ -17,6 +17,7 @@
 */
 #include "ternary.h"
 #include "native_type.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -58,4 +59,14 @@ namespace FreeOCL
     {
         return "ternary";
     }
+
+	llvm::Value *ternary::to_IR(vm *p_vm) const
+	{
+		return p_vm->get_builder()->CreateSelect(exp1->to_IR(p_vm), exp2->to_IR(p_vm), exp3->to_IR(p_vm), "ternary");
+	}
+
+	llvm::Value *ternary::get_ptr(vm *p_vm) const
+	{
+		return NULL;
+	}
 }

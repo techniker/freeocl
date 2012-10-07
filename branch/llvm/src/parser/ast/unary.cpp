@@ -120,7 +120,7 @@ namespace FreeOCL
 			{
 				llvm::Value *v;
 				if (t->getType()->isFloatingPointTy())
-					v = builder->CreateFAdd(t, llvm::ConstantFP::get(p_vm->getContext(), llvm::APFloat(1.0f)));
+					v = builder->CreateFAdd(t, llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(1.0f)));
 				else if (t->getType()->isIntegerTy())
 					v = builder->CreateAdd(t, builder->getInt32(1));
 				else
@@ -135,7 +135,7 @@ namespace FreeOCL
 			{
 				llvm::Value *v;
 				if (t->getType()->isFloatingPointTy())
-					v = builder->CreateFSub(t, llvm::ConstantFP::get(p_vm->getContext(), llvm::APFloat(1.0f)));
+					v = builder->CreateFSub(t, llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(1.0f)));
 				else if (t->getType()->isIntegerTy())
 					v = builder->CreateSub(t, builder->getInt32(1));
 				else

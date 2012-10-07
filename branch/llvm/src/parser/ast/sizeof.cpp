@@ -1,5 +1,6 @@
 #include "sizeof.h"
 #include "native_type.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -39,4 +40,17 @@ namespace FreeOCL
     {
         return "size_of";
     }
+
+	llvm::Value *size_of::to_IR(vm *p_vm) const
+	{
+		Builder *builder = p_vm->get_builder();
+		llvm::Type *p_type = (n.as<expression>() ? n.as<expression>()->get_type() : n.as<type>())->to_LLVM_type(p_vm);
+		llvm::Value *t = builder->CreateGEP(llvm::ConstantPointerNull::get(llvm::PointerType::get(p_type, 0)), builder->getInt32(1), "sizeof");
+		return builder->CreatePtrToInt(t, native_type::t_size_t->to_LLVM_type(p_vm));
+	}
+
+	llvm::Value *size_of::get_ptr(vm *p_vm) const
+	{
+		return NULL;
+	}
 }

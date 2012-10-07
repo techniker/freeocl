@@ -21,6 +21,8 @@
 #include "overloaded_builtin.h"
 #include "native_type.h"
 #include <vm/vm.h>
+#include <llvm/Function.h>
+#include "llvm/Analysis/Verifier.h"
 
 namespace FreeOCL
 {
@@ -128,7 +130,7 @@ namespace FreeOCL
 
 	llvm::Value *function::to_IR(vm *p_vm) const
 	{
-		fn = getCallee(p_vm);
+		fn = get_callee(p_vm);
 		if (body)
 		{
 			llvm::BasicBlock *BB = llvm::BasicBlock::Create(p_vm->get_context(), "fonction_entry", fn);
@@ -140,13 +142,26 @@ namespace FreeOCL
 				p_vm->get_builder()->CreateStore(arg, p);
 			}
 			body->to_IR(p_vm);
-			if (*return_type == native_type::t_void)
+			if (*native_type::t_void == *return_type)
 				p_vm->get_builder()->CreateRetVoid();
 			llvm::verifyFunction(*fn);
 
 			//! TODO: implement optimization passes
 //			vm->getFunctionPassManager()->run(*fn);
 		}
+		return fn;
+	}
+
+	llvm::Function *function::get_callee(vm *p_vm) const
+	{
+		if (fn)
+			return fn;
+		const std::string &symbol_name = get_name();
+		std::vector<llvm::Type*> params;
+		for(size_t i = 0 ; i < arg_types.size() ; ++i)
+			params.push_back(arg_types[i]->to_LLVM_type(p_vm));
+		llvm::FunctionType *fntype = llvm::FunctionType::get(return_type->to_LLVM_type(p_vm), params, false);
+		fn = llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
 		return fn;
 	}
 }

@@ -17,6 +17,8 @@
 */
 #include "call.h"
 #include "native_type.h"
+#include <vm/vm.h>
+#include <llvm/Function.h>
 
 namespace FreeOCL
 {
@@ -90,4 +92,23 @@ namespace FreeOCL
     {
         return "call";
     }
+
+	llvm::Value *call::to_IR(vm *p_vm) const
+	{
+		std::vector<llvm::Value*> vargs;
+		const std::deque<smartptr<type> > &arg_types = fn->get_arg_types(args->get_as_types());
+		for(size_t i = 0, end = args->size() ; i < end ; ++i)
+		{
+			llvm::Value *v = args->at(i)->to_IR(p_vm);
+			v = type::cast_to(p_vm, args->at(i).as<expression>()->get_type(), arg_types[i], v);
+			vargs.push_back(v);
+		}
+		llvm::Value *callee = fn->get_callee(p_vm);
+		return p_vm->get_builder()->CreateCall(callee, vargs, "call");
+	}
+
+	llvm::Value *call::get_ptr(vm *p_vm) const
+	{
+		return NULL;
+	}
 }

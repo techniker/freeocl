@@ -45,4 +45,9 @@ namespace FreeOCL
     {
         return "qualifier";
     }
+
+	llvm::Value *qualifier::to_IR(vm *p_vm) const
+	{
+		return NULL;
+	}
 }

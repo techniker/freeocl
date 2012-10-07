@@ -267,4 +267,14 @@ namespace FreeOCL
     {
         return "swizzle";
     }
+
+	llvm::Value *swizzle::to_IR(vm *p_vm) const
+	{
+
+	}
+
+	llvm::Value *swizzle::get_ptr(vm *p_vm) const
+	{
+
+	}
 }

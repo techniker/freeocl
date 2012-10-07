@@ -19,6 +19,7 @@
 #include "struct_type.h"
 #include "chunk.h"
 #include "typedef.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -68,4 +69,16 @@ namespace FreeOCL
     {
         return "struct_literal";
     }
+
+	llvm::Value *struct_literal::to_IR(vm *p_vm) const
+	{
+		Builder *builder = p_vm->get_builder();
+		//! \todo implement struct literals
+		return NULL;
+	}
+
+	llvm::Value *struct_literal::get_ptr(vm *p_vm) const
+	{
+		return NULL;
+	}
 }
