@@ -130,7 +130,7 @@ namespace FreeOCL
 
 	llvm::Value *function::to_IR(vm *p_vm) const
 	{
-		fn = get_callee(p_vm);
+		fn = get_callee(p_vm, std::deque<smartptr<type> >());
 		if (body)
 		{
 			llvm::BasicBlock *BB = llvm::BasicBlock::Create(p_vm->get_context(), "fonction_entry", fn);
@@ -152,7 +152,7 @@ namespace FreeOCL
 		return fn;
 	}
 
-	llvm::Function *function::get_callee(vm *p_vm) const
+	llvm::Function *function::get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const
 	{
 		if (fn)
 			return fn;

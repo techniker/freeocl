@@ -48,4 +48,27 @@ namespace FreeOCL
     {
         return "array_type";
     }
+
+	std::string array_type::mangled_name() const
+	{
+		switch(base_type->get_address_space())
+		{
+		case PRIVATE:
+			if (is_const())
+				return "KA_" + base_type->mangled_name();
+			return "A_" + base_type->mangled_name();
+		case GLOBAL:
+			if (is_const())
+				return "KA_U2A1" + base_type->mangled_name();
+			return "A_U2A1" + base_type->mangled_name();
+		case CONSTANT:
+			if (is_const())
+				return "KA_U2A2" + base_type->mangled_name();
+			return "A_U2A2" + base_type->mangled_name();
+		case LOCAL:
+			if (is_const())
+				return "KA_U2A3" + base_type->mangled_name();
+			return "A_U2A3" + base_type->mangled_name();
+		}
+	}
 }

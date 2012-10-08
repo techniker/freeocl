@@ -24,6 +24,8 @@
 #include <stdexcept>
 #include <utils/set.h>
 #include <utils/string.h>
+#include <llvm/Function.h>
+#include <vm/vm.h>
 
 using namespace std;
 
@@ -514,4 +516,24 @@ namespace FreeOCL
     {
         return "overloaded_builtin";
     }
+
+	llvm::Value *overloaded_builtin::to_IR(vm *p_vm) const
+	{
+		return NULL;
+	}
+
+	llvm::Function *overloaded_builtin::get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const
+	{
+		const std::deque<smartptr<type> > &arg_types = get_arg_types(param_types);
+		std::string mangled_name("_Z");
+		mangled_name += to_string(name.size()) + name;
+		for(size_t i = 0 ; i < arg_types.size() ; ++i)
+			mangled_name == arg_types[i]->mangled_name();
+
+		const std::string &symbol_name = "_Z6printfPrKU2A2cz";
+		std::vector<llvm::Type*> params;
+		params.push_back(pointer_type::t_p_const_char->to_LLVM_type(p_vm));
+		llvm::FunctionType *fntype = llvm::FunctionType::get(native_type::t_int->to_LLVM_type(p_vm), params, false);
+		return llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+	}
 }

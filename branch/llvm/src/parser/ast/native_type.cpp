@@ -759,6 +759,6 @@ namespace FreeOCL
 			"u2v2Dh", "u2v3Dh", "u2v4Dh", "u2v8Dh", "u3v16Dh"
 		};
 
-		return mangled_names[id];
+		return (is_const() ? "K" : "") + std::string(mangled_names[id]);
 	}
 }

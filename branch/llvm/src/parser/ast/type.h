@@ -56,7 +56,7 @@ namespace FreeOCL
 
 		virtual llvm::Type *to_LLVM_type(vm *p_vm) const = 0;
 
-		virtual std::string mangled_name() const;
+		virtual std::string mangled_name() const = 0;
 	private:
 		const bool b_const;
 		const address_space addr_space;

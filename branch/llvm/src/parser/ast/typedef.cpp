@@ -60,6 +60,11 @@ namespace FreeOCL
 		return p_type->to_LLVM_type(p_vm);
 	}
 
+	std::string type_def::mangled_name() const
+	{
+		return p_type->mangled_name();
+	}
+
 	void type_decl::write(std::ostream& out) const
 	{
 		out << "typedef ";

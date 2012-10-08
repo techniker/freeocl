@@ -17,6 +17,7 @@
 */
 #include "enum_type.h"
 #include "typedef.h"
+#include <utils/string.h>
 
 namespace FreeOCL
 {
@@ -72,4 +73,11 @@ namespace FreeOCL
     {
         return "enum_type";
     }
+
+	std::string enum_type::mangled_name() const
+	{
+		if (is_const())
+			return "K" + to_string(name.size()) + name;
+		return to_string(name.size()) + name;
+	}
 }

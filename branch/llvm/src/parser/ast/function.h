@@ -55,7 +55,7 @@ namespace FreeOCL
         virtual const char *get_node_type() const;
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
-		virtual llvm::Function *get_callee(vm *p_vm) const;
+		virtual llvm::Function *get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const;
     private:
 		const std::string name;
 		smartptr<type>	return_type;

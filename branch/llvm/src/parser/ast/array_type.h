@@ -41,6 +41,8 @@ namespace FreeOCL
 		size_t get_size() const	{	return size;	}
 
         virtual const char *get_node_type() const;
+
+		virtual std::string mangled_name() const;
     private:
 		size_t size;
 	};

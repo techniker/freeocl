@@ -18,6 +18,8 @@
 #include "printf.h"
 #include "pointer_type.h"
 #include "native_type.h"
+#include <vm/vm.h>
+#include <llvm/Function.h>
 
 namespace FreeOCL
 {
@@ -73,4 +75,18 @@ namespace FreeOCL
     {
         return std::deque<smartptr<type> >();
     }
+
+	llvm::Value *printf::to_IR(vm *p_vm) const
+	{
+		return NULL;
+	}
+
+	llvm::Function *printf::get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const
+	{
+		const std::string &symbol_name = "_Z6printfPrKU2A2cz";
+		std::vector<llvm::Type*> params;
+		params.push_back(pointer_type::t_p_const_char->to_LLVM_type(p_vm));
+		llvm::FunctionType *fntype = llvm::FunctionType::get(native_type::t_int->to_LLVM_type(p_vm), params, false);
+		return llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+	}
 }

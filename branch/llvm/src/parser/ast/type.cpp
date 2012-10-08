@@ -143,9 +143,4 @@ namespace FreeOCL
 //		}
 		return in;
 	}
-
-	std::string type::mangled_name() const
-	{
-		return std::string();
-	}
 }

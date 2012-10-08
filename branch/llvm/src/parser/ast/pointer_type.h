@@ -42,6 +42,8 @@ namespace FreeOCL
         void set_root_type(const smartptr<type> &root_type);
 
 		virtual llvm::Type *to_LLVM_type(vm *p_vm) const;
+
+		virtual std::string mangled_name() const;
 	protected:
 		smartptr<type> base_type;
 

@@ -41,6 +41,7 @@ namespace FreeOCL
 
 		virtual llvm::Type *to_LLVM_type(vm *p_vm) const;
 
+		virtual std::string mangled_name() const;
 	protected:
 		const std::string name;
 		const smartptr<type> p_type;

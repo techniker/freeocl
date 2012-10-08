@@ -43,6 +43,9 @@ namespace FreeOCL
 		virtual bool has_references_to(const std::string &function_name) const;
 
         virtual const char *get_node_type() const;
+
+		virtual llvm::Value *to_IR(vm *p_vm) const;
+		virtual llvm::Function *get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const;
     private:
 		void remove_duplicates();
 

@@ -103,7 +103,7 @@ namespace FreeOCL
 			v = type::cast_to(p_vm, args->at(i).as<expression>()->get_type(), arg_types[i], v);
 			vargs.push_back(v);
 		}
-		llvm::Value *callee = fn->get_callee(p_vm);
+		llvm::Value *callee = fn->get_callee(p_vm, arg_types);
 		return p_vm->get_builder()->CreateCall(callee, vargs, "call");
 	}
 

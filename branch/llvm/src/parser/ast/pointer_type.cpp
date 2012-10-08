@@ -98,4 +98,27 @@ namespace FreeOCL
 	{
 		return llvm::PointerType::get(base_type->to_LLVM_type(p_vm), 0);
 	}
+
+	std::string pointer_type::mangled_name() const
+	{
+		switch(base_type->get_address_space())
+		{
+		case PRIVATE:
+			if (is_const())
+				return "KP" + base_type->mangled_name();
+			return "P" + base_type->mangled_name();
+		case GLOBAL:
+			if (is_const())
+				return "KPU2A1" + base_type->mangled_name();
+			return "PU2A1" + base_type->mangled_name();
+		case CONSTANT:
+			if (is_const())
+				return "KPU2A2" + base_type->mangled_name();
+			return "PU2A2" + base_type->mangled_name();
+		case LOCAL:
+			if (is_const())
+				return "KPU2A3" + base_type->mangled_name();
+			return "PU2A3" + base_type->mangled_name();
+		}
+	}
 }

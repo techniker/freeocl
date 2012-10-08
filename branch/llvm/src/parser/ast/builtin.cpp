@@ -921,4 +921,14 @@ namespace FreeOCL
     {
         return std::deque<smartptr<type> >();
     }
+
+	llvm::Value *builtin::to_IR(vm *p_vm) const
+	{
+		return NULL;
+	}
+
+	llvm::Function *builtin::get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const
+	{
+
+	}
 }

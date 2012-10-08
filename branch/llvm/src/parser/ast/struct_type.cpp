@@ -19,6 +19,7 @@
 #include "typedef.h"
 #include <algorithm>
 #include <vm/vm.h>
+#include <utils/string.h>
 
 namespace FreeOCL
 {
@@ -165,5 +166,12 @@ namespace FreeOCL
 		for(std::vector<std::pair<std::string, smartptr<type> > >::const_iterator i = members.begin() ; i != members.end() ; ++i)
 			elements.push_back(i->second->to_LLVM_type(p_vm));
 		return llvm::StructType::get(p_vm->get_context(), elements, false);
+	}
+
+	std::string struct_type::mangled_name() const
+	{
+		if (is_const())
+			return "K" + to_string(name.size()) + name;
+		return to_string(name.size()) + name;
 	}
 }

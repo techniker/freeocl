@@ -102,4 +102,14 @@ namespace FreeOCL
     {
         return "overloaded_function";
     }
+
+	llvm::Value *overloaded_function::to_IR(vm *p_vm) const
+	{
+		return NULL;
+	}
+
+	llvm::Function *overloaded_function::get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const
+	{
+		return get_function(param_types)->get_callee(p_vm, param_types);
+	}
 }

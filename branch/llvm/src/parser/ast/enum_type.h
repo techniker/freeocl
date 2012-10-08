@@ -35,6 +35,8 @@ namespace FreeOCL
 		virtual smartptr<type> clone(const bool b_const, const address_space addr_space) const;
 
         virtual const char *get_node_type() const;
+
+		virtual std::string mangled_name() const;
     private:
 		const std::string name;
 		const std::vector<smartptr<node> > v_values;
