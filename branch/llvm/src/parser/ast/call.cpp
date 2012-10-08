@@ -96,7 +96,10 @@ namespace FreeOCL
 	llvm::Value *call::to_IR(vm *p_vm) const
 	{
 		std::vector<llvm::Value*> vargs;
-		const std::deque<smartptr<type> > &arg_types = fn->get_arg_types(args->get_as_types());
+		std::deque<smartptr<type> > param_types;
+		for(size_t i = 0 ; i < args->size() ; ++i)
+			param_types.push_back((*args)[i].as<expression>()->get_type());
+		const std::deque<smartptr<type> > &arg_types = fn->get_arg_types(param_types);
 		for(size_t i = 0, end = args->size() ; i < end ; ++i)
 		{
 			llvm::Value *v = args->at(i)->to_IR(p_vm);

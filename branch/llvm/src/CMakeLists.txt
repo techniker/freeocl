@@ -121,7 +121,7 @@ set(FREEOCL_HEADERS
     )
 
 add_library(FreeOCL SHARED ${SOURCES} ${PARSER_SOURCES} ${VM_SOURCES} ${UTILS_SOURCES} ${FREEOCL_HEADERS} ${PREPROCESSOR_SOURCES})
-target_link_libraries(FreeOCL)
+target_link_libraries(FreeOCL ${LLVM_LIBRARIES})
 
 # Installation and packaging process
 install(TARGETS FreeOCL LIBRARY DESTINATION lib)

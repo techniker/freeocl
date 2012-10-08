@@ -235,7 +235,7 @@ namespace FreeOCL
 					else if (cur->back().as<token>())
 						name = cur->back().as<token>()->get_string();
                     arg_types.push_back(p_type);
-					smartptr<var> v = new var(name, p_type, b_in_function_body);
+					smartptr<var> v = new var(name, p_type, true);
 					variable_args.push_back(v);
 					symbols->insert(name, v);
 				}

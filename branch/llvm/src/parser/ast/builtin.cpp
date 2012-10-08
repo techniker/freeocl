@@ -168,14 +168,14 @@ namespace FreeOCL
 		symbols->insert("printf", new printf);
 
 		// Workitem functions
-		REGISTER(uint, get_work_dim, 0);
-		REGISTER(size_t, get_global_size, 1);
-		REGISTER(size_t, get_global_id, 1);
-		REGISTER(size_t, get_local_size, 1);
-		REGISTER(size_t, get_local_id, 1);
-		REGISTER(size_t, get_num_groups, 1);
-		REGISTER(size_t, get_group_id, 1);
-		REGISTER(size_t, get_global_offset, 1);
+		REGISTER_OVERLOADED("uint get_work_dim()", gentype_single);
+		REGISTER_OVERLOADED("size_t get_global_size(uint)", gentype_single);
+		REGISTER_OVERLOADED("size_t get_global_id(uint)", gentype_single);
+		REGISTER_OVERLOADED("size_t get_local_size(uint)", gentype_single);
+		REGISTER_OVERLOADED("size_t get_local_id(uint)", gentype_single);
+		REGISTER_OVERLOADED("size_t get_num_groups(uint)", gentype_single);
+		REGISTER_OVERLOADED("size_t get_group_id(uint)", gentype_single);
+		REGISTER_OVERLOADED("size_t get_global_offset(uint)", gentype_single);
 
 		// Math functions
 		REGISTER_OVERLOADED("gentype acos(gentype)", gentype_floats);

@@ -14,15 +14,17 @@ if(NOT CMAKE_THREAD_LIBS_INIT)
 	message(FATAL_ERROR "thread library not found")
 endif(NOT CMAKE_THREAD_LIBS_INIT)
 
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH} ${FreeOCL_SOURCE_DIR}/cmake")
-find_package(LLVM)
+find_package(LLVM REQUIRED)
 if(NOT LLVM_FOUND)
     message(FATAL_ERROR "LLVM not found!")
 endif(NOT LLVM_FOUND)
 
-include_directories(${LLVM_INCLUDE_DIR})
-link_libraries(${LLVM_LIBRARIES})
-add_definitions(-D__STDC_LIMIT_MACROS=1 -D__STDC_CONSTANT_MACROS=1)
+include_directories(${LLVM_INCLUDE_DIRS})
+link_directories(${LLVM_LIBRARY_DIRS})
+add_definitions(${LLVM_DEFINITIONS})
+
+llvm_map_components_to_libraries(LLVM_LIBRARIES jit engine)
+message(STATUS "${LLVM_LIBRARIES}")
 
 # Default is debug build
 if(NOT CMAKE_BUILD_TYPE)

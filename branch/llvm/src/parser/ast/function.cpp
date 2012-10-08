@@ -158,7 +158,7 @@ namespace FreeOCL
 			return fn;
 		const std::string &symbol_name = get_name();
 		std::vector<llvm::Type*> params;
-		for(size_t i = 0 ; i < arg_types.size() ; ++i)
+		for(size_t i = 1 ; i < arg_types.size() ; ++i)
 			params.push_back(arg_types[i]->to_LLVM_type(p_vm));
 		llvm::FunctionType *fntype = llvm::FunctionType::get(return_type->to_LLVM_type(p_vm), params, false);
 		fn = llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());

@@ -25,7 +25,8 @@ namespace FreeOCL
     var::var(const std::string &name, const smartptr<type> &p_type, const bool b_local)
 		: name(name),
         p_type(p_type),
-        b_local(b_local)
+		b_local(b_local),
+		v(NULL)
 	{
 	}
 
