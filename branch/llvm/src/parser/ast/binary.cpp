@@ -215,37 +215,66 @@ namespace FreeOCL
 
 		switch(op)
 		{
-		case '+':	return builder->CreateAdd(vl, vr, "add");
-		case '-':	return builder->CreateSub(vl, vr, "sub");
-		case '*':	return builder->CreateMul(vl, vr, "mul");
-		case '/':	return builder->CreateUDiv(vl, vr, "div");
-		case '%':	return builder->CreateSRem(vl, vr, "smod");
-		case '|':	return builder->CreateOr(vl, vr, "or");
-		case '^':	return builder->CreateXor(vl, vr, "xor");
-		case '&':	return builder->CreateAnd(vl, vr, "and");
-		case '<':	return builder->CreateICmpSLT(vl, vr, "slt");
-		case '>':	return builder->CreateICmpSGT(vl, vr, "sgt");
 		case ',':	return vr;
-		case parser::LEFT_OP:	return builder->CreateShl(vl, vr, "ls");
-		case parser::RIGHT_OP:	return builder->CreateAShr(vl, vr, "rs");
-		case parser::EQ_OP:		return builder->CreateICmpEQ(vl, vr, "eq");
-		case parser::NE_OP:		return builder->CreateICmpNE(vl, vr, "ne");
-		case parser::LE_OP:		return builder->CreateICmpSLE(vl, vr, "le");
-		case parser::GE_OP:		return builder->CreateICmpSGE(vl, vr, "ge");
 		case parser::AND_OP:	return builder->CreateAnd(type::cast_to_bool(p_vm, vl), type::cast_to_bool(p_vm, vr), "land");
 		case parser::OR_OP:		return builder->CreateOr(type::cast_to_bool(p_vm, vl), type::cast_to_bool(p_vm, vr), "lor");
+		case '=':				return builder->CreateStore(type::cast_to(p_vm, right->get_type(), left->get_type(), vr), vl);
+		}
 
-		case '=':	return builder->CreateStore(vr, vl, "assign");
-		case parser::MUL_ASSIGN:	return builder->CreateStore(builder->CreateMul(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
-		case parser::DIV_ASSIGN:	return builder->CreateStore(builder->CreateUDiv(builder->CreateLoad(vl), vr, "div"), vl, "assign");
-		case parser::MOD_ASSIGN:	return builder->CreateStore(builder->CreateSRem(builder->CreateLoad(vl), vr, "smod"), vl, "assign");
-		case parser::ADD_ASSIGN:	return builder->CreateStore(builder->CreateAdd(builder->CreateLoad(vl), vr, "add"), vl, "assign");
-		case parser::SUB_ASSIGN:	return builder->CreateStore(builder->CreateSub(builder->CreateLoad(vl), vr, "sub"), vl, "assign");
-		case parser::LEFT_ASSIGN:	return builder->CreateStore(builder->CreateShl(builder->CreateLoad(vl), vr, "ls"), vl, "assign");
-		case parser::RIGHT_ASSIGN:	return builder->CreateStore(builder->CreateAShr(builder->CreateLoad(vl), vr, "rs"), vl, "assign");
-		case parser::AND_ASSIGN:	return builder->CreateStore(builder->CreateAnd(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
-		case parser::XOR_ASSIGN:	return builder->CreateStore(builder->CreateXor(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
-		case parser::OR_ASSIGN:		return builder->CreateStore(builder->CreateOr(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
+		if (vl->getType()->isIntOrIntVectorTy() && vr->getType()->isIntOrIntVectorTy())
+		{
+			switch(op)
+			{
+			case '+':	return builder->CreateAdd(vl, vr, "add");
+			case '-':	return builder->CreateSub(vl, vr, "sub");
+			case '*':	return builder->CreateMul(vl, vr, "mul");
+			case '/':	return builder->CreateUDiv(vl, vr, "div");
+			case '%':	return builder->CreateSRem(vl, vr, "smod");
+			case '|':	return builder->CreateOr(vl, vr, "or");
+			case '^':	return builder->CreateXor(vl, vr, "xor");
+			case '&':	return builder->CreateAnd(vl, vr, "and");
+			case '<':	return builder->CreateICmpSLT(vl, vr, "slt");
+			case '>':	return builder->CreateICmpSGT(vl, vr, "sgt");
+			case parser::LEFT_OP:	return builder->CreateShl(vl, vr, "ls");
+			case parser::RIGHT_OP:	return builder->CreateAShr(vl, vr, "rs");
+			case parser::EQ_OP:		return builder->CreateICmpEQ(vl, vr, "eq");
+			case parser::NE_OP:		return builder->CreateICmpNE(vl, vr, "ne");
+			case parser::LE_OP:		return builder->CreateICmpSLE(vl, vr, "le");
+			case parser::GE_OP:		return builder->CreateICmpSGE(vl, vr, "ge");
+
+			case parser::MUL_ASSIGN:	return builder->CreateStore(builder->CreateMul(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
+			case parser::DIV_ASSIGN:	return builder->CreateStore(builder->CreateUDiv(builder->CreateLoad(vl), vr, "div"), vl, "assign");
+			case parser::MOD_ASSIGN:	return builder->CreateStore(builder->CreateSRem(builder->CreateLoad(vl), vr, "smod"), vl, "assign");
+			case parser::ADD_ASSIGN:	return builder->CreateStore(builder->CreateAdd(builder->CreateLoad(vl), vr, "add"), vl, "assign");
+			case parser::SUB_ASSIGN:	return builder->CreateStore(builder->CreateSub(builder->CreateLoad(vl), vr, "sub"), vl, "assign");
+			case parser::LEFT_ASSIGN:	return builder->CreateStore(builder->CreateShl(builder->CreateLoad(vl), vr, "ls"), vl, "assign");
+			case parser::RIGHT_ASSIGN:	return builder->CreateStore(builder->CreateAShr(builder->CreateLoad(vl), vr, "rs"), vl, "assign");
+			case parser::AND_ASSIGN:	return builder->CreateStore(builder->CreateAnd(builder->CreateLoad(vl), vr, "and"), vl, "assign");
+			case parser::XOR_ASSIGN:	return builder->CreateStore(builder->CreateXor(builder->CreateLoad(vl), vr, "xor"), vl, "assign");
+			case parser::OR_ASSIGN:		return builder->CreateStore(builder->CreateOr(builder->CreateLoad(vl), vr, "or"), vl, "assign");
+			}
+		}
+		else if ((vl->getType()->isFloatingPointTy() || vl->getType()->isVectorTy())
+				 && (vr->getType()->isFloatingPointTy() || vr->getType()->isVectorTy()))
+		{
+			switch(op)
+			{
+			case '+':	return builder->CreateFAdd(vl, vr, "add");
+			case '-':	return builder->CreateFSub(vl, vr, "sub");
+			case '*':	return builder->CreateFMul(vl, vr, "mul");
+			case '/':	return builder->CreateFDiv(vl, vr, "div");
+			case '<':	return builder->CreateFCmpOLT(vl, vr, "lt");
+			case '>':	return builder->CreateFCmpOGT(vl, vr, "gt");
+			case parser::EQ_OP:		return builder->CreateFCmpOEQ(vl, vr, "eq");
+			case parser::NE_OP:		return builder->CreateFCmpONE(vl, vr, "ne");
+			case parser::LE_OP:		return builder->CreateFCmpOLE(vl, vr, "le");
+			case parser::GE_OP:		return builder->CreateFCmpOGE(vl, vr, "ge");
+
+			case parser::MUL_ASSIGN:	return builder->CreateStore(builder->CreateFMul(builder->CreateLoad(vl), vr, "mul"), vl, "assign");
+			case parser::DIV_ASSIGN:	return builder->CreateStore(builder->CreateFDiv(builder->CreateLoad(vl), vr, "div"), vl, "assign");
+			case parser::ADD_ASSIGN:	return builder->CreateStore(builder->CreateFAdd(builder->CreateLoad(vl), vr, "add"), vl, "assign");
+			case parser::SUB_ASSIGN:	return builder->CreateStore(builder->CreateFSub(builder->CreateLoad(vl), vr, "sub"), vl, "assign");
+			}
 		}
 
 		return NULL;

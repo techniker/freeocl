@@ -159,6 +159,8 @@ namespace FreeOCL
 		FreeOCL::map<std::string, smartptr<kernel> >	kernels;
 		std::vector<std::pair<int, smartptr<node> > >	tokens;
 		std::vector<std::pair<int, smartptr<node> > >	processed;
+		std::vector<smartptr<node> >	switches;
+		std::vector<smartptr<node> >	control_blocks;
 		symbol_table *symbols;
 		std::bitset<_nb_extensions>	active_extensions;
 

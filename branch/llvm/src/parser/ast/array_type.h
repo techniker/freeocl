@@ -42,6 +42,8 @@ namespace FreeOCL
 
         virtual const char *get_node_type() const;
 
+		virtual llvm::Type *to_LLVM_type(vm *p_vm) const;
+
 		virtual std::string mangled_name() const;
     private:
 		size_t size;

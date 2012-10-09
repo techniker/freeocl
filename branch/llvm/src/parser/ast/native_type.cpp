@@ -761,4 +761,20 @@ namespace FreeOCL
 
 		return (is_const() ? "K" : "") + std::string(mangled_names[id]);
 	}
+
+	size_t native_type::get_size() const
+	{
+		static const size_t sizes[] = {
+			0, 1, 2, sizeof(size_t), 4, 4,
+			0, 0, 0, 0, 0, 0,
+			1, 2, 4, 8, 1, 2, 4, 8, 4, 8,
+			2, 4, 8, 16, 2, 4, 8, 16, 8, 16,
+			4, 8, 16, 32, 4, 8, 16, 32, 16, 32,
+			4, 8, 16, 32, 4, 8, 16, 32, 16, 32,
+			8, 16, 32, 64, 8, 16, 32, 64, 32, 64,
+			16, 32, 64, 128, 16, 32, 64, 128, 64, 64,
+			4, 6, 8, 16, 32
+		};
+		return sizes[id];
+	}
 }

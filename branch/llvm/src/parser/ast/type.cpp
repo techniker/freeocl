@@ -105,14 +105,64 @@ namespace FreeOCL
 		smartptr<type> n_to = to->clone(true, CONSTANT);
 		if (*n_from == *n_to)
 			return in;
-//		if (*native_type::t_bool == *n_to && from.as<native_type>())
-//		{
-//			if (from.plvl > 0)
-//				return builder->CreateICmpNE(in, llvm::ConstantPointerNull::get((const llvm::PointerType*)from->to_LLVM_type(p_vm)), "not_null");
-//			if (from.native == Float)
-//				return builder->CreateFCmpONE(in, llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(0.0f)));
-//			return builder->CreateICmpNE(in, llvm::ConstantInt::get(from->to_LLVM_type(p_vm), 0, false), "not_0");
-//		}
+		const native_type *fnt = from.as<native_type>();
+		const native_type *tnt = to.as<native_type>();
+		if (fnt)
+		{
+			if (fnt->is_integer() && fnt->is_scalar())
+			{
+				if (to.as<pointer_type>())
+					return builder->CreateIntToPtr(in, to->to_LLVM_type(p_vm));
+				if (tnt)
+				{
+					if (tnt->is_floatting() && tnt->is_scalar())
+						return builder->CreateSIToFP(in, to->to_LLVM_type(p_vm), "cvtfp");
+					if (tnt->is_integer() && tnt->is_scalar())
+					{
+						if (fnt->get_size() == tnt->get_size())
+							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast");
+						if (fnt->get_size() < tnt->get_size())
+							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
+						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
+					}
+				}
+			}
+			if (fnt->is_floatting() && fnt->is_scalar())
+			{
+				if (tnt)
+				{
+					if (tnt->is_integer() && tnt->is_scalar())
+						return builder->CreateFPToSI(in, to->to_LLVM_type(p_vm), "cvtfp");
+					if (tnt->is_floatting() && tnt->is_scalar())
+					{
+						if (fnt->get_size() == tnt->get_size())
+							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast");
+						if (fnt->get_size() < tnt->get_size())
+							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
+						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
+					}
+				}
+			}
+			if (*native_type::t_bool == *n_to)
+				return cast_to_bool(p_vm, in);
+		}
+		if (from.as<pointer_type>())
+		{
+			if (to.as<pointer_type>())
+				return builder->CreatePointerCast(in, to->to_LLVM_type(p_vm), "pcast");
+			in = builder->CreatePtrToInt(in, builder->getInt64Ty(), "ptr2i64");
+			if (tnt)
+			{
+				if (tnt->is_integer())
+				{
+					if (tnt->is_ulong() || tnt->is_ulong())
+						return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast");
+					return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
+				}
+				return builder->CreateSIToFP(in, to->to_LLVM_type(p_vm), "cvtfp");
+			}
+			return in;
+		}
 //		if (*native_type::t_float == *n_from && *native_type::t_float == *n_to)
 //		{
 //			if (to.plvl == 0)

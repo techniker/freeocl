@@ -56,6 +56,7 @@
 #include "ast/for.h"
 #include "ast/noop.h"
 #include "ast/return.h"
+#include "ast/switch.h"
 
 namespace FreeOCL
 {
@@ -1385,13 +1386,28 @@ namespace FreeOCL
 			CHECK(2, "syntax error, statement expected");
 			break;
 		case CASE:
-			RULE4(token<CASE>, constant_expression, token<':'>, statement);
+			MATCH4(token<CASE>, constant_expression, token<':'>, statement)
+			{
+				if (switches.empty())
+					ERROR("case: without switch!");
+				const int val = N[1].as<expression>()->eval_as_uint();
+				switches.back().as<_switch>()->add_case(val, N[3]);
+				return 1;
+			}
 			CHECK(3, "syntax error, statement expected");
 			CHECK(2, "syntax error, ':' expected");
 			CHECK(1, "syntax error, constant expression expected");
 			break;
 		case DEFAULT:
-			RULE3(token<DEFAULT>, token<':'>, statement);
+			MATCH3(token<DEFAULT>, token<':'>, statement)
+			{
+				if (switches.empty())
+					ERROR("default: with switch!");
+				if (switches.back().as<_switch>()->set_default(N[2]))
+					ERROR("default block already set!");
+				return 1;
+			}
+
 			CHECK(2, "syntax error, statement expected");
 			CHECK(1, "syntax error, ':' expected");
 			break;
@@ -1537,8 +1553,22 @@ namespace FreeOCL
 			CHECK(1, "syntax error, '(' expected");
 			break;
 		case SWITCH:
-			RULE5(token<SWITCH>, token<'('>, expression, token<')'>, statement);
-			CHECK(4, "syntax error, statement expected");
+			MATCH4(token<SWITCH>, token<'('>, expression, token<')'>)
+			{
+				smartptr<_switch> p_switch = new _switch(N[2]);
+				switches.push_back(p_switch);
+				control_blocks.push_back(p_switch);
+				MATCH1(statement)
+				{
+					switches.pop_back();
+					control_blocks.pop_back();
+					d_val__ = p_switch;
+					return 1;
+				}
+				switches.pop_back();
+				control_blocks.pop_back();
+				ERROR("syntax error, statement expected");
+			}
 			CHECK(3, "syntax error, ')' expected");
 			CHECK(2, "syntax error, expression expected");
 			CHECK(1, "syntax error, '(' expected");

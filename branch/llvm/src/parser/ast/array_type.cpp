@@ -17,6 +17,7 @@
 */
 #include "array_type.h"
 #include "utils/string.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -70,5 +71,10 @@ namespace FreeOCL
 				return "KA_U2A3" + base_type->mangled_name();
 			return "A_U2A3" + base_type->mangled_name();
 		}
+	}
+
+	llvm::Type *array_type::to_LLVM_type(vm *p_vm) const
+	{
+		return llvm::ArrayType::get(base_type->to_LLVM_type(p_vm), size);
 	}
 }

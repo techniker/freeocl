@@ -142,7 +142,7 @@ namespace FreeOCL
 				p_vm->get_builder()->CreateStore(arg, p);
 			}
 			body->to_IR(p_vm);
-			if (*native_type::t_void == *return_type)
+			if (*native_type::t_void == *(return_type->clone(true, type::CONSTANT)))
 				p_vm->get_builder()->CreateRetVoid();
 			llvm::verifyFunction(*fn);
 

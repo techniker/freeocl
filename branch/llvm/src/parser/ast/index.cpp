@@ -19,6 +19,9 @@
 #include "pointer_type.h"
 #include "array_type.h"
 #include <vm/vm.h>
+#include <iostream>
+#include "native_type.h"
+#include <llvm/Module.h>
 
 namespace FreeOCL
 {
@@ -88,7 +91,15 @@ namespace FreeOCL
 	{
 		llvm::Value *t0 = ptr->to_IR(p_vm);
 		llvm::Value *t1 = idx->to_IR(p_vm);
-		t0 = p_vm->get_builder()->CreateGEP(t0, t1, "index");
+		if (ptr->get_type().as<array_type>())
+		{
+			std::vector<llvm::Value*> idxs;
+			idxs.push_back(p_vm->get_builder()->getInt32(0));
+			idxs.push_back(t1);
+			t0 = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
+		}
+		else
+			t0 = p_vm->get_builder()->CreateGEP(t0, t1, "index");
 		return p_vm->get_builder()->CreateLoad(t0);
 	}
 
@@ -96,7 +107,15 @@ namespace FreeOCL
 	{
 		llvm::Value *t0 = ptr->to_IR(p_vm);
 		llvm::Value *t1 = idx->to_IR(p_vm);
-		t0 = p_vm->get_builder()->CreateGEP(t0, t1, "index");
+		if (ptr->get_type().as<array_type>())
+		{
+			std::vector<llvm::Value*> idxs;
+			idxs.push_back(p_vm->get_builder()->getInt32(0));
+			idxs.push_back(t1);
+			t0 = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
+		}
+		else
+			t0 = p_vm->get_builder()->CreateGEP(t0, t1, "index");
 		return t0;
 	}
 }

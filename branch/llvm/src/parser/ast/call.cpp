@@ -97,17 +97,19 @@ namespace FreeOCL
 	{
 		std::vector<llvm::Value*> vargs;
 		std::deque<smartptr<type> > param_types;
-		for(size_t i = 0 ; i < args->size() ; ++i)
-			param_types.push_back((*args)[i].as<expression>()->get_type());
+		if (args)
+			for(size_t i = 0 ; i < args->size() ; ++i)
+				param_types.push_back((*args)[i].as<expression>()->get_type());
 		const std::deque<smartptr<type> > &arg_types = fn->get_arg_types(param_types);
-		for(size_t i = 0, end = args->size() ; i < end ; ++i)
-		{
-			llvm::Value *v = args->at(i)->to_IR(p_vm);
-			v = type::cast_to(p_vm, args->at(i).as<expression>()->get_type(), arg_types[i], v);
-			vargs.push_back(v);
-		}
+		if (args)
+			for(size_t i = 0, end = args->size() ; i < end ; ++i)
+			{
+				llvm::Value *v = args->at(i)->to_IR(p_vm);
+				v = type::cast_to(p_vm, args->at(i).as<expression>()->get_type(), arg_types[i], v);
+				vargs.push_back(v);
+			}
 		llvm::Value *callee = fn->get_callee(p_vm, arg_types);
-		return p_vm->get_builder()->CreateCall(callee, vargs, "call");
+		return p_vm->get_builder()->CreateCall(callee, vargs);
 	}
 
 	llvm::Value *call::get_ptr(vm *p_vm) const
