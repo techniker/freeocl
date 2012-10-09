@@ -18,6 +18,7 @@
 #include "cast.h"
 #include "native_type.h"
 #include "binary.h"
+#include <vm/vm.h>
 #include <sstream>
 #include <iostream>
 
@@ -104,7 +105,60 @@ namespace FreeOCL
 
 	llvm::Value *cast::to_IR(vm *p_vm) const
 	{
-		return type::cast_to(p_vm, exp->get_type(), p_type, exp->to_IR(p_vm));
+		const native_type *native = p_type.as<native_type>();
+		if (native && native->is_vector())
+		{
+			llvm::Value *t = llvm::UndefValue::get(p_type->to_LLVM_type(p_vm));
+			const expression *cur = exp.weak();
+			const binary *bin = dynamic_cast<const binary*>(cur);
+			int n = native->get_dim() - 1;
+			smartptr<type> scalar_type = new native_type(native->get_scalar_type(), true, type::CONSTANT);
+			while(bin && bin->get_op() == ',')
+			{
+				llvm::Value *r = bin->get_right()->to_IR(p_vm);
+				if (r->getType()->isVectorTy())
+				{
+					const native_type *from_native = bin->get_right()->get_type().as<native_type>();
+					smartptr<type> from_scalar_type = new native_type(from_native->get_scalar_type(), true, type::CONSTANT);
+					for(size_t i = 0 ; i < from_native->get_dim() ; ++i)
+					{
+						llvm::Value *q = p_vm->get_builder()->CreateExtractElement(r, p_vm->get_builder()->getInt32(from_native->get_dim() - i - 1));
+						q = type::cast_to(p_vm, from_scalar_type, scalar_type, q);
+						t = p_vm->get_builder()->CreateInsertElement(t, q, p_vm->get_builder()->getInt32(n));
+						--n;
+					}
+				}
+				else
+				{
+					r = type::cast_to(p_vm, bin->get_right()->get_type(), scalar_type, r);
+					t = p_vm->get_builder()->CreateInsertElement(t, r, p_vm->get_builder()->getInt32(n));
+					--n;
+				}
+				cur = bin->get_left().weak();
+				bin = dynamic_cast<const binary*>(cur);
+			}
+			llvm::Value *r = cur->to_IR(p_vm);
+			if (r->getType()->isVectorTy())
+			{
+				const native_type *from_native = cur->get_type().as<native_type>();
+				smartptr<type> from_scalar_type = new native_type(from_native->get_scalar_type(), true, type::CONSTANT);
+				for(size_t i = 0 ; i < from_native->get_dim() ; ++i)
+				{
+					llvm::Value *q = p_vm->get_builder()->CreateExtractElement(r, p_vm->get_builder()->getInt32(from_native->get_dim() - i - 1));
+					q = type::cast_to(p_vm, from_scalar_type, scalar_type, q);
+					t = p_vm->get_builder()->CreateInsertElement(t, q, p_vm->get_builder()->getInt32(n));
+					--n;
+				}
+			}
+			else
+			{
+				r = type::cast_to(p_vm, cur->get_type(), scalar_type, r);
+				t = p_vm->get_builder()->CreateInsertElement(t, r, p_vm->get_builder()->getInt32(n));
+			}
+			return t;
+		}
+		else
+			return type::cast_to(p_vm, exp->get_type(), p_type, exp->to_IR(p_vm));
 	}
 
 	llvm::Value *cast::get_ptr(vm *p_vm) const

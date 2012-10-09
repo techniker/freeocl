@@ -20,32 +20,4 @@
 
 #include "callable.h"
 
-namespace FreeOCL
-{
-	class builtin : public callable
-	{
-	public:
-		builtin(const smartptr<type> &return_type, const std::string &name, const size_t num_params);
-		virtual ~builtin();
-
-		virtual smartptr<type> get_return_type(const std::deque<smartptr<type> > &arg_types) const;
-		virtual const std::string &get_name() const;
-		virtual size_t get_num_params() const;
-        virtual std::deque<smartptr<type> > get_arg_types(const std::deque<smartptr<type> > &param_types) const;
-
-		virtual void write(std::ostream& out) const;
-
-		virtual bool has_references_to(const std::string &function_name) const;
-
-        virtual const char *get_node_type() const;
-
-		virtual llvm::Value *to_IR(vm *p_vm) const;
-		virtual llvm::Function *get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const;
-    private:
-		const smartptr<type> return_type;
-		const std::string name;
-		const size_t num_params;
-	};
-}
-
 #endif

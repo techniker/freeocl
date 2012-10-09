@@ -29,4 +29,20 @@ namespace FreeOCL
 		delete builder;
 		delete context;
 	}
+
+	void vm::link()
+	{
+		if (engine)
+			return;
+
+		engine = llvm::EngineBuilder(module).create();
+	}
+
+	void *vm::get_function(const std::string &function_name)
+	{
+		if (!engine)
+			link();
+
+		return engine->getPointerToNamedFunction(function_name);
+	}
 }

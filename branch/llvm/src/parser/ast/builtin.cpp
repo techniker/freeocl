@@ -17,37 +17,6 @@ namespace FreeOCL
 		}
 	}
 
-	builtin::builtin(const smartptr<type> &return_type, const std::string &name, const size_t num_params)
-		: return_type(return_type),
-		name(name),
-		num_params(num_params)
-	{
-	}
-
-	builtin::~builtin()
-	{
-	}
-
-	smartptr<type> builtin::get_return_type(const std::deque<smartptr<type> > &/*arg_types*/) const
-	{
-		return return_type;
-	}
-
-	const std::string &builtin::get_name() const
-	{
-		return name;
-	}
-
-	size_t builtin::get_num_params() const
-	{
-		return num_params;
-	}
-
-	void builtin::write(std::ostream& out) const
-	{
-		out << name << ' ';
-	}
-
 	void parser::register_builtin()
 	{
 		static bool b_init = true;
@@ -159,7 +128,6 @@ namespace FreeOCL
 		gentype_half.push_back(native_type::HALF8);
 		gentype_half.push_back(native_type::HALF16);
 
-#define REGISTER(type, name, num)					symbols->insert(#name, new builtin(native_type::t_##type, #name, num))
 #define REGISTER_OVERLOADED(signature, gentype)		do { overloaded_builtin *n = new overloaded_builtin(signature, gentype);	symbols->insert(n->get_name(), n);	} while(false)
 #define REGISTER_OVERLOADED_REDIRECT(cl_name, signature, gentype)		do { overloaded_builtin *n = new overloaded_builtin(signature, gentype);	symbols->insert(#cl_name, n);	} while(false)
 #define REGISTER_VAR(type, name)					symbols->insert(#name, new var(#name, native_type::t_##type))
@@ -348,12 +316,12 @@ namespace FreeOCL
 		REGISTER_OVERLOADED("gentype select(gentype,gentype,ugentype)|gentype select(gentype,gentype,igentype)", gentype_all);
 
 		// Sync functions
-		REGISTER(void, barrier, 1);
+		REGISTER_OVERLOADED("void barrier(int)", gentype_single);
 
 		// Memory fence function
-		REGISTER(void, mem_fence, 1);
-		REGISTER(void, read_mem_fence, 1);
-		REGISTER(void, write_mem_fence, 1);
+		REGISTER_OVERLOADED("void mem_fence(int)", gentype_single);
+		REGISTER_OVERLOADED("void read_mem_fence(int)", gentype_single);
+		REGISTER_OVERLOADED("void write_mem_fence(int)", gentype_single);
 
 		// Async Copies from Global to Local Memory, Local to Global Memory, and Prefetch
 		REGISTER_OVERLOADED("event_t async_work_group_copy(__global gentype*,const __local gentype*,size_t,event_t)|event_t async_work_group_copy(__local gentype*,const __global gentype*,size_t,event_t)", gentype_all);
@@ -905,30 +873,5 @@ namespace FreeOCL
 
 		b_init = false;
 		syms = *symbols;
-	}
-
-	bool builtin::has_references_to(const std::string &function_name) const
-	{
-		return name == function_name;
-	}
-
-    const char *builtin::get_node_type() const
-    {
-        return "builtin";
-    }
-
-    std::deque<smartptr<type> > builtin::get_arg_types(const std::deque<smartptr<type> > &/*param_types*/) const
-    {
-        return std::deque<smartptr<type> >();
-    }
-
-	llvm::Value *builtin::to_IR(vm *p_vm) const
-	{
-		return NULL;
-	}
-
-	llvm::Function *builtin::get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const
-	{
-
 	}
 }

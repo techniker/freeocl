@@ -31,15 +31,13 @@ namespace FreeOCL
 		vm();
 		virtual ~vm();
 
-//		void run();
+		void *get_function(const std::string &function_name);
 
-//		void link(bool autoload = false);
+		void link();
 
 //		void save(const std::string &filename);
 
 //		void load(const std::string &filename);
-
-//		void add_lib_dir(const std::string &path);
 
         llvm::IRBuilder<> *get_builder() {	return builder;	}
 		llvm::Module *get_module() {	return module;	}
@@ -51,7 +49,6 @@ namespace FreeOCL
 		llvm::ExecutionEngine *engine;
 		llvm::LLVMContext *context;
 		llvm::FunctionPassManager *pFPM;
-		bool bInit;
 	};
 }
 
