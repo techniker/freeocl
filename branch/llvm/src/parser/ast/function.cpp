@@ -23,6 +23,7 @@
 #include <vm/vm.h>
 #include <llvm/Function.h>
 #include "llvm/Analysis/Verifier.h"
+#include <llvm/Module.h>
 
 namespace FreeOCL
 {
@@ -144,6 +145,7 @@ namespace FreeOCL
 			body->to_IR(p_vm);
 			if (*native_type::t_void == *(return_type->clone(true, type::CONSTANT)))
 				p_vm->get_builder()->CreateRetVoid();
+			fn->dump();
 			llvm::verifyFunction(*fn);
 
 			//! TODO: implement optimization passes

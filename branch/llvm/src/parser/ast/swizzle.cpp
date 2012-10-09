@@ -19,6 +19,7 @@
 #include "native_type.h"
 #include "pointer_type.h"
 #include "typedef.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -270,7 +271,21 @@ namespace FreeOCL
 
 	llvm::Value *swizzle::to_IR(vm *p_vm) const
 	{
+		Builder *builder = p_vm->get_builder();
+		llvm::Value *t = base->to_IR(p_vm);
 
+		const size_t dim = get_type().as<native_type>()->get_dim();
+		int values[16];
+		parse_components(components, values, dim);
+		if (dim == 1)
+			return builder->CreateExtractElement(t, builder->getInt32(values[0]));
+
+		std::vector<llvm::Constant*> constant_values;
+		for(size_t i = 0 ; i < dim ; ++i)
+			constant_values.push_back(builder->getInt32(values[i]));
+		llvm::Value *mask = llvm::ConstantVector::get(constant_values);
+		t = builder->CreateShuffleVector(t, llvm::UndefValue::get(t->getType()), mask, "swizzle");
+		return t;
 	}
 
 	llvm::Value *swizzle::get_ptr(vm *p_vm) const
