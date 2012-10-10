@@ -44,11 +44,14 @@ namespace FreeOCL
 		virtual llvm::Value *to_IR(vm *p_vm) const;
 
 		virtual llvm::Value *get_ptr(vm *p_vm) const;
+
+		virtual llvm::Value *set_value(vm *p_vm, llvm::Value *v) const;
     private:
 		const smartptr<expression> exp;
 		smartptr<type> p_type;
 		const int op;
 		const bool b_postfix;
+		mutable llvm::Value *t;
 	};
 }
 

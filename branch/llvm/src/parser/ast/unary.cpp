@@ -26,7 +26,8 @@ namespace FreeOCL
 	unary::unary(int op, const smartptr<expression> &exp, const bool b_postfix)
 		: exp(exp),
 		op(op),
-		b_postfix(b_postfix)
+		b_postfix(b_postfix),
+		t(NULL)
 	{
 		const smartptr<type> &t0 = exp->get_type();
 		switch(op)
@@ -112,7 +113,8 @@ namespace FreeOCL
 	llvm::Value *unary::to_IR(vm *p_vm) const
 	{
 		Builder *builder = p_vm->get_builder();
-		llvm::Value *t = exp->to_IR(p_vm);
+		if (!t)
+			t = exp->to_IR(p_vm);
 
 		switch(op)
 		{
@@ -174,8 +176,13 @@ namespace FreeOCL
 		case '+':
 			return exp->get_ptr(p_vm);
 		case '*':
-			return exp->to_IR(p_vm);
+			return t ? t : (t = exp->to_IR(p_vm));
 		}
+		return NULL;
+	}
+
+	llvm::Value *unary::set_value(vm *p_vm, llvm::Value *v) const
+	{
 		return NULL;
 	}
 }

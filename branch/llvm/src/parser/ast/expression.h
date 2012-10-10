@@ -29,7 +29,8 @@ namespace FreeOCL
 
 		virtual uint32_t eval_as_uint() const = 0;
 
-		virtual llvm::Value *get_ptr(vm *p_vm) const = 0;
+		virtual llvm::Value *set_value(vm *p_vm, llvm::Value *v) const = 0;
+		virtual llvm::Value *get_ptr(vm *p_vm) const	{}
 	};
 }
 

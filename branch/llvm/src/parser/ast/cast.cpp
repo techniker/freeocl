@@ -161,7 +161,7 @@ namespace FreeOCL
 			return type::cast_to(p_vm, exp->get_type(), p_type, exp->to_IR(p_vm));
 	}
 
-	llvm::Value *cast::get_ptr(vm *p_vm) const
+	llvm::Value *cast::set_value(vm *p_vm, llvm::Value *v) const
 	{
 		return NULL;
 	}

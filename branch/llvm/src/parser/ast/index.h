@@ -42,11 +42,14 @@ namespace FreeOCL
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
 		virtual llvm::Value *get_ptr(vm *p_vm) const;
+		virtual llvm::Value *set_value(vm *p_vm, llvm::Value *v) const;
 	private:
 		const smartptr<expression> ptr;
 		const smartptr<expression> idx;
 		bool b_check_bounds;
 		std::string ref;
+		mutable llvm::Value *t0;
+		mutable llvm::Value *t1;
 	};
 }
 

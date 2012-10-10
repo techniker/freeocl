@@ -65,7 +65,7 @@ namespace FreeOCL
 		return p_vm->get_builder()->CreateSelect(exp1->to_IR(p_vm), exp2->to_IR(p_vm), exp3->to_IR(p_vm), "ternary");
 	}
 
-	llvm::Value *ternary::get_ptr(vm *p_vm) const
+	llvm::Value *ternary::set_value(vm *p_vm, llvm::Value *v) const
 	{
 		return NULL;
 	}

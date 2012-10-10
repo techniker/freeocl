@@ -73,7 +73,9 @@ namespace FreeOCL
 
     std::deque<smartptr<type> > printf::get_arg_types(const std::deque<smartptr<type> > &/*param_types*/) const
     {
-        return std::deque<smartptr<type> >();
+		std::deque<smartptr<type> > arg_types;
+		arg_types.push_back(pointer_type::t_p_const_char);
+		return arg_types;
     }
 
 	llvm::Value *printf::to_IR(vm *p_vm) const
@@ -86,7 +88,7 @@ namespace FreeOCL
 		const std::string &symbol_name = "_Z6printfPrKU2A2cz";
 		std::vector<llvm::Type*> params;
 		params.push_back(pointer_type::t_p_const_char->to_LLVM_type(p_vm));
-		llvm::FunctionType *fntype = llvm::FunctionType::get(native_type::t_int->to_LLVM_type(p_vm), params, false);
+		llvm::FunctionType *fntype = llvm::FunctionType::get(native_type::t_int->to_LLVM_type(p_vm), params, true);
 		return llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
 	}
 }

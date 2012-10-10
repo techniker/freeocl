@@ -97,4 +97,10 @@ namespace FreeOCL
         allocate(p_vm);
         return v;
     }
+
+	llvm::Value *var::set_value(vm *p_vm, llvm::Value *v) const
+	{
+		allocate(p_vm);
+		return p_vm->get_builder()->CreateStore(v, this->v, false);
+	}
 }

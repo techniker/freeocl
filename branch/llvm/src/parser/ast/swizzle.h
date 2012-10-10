@@ -37,7 +37,8 @@ namespace FreeOCL
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
 		virtual llvm::Value *get_ptr(vm *p_vm) const;
-    private:
+		virtual llvm::Value *set_value(vm *p_vm, llvm::Value *v) const;
+	private:
 		static void parse_components(const std::string &components, int values[], size_t dim);
 
 	public:
@@ -46,6 +47,7 @@ namespace FreeOCL
 	private:
 		smartptr<expression> base;
 		const std::string components;
+		mutable llvm::Value *t;
 	};
 }
 

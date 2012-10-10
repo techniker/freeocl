@@ -138,10 +138,7 @@ namespace FreeOCL
 			p_vm->get_builder()->SetInsertPoint(BB);
 			size_t var_id = 0;
 			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < arguments->size() ; ++arg, ++var_id)
-			{
-				llvm::Value *p = variable_args[var_id]->get_ptr(p_vm);
-				p_vm->get_builder()->CreateStore(arg, p);
-			}
+				variable_args[var_id]->set_value(p_vm, arg);
 			body->to_IR(p_vm);
 			if (*native_type::t_void == *(return_type->clone(true, type::CONSTANT)))
 				p_vm->get_builder()->CreateRetVoid();

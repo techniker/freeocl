@@ -54,7 +54,7 @@ namespace FreeOCL
 			{
 				if (i)
 					out << ',';
-                if (arg_types.empty())
+				if (i >= arg_types.size())
                     out << *((*args)[i]);
                 else
                 {
@@ -105,14 +105,15 @@ namespace FreeOCL
 			for(size_t i = 0, end = args->size() ; i < end ; ++i)
 			{
 				llvm::Value *v = args->at(i)->to_IR(p_vm);
-				v = type::cast_to(p_vm, args->at(i).as<expression>()->get_type(), arg_types[i], v);
+				if (i < arg_types.size())
+					v = type::cast_to(p_vm, args->at(i).as<expression>()->get_type(), arg_types[i], v);
 				vargs.push_back(v);
 			}
 		llvm::Value *callee = fn->get_callee(p_vm, arg_types);
 		return p_vm->get_builder()->CreateCall(callee, vargs);
 	}
 
-	llvm::Value *call::get_ptr(vm *p_vm) const
+	llvm::Value *call::set_value(vm *p_vm, llvm::Value *v) const
 	{
 		return NULL;
 	}

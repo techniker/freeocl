@@ -40,7 +40,7 @@ namespace FreeOCL
         virtual const char *get_node_type() const;
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
-		virtual llvm::Value *get_ptr(vm *p_vm) const;
+		virtual llvm::Value *set_value(vm *p_vm, llvm::Value *v) const;
     private:
 		const smartptr<callable> fn;
 		const smartptr<chunk> args;

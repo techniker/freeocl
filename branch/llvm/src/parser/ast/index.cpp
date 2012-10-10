@@ -28,7 +28,9 @@ namespace FreeOCL
 	index::index(const smartptr<expression> &ptr, const smartptr<expression> &idx)
 		: ptr(ptr),
 		idx(idx),
-		b_check_bounds(false)
+		b_check_bounds(false),
+		t0(NULL),
+		t1(NULL)
 	{
 
 	}
@@ -89,33 +91,45 @@ namespace FreeOCL
 
 	llvm::Value *index::to_IR(vm *p_vm) const
 	{
-		llvm::Value *t0 = ptr->to_IR(p_vm);
-		llvm::Value *t1 = idx->to_IR(p_vm);
+		if (!t0)
+			t0 = ptr->to_IR(p_vm);
+		if (!t1)
+			t1 = idx->to_IR(p_vm);
+		llvm::Value *r;
 		if (ptr->get_type().as<array_type>())
 		{
 			std::vector<llvm::Value*> idxs;
 			idxs.push_back(p_vm->get_builder()->getInt32(0));
 			idxs.push_back(t1);
-			t0 = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
+			r = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
 		}
 		else
-			t0 = p_vm->get_builder()->CreateGEP(t0, t1, "index");
-		return p_vm->get_builder()->CreateLoad(t0);
+			r = p_vm->get_builder()->CreateGEP(t0, t1, "index");
+		return p_vm->get_builder()->CreateLoad(r);
 	}
 
 	llvm::Value *index::get_ptr(vm *p_vm) const
 	{
-		llvm::Value *t0 = ptr->to_IR(p_vm);
-		llvm::Value *t1 = idx->to_IR(p_vm);
+		if (!t0)
+			t0 = ptr->to_IR(p_vm);
+		if (!t1)
+			t1 = idx->to_IR(p_vm);
+		llvm::Value *r;
 		if (ptr->get_type().as<array_type>())
 		{
 			std::vector<llvm::Value*> idxs;
 			idxs.push_back(p_vm->get_builder()->getInt32(0));
 			idxs.push_back(t1);
-			t0 = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
+			r = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
 		}
 		else
-			t0 = p_vm->get_builder()->CreateGEP(t0, t1, "index");
-		return t0;
+			r = p_vm->get_builder()->CreateGEP(t0, t1, "index");
+		return r;
+	}
+
+	llvm::Value *index::set_value(vm *p_vm, llvm::Value *v) const
+	{
+		llvm::Value *ptr = get_ptr(p_vm);
+		return p_vm->get_builder()->CreateStore(v, ptr, false);
 	}
 }

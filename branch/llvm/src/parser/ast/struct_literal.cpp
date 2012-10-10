@@ -77,7 +77,7 @@ namespace FreeOCL
 		return NULL;
 	}
 
-	llvm::Value *struct_literal::get_ptr(vm *p_vm) const
+	llvm::Value *struct_literal::set_value(vm *p_vm, llvm::Value *v) const
 	{
 		return NULL;
 	}

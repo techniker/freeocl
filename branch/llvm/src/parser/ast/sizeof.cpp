@@ -49,7 +49,7 @@ namespace FreeOCL
 		return builder->CreatePtrToInt(t, native_type::t_size_t->to_LLVM_type(p_vm));
 	}
 
-	llvm::Value *size_of::get_ptr(vm *p_vm) const
+	llvm::Value *size_of::set_value(vm *p_vm, llvm::Value *v) const
 	{
 		return NULL;
 	}

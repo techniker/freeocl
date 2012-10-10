@@ -24,7 +24,7 @@
 namespace FreeOCL
 {
 	member::member(const smartptr<expression> &base, const std::string &member_name)
-		: base(base), member_name(member_name)
+		: base(base), member_name(member_name), t(NULL)
 	{
 	}
 
@@ -83,10 +83,12 @@ namespace FreeOCL
 
 	llvm::Value *member::to_IR(vm *p_vm) const
 	{
+		if (t)
+			return t;
 		Builder *builder = p_vm->get_builder();
 		smartptr<pointer_type> ptr_type = base->get_type();
 		smartptr<struct_type> p_type = get_type();
-		llvm::Value *t = ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
+		t = ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
 		if (!t)
 		{
 			std::vector<unsigned> idx;
@@ -98,12 +100,18 @@ namespace FreeOCL
 		idx.push_back(builder->getInt32(0));
 		idx.push_back(builder->getInt32(p_type->get_member_id(member_name)));
 		t = builder->CreateGEP(t, idx, "member");
-		return builder->CreateLoad(t, false);
+		return t = builder->CreateLoad(t, false);
 	}
 
 	llvm::Value *member::get_ptr(vm *p_vm) const
 	{
 		smartptr<pointer_type> ptr_type = base->get_type();
 		return ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
+	}
+
+	llvm::Value *member::set_value(vm *p_vm, llvm::Value *v) const
+	{
+		llvm::Value *ptr = get_ptr(p_vm);
+		return p_vm->get_builder()->CreateStore(v, ptr, false);
 	}
 }

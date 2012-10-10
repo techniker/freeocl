@@ -24,7 +24,7 @@
 namespace FreeOCL
 {
 	swizzle::swizzle(const smartptr<expression> &base, const std::string &components)
-		: base(base), components(components)
+		: base(base), components(components), t(NULL)
 	{
 	}
 
@@ -272,7 +272,8 @@ namespace FreeOCL
 	llvm::Value *swizzle::to_IR(vm *p_vm) const
 	{
 		Builder *builder = p_vm->get_builder();
-		llvm::Value *t = base->to_IR(p_vm);
+		if (!t)
+			t = base->to_IR(p_vm);
 
 		const size_t dim = get_type().as<native_type>()->get_dim();
 		int values[16];
@@ -284,12 +285,32 @@ namespace FreeOCL
 		for(size_t i = 0 ; i < dim ; ++i)
 			constant_values.push_back(builder->getInt32(values[i]));
 		llvm::Value *mask = llvm::ConstantVector::get(constant_values);
-		t = builder->CreateShuffleVector(t, llvm::UndefValue::get(t->getType()), mask, "swizzle");
-		return t;
+		return builder->CreateShuffleVector(t, llvm::UndefValue::get(t->getType()), mask, "swizzle");
 	}
 
 	llvm::Value *swizzle::get_ptr(vm *p_vm) const
 	{
+		return NULL;
+	}
 
+	llvm::Value *swizzle::set_value(vm *p_vm, llvm::Value *v) const
+	{
+		Builder *builder = p_vm->get_builder();
+		if (!t)
+			t = base->to_IR(p_vm);
+
+		const size_t dim = get_type().as<native_type>()->get_dim();
+		int values[16];
+		parse_components(components, values, dim);
+		if (dim == 1)
+			return builder->CreateInsertElement(t, v, builder->getInt32(values[0]));
+
+		llvm::Value *r = t;
+		for(size_t i = 0 ; i < dim ; ++i)
+		{
+			llvm::Value *q = builder->CreateExtractElement(v, builder->getInt32(i));
+			r = builder->CreateInsertElement(r, v, builder->getInt32(values[i]));
+		}
+		return r;
 	}
 }

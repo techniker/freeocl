@@ -36,6 +36,8 @@ namespace FreeOCL
 		virtual void write(std::ostream &out) const;
 
         virtual const char *get_node_type() const;
+
+		virtual llvm::Value *to_IR(vm *p_vm) const;
     };
 }
 
