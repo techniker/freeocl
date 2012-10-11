@@ -56,14 +56,13 @@ namespace FreeOCL
 			RUNTIME_FREEOCL_CXX_FLAGS = env_FREEOCL_CXX_FLAGS;
 	}
 
-	std::string build_program(const std::string &options,
-							  const std::string &code,
-							  std::stringstream &log,
-							  FreeOCL::set<std::string> &kernels,
-							  bool &b_valid_options,
-							  const bool b_compile_only,
-							  const FreeOCL::map<std::string, std::string> &headers,
-							  std::string *temporary_filename)
+	vm *build_program(const std::string &options,
+					  const std::string &code,
+					  std::stringstream &log,
+					  FreeOCL::set<std::string> &kernels,
+					  bool &b_valid_options,
+					  const bool b_compile_only,
+					  const FreeOCL::map<std::string, std::string> &headers)
 	{
 		b_valid_options = true;
 
@@ -88,7 +87,7 @@ namespace FreeOCL
 				if (!coptions)
 				{
 					b_valid_options = false;
-					return std::string();
+					return NULL;
 				}
 				coptions >> word;
 				const size_t eq = word.find('=');
@@ -110,7 +109,7 @@ namespace FreeOCL
 				if (!coptions)
 				{
 					b_valid_options = false;
-					return std::string();
+					return NULL;
 				}
 				coptions >> word;
 				include_paths.push_back(word);
@@ -169,7 +168,7 @@ namespace FreeOCL
 			else
 			{
 				b_valid_options = false;
-				return std::string();
+				return NULL;
 			}
 		}
 
@@ -180,80 +179,9 @@ namespace FreeOCL
 															   headers);
 
 		if (preprocessed_code.empty())
-			return std::string();
+			return NULL;
 
-		const std::string &validated_code = validate_code(preprocessed_code, log, kernels, b_debug_mode);
-
-		if (validated_code.empty())
-			return std::string();
-
-		char buf[1024];		// Buffer for tmpnam (to make it thread safe)
-		int fd_in = -1;
-		int fd_out = -1;
-		std::string filename_in;
-		std::string filename_out;
-
-		// Open a unique temporary file to write the code
-		size_t n = 0;
-		while(fd_in == -1)
-		{
-			++n;
-			if (n > 0x10000)
-			{
-				log << "error: impossible to get a temporary file as compiler input" << std::endl;
-				return filename_out;
-			}
-			filename_in = tmpnam(buf);
-			fd_in = open(filename_in.c_str(), O_EXCL | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR);
-		}
-
-		FILE *file_in = fdopen(fd_in, "w");
-		(void)fputs("#include <FreeOCL/opencl_c.h>\n", file_in);
-		(void)fwrite(validated_code.c_str(), 1, validated_code.size(), file_in);
-		(void)fflush(file_in);
-
-		// Creates a unique temporary file to write the binary data
-		n = 0;
-		while(fd_out == -1)
-		{
-			++n;
-			if (n > 0x10000)
-			{
-				fclose(file_in);
-				remove(filename_in.c_str());
-				log << "error: impossible to get a temporary file as compiler output" << std::endl;
-				filename_out.clear();
-				return filename_out;
-			}
-			filename_out = tmpnam(buf);
-			filename_out += b_compile_only ? ".o" : ".so";
-			fd_out = open(filename_out.c_str(), O_EXCL | O_CREAT | O_RDONLY, S_IWUSR | S_IRUSR | S_IXUSR);
-		}
-
-		std::stringstream cmd;
-		cmd << RUNTIME_FREEOCL_CXX_COMPILER << ' '
-			<< RUNTIME_FREEOCL_CXX_FLAGS
-			<< compiler_extra_args
-			<< " -o " << filename_out
-			<< ' ' << filename_in
-			<< " 2>&1";			// Redirects everything to stdout in order to read all logs
-		int ret = 0;
-		log << run_command(cmd.str(), &ret) << std::endl;
-
-		close(fd_out);
-		fclose(file_in);
-		// Keep temporary file name in order to remove it later (if no error occurs)
-		if (temporary_filename)
-			*temporary_filename = filename_in;
-		else
-			remove(filename_in.c_str());
-
-		if (ret != 0)
-		{
-			remove(filename_out.c_str());
-			filename_out.clear();
-		}
-		return filename_out;
+		return validate_code(preprocessed_code, log, kernels, b_debug_mode);
 	}
 
 	std::string preprocess_code(const std::string &code,
@@ -383,7 +311,7 @@ namespace FreeOCL
 		return _out.str();
 	}
 
-	std::string validate_code(const std::string &code, std::stringstream &log, FreeOCL::set<std::string> &kernels, const bool b_debug_mode)
+	vm *validate_code(const std::string &code, std::stringstream &log, FreeOCL::set<std::string> &kernels, const bool b_debug_mode)
 	{
 		log << "code validator log:" << std::endl;
 		log << "code:" << std::endl << code << std::endl;
@@ -394,26 +322,19 @@ namespace FreeOCL
 		p.parse();
 		std::clog << usec_timer() - timer << "µs" << std::endl;
 		if (p.errors())
-			return std::string();
+			return NULL;
 
-		std::stringstream gen;
 		if (!p.get_ast())
-			return std::string();
-
-		p.get_ast()->write(gen);
+			return NULL;
 
 		vm *p_vm = new vm;
 		p.get_ast()->to_IR(p_vm);
 		p_vm->get_module()->dump();
 
-		gen << std::endl;
 		for(FreeOCL::map<std::string, smartptr<kernel> >::const_iterator i = p.get_kernels().begin(), end = p.get_kernels().end() ; i != end ; ++i)
-		{
 			kernels.insert(i->first);
-		}
 
-		log << "converted code:" << std::endl << gen.str() << std::endl;
-		return gen.str();
+		return p_vm;
 	}
 
 	std::string link_program(const std::string &options,

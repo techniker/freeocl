@@ -23,10 +23,11 @@
 
 namespace FreeOCL
 {
-    var::var(const std::string &name, const smartptr<type> &p_type, const bool b_local)
+	var::var(const std::string &name, const smartptr<type> &p_type, const bool b_local, const bool b_thread_local)
 		: name(name),
         p_type(p_type),
 		b_local(b_local),
+		b_thread_local(b_thread_local),
 		v(NULL)
 	{
 	}
@@ -69,7 +70,15 @@ namespace FreeOCL
                 v = new_local_variable(p_vm, p_type, get_name());
             else
             {
-				llvm::GlobalVariable *var = new llvm::GlobalVariable(*(p_vm->get_module()), p_type->to_LLVM_type(p_vm), false, llvm::GlobalVariable::ExternalLinkage, NULL, get_name());
+				llvm::GlobalVariable *var = new llvm::GlobalVariable(*(p_vm->get_module()),
+																	 p_type->to_LLVM_type(p_vm),
+																	 false,
+																	 llvm::GlobalVariable::ExternalLinkage,
+																	 NULL,
+																	 get_name(),
+																	 0,
+																	 b_thread_local ? llvm::GlobalVariable::GeneralDynamicTLSModel : llvm::GlobalVariable::NotThreadLocal,
+																	 0);
 //                if (!b_extern)
 					var->setInitializer(llvm::ConstantAggregateZero::get(p_type->to_LLVM_type(p_vm)));
                 v = var;

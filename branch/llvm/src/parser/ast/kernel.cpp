@@ -451,22 +451,23 @@ namespace FreeOCL
 		__FCL_init->push_arg(__FCL_init_global_size);
 		__FCL_init->push_arg(__FCL_init_local_size);
 
-		smartptr<var> __FreeOCL_args = new var("__FreeOCL_args", new pointer_type(native_type::t_void, true, type::PRIVATE), false);
-		smartptr<var> __FreeOCL_dim = new var("__FreeOCL_dim", native_type::t_size_t, false);
-		smartptr<var> __FreeOCL_global_offset = new var("__FreeOCL_global_offset", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
-		smartptr<var> __FreeOCL_global_size = new var("__FreeOCL_global_size", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
-		smartptr<var> __FreeOCL_local_size = new var("__FreeOCL_local_size", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
-		smartptr<var> __FreeOCL_num_groups = new var("__FreeOCL_num_groups", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
+		smartptr<var> __FreeOCL_args = new var("__FreeOCL_args", new pointer_type(native_type::t_void, true, type::PRIVATE), false, true);
+		smartptr<var> __FreeOCL_dim = new var("__FreeOCL_dim", native_type::t_size_t, false, true);
+		smartptr<var> __FreeOCL_global_offset = new var("__FreeOCL_global_offset", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
+		smartptr<var> __FreeOCL_global_size = new var("__FreeOCL_global_size", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
+		smartptr<var> __FreeOCL_local_size = new var("__FreeOCL_local_size", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
+		smartptr<var> __FreeOCL_num_groups = new var("__FreeOCL_num_groups", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
 
 		__FCL_init_body->push_back(new binary('=', __FreeOCL_args, __FCL_init_pargs));
 		__FCL_init_body->push_back(new binary('=', __FreeOCL_dim, __FCL_init_dim));
 
 		for(size_t i = 0 ; i < 3 ; ++i)
 		{
-			__FCL_init_body->push_back(new binary('=', new index(__FreeOCL_global_offset, new value<int>(i)), new index(__FCL_init_global_offset, new value<int>(i))));
-			__FCL_init_body->push_back(new binary('=', new index(__FreeOCL_global_size, new value<int>(i)), new index(__FCL_init_global_size, new value<int>(i))));
-			__FCL_init_body->push_back(new binary('=', new index(__FreeOCL_local_size, new value<int>(i)), new index(__FCL_init_local_size, new value<int>(i))));
-			__FCL_init_body->push_back(new binary('=', new index(__FreeOCL_num_groups, new value<int>(i)), new binary('/', new index(__FCL_init_global_size, new value<int>(i)), new index(__FCL_init_local_size, new value<int>(i)))));
+			smartptr<expression> idx = new value<int>(i);
+			__FCL_init_body->push_back(new binary('=', new index(__FreeOCL_global_offset, idx), new index(__FCL_init_global_offset, idx)));
+			__FCL_init_body->push_back(new binary('=', new index(__FreeOCL_global_size, idx), new index(__FCL_init_global_size, idx)));
+			__FCL_init_body->push_back(new binary('=', new index(__FreeOCL_local_size, idx), new index(__FCL_init_local_size, idx)));
+			__FCL_init_body->push_back(new binary('=', new index(__FreeOCL_num_groups, idx), new binary('/', new index(__FCL_init_global_size, idx), new index(__FCL_init_local_size, idx))));
 		}
 
 		bool b_needs_sync = false;
@@ -498,10 +499,10 @@ namespace FreeOCL
 		__FCL_setwg->push_arg(__FCL_setwg_scheduler);
 		__FCL_setwg->push_arg(__FCL_setwg_threads);
 
-		smartptr<var> __FreeOCL_group_id = new var("__FreeOCL_group_id", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
-		smartptr<var> __FreeOCL_local_memory = new var("__FreeOCL_local_memory", new pointer_type(native_type::t_char, false, type::PRIVATE), false);
-		smartptr<var> __FreeOCL_scheduler = new var("__FreeOCL_scheduler", new pointer_type(native_type::t_void, false, type::PRIVATE), false);
-		smartptr<var> __FreeOCL_threads = new var("__FreeOCL_threads", new pointer_type(native_type::t_void, false, type::PRIVATE), false);
+		smartptr<var> __FreeOCL_group_id = new var("__FreeOCL_group_id", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
+		smartptr<var> __FreeOCL_local_memory = new var("__FreeOCL_local_memory", new pointer_type(native_type::t_char, false, type::PRIVATE), false, true);
+		smartptr<var> __FreeOCL_scheduler = new var("__FreeOCL_scheduler", new pointer_type(native_type::t_void, false, type::PRIVATE), false, true);
+		smartptr<var> __FreeOCL_threads = new var("__FreeOCL_threads", new pointer_type(native_type::t_void, false, type::PRIVATE), false, true);
 		__FCL_setwg_body->push_back(new binary('=', __FreeOCL_local_memory, __FCL_setwg_local_memory));
 		for(size_t i = 0 ; i < 3 ; ++i)
 			__FCL_setwg_body->push_back(new binary('=', new index(__FreeOCL_group_id, new value<int>(i)), new index(__FCL_setwg_thread_group_id, new value<int>(i))));
@@ -519,7 +520,7 @@ namespace FreeOCL
 		smartptr<function> __FCL_kernel = new function(native_type::t_void, "__FCL_kernel_" + get_name(), smartptr<chunk>(), __FCL_kernel_body, __FCL_kernel_args);
 		__FCL_kernel->push_arg(__FCL_kernel_thread_id);
 
-		smartptr<var> __FreeOCL_thread_num = new var("__FreeOCL_thread_num", native_type::t_size_t, false);
+		smartptr<var> __FreeOCL_thread_num = new var("__FreeOCL_thread_num", native_type::t_size_t, false, true);
 
 		smartptr<expression> last_shift = new value<int>(0x8000);
 		smartptr<expression> args_shift = new value<int>(0);
@@ -534,7 +535,10 @@ namespace FreeOCL
 			if (b_local)
 			{
 				smartptr<var> __shift = new var("__shift" + to_string(j), native_type::t_int, true);
-				__FCL_kernel_body->push_back(new binary('=', __shift, new binary('-', last_shift, new unary('*', new cast(new pointer_type(native_type::t_size_t, true, type::PRIVATE), new binary('+', new cast(pointer_type::t_p_const_char, __FreeOCL_args), args_shift)), false))));
+				__FCL_kernel_body->push_back(new binary('=', __shift,
+														new binary('-', last_shift,
+																   new unary('*', new cast(new pointer_type(native_type::t_size_t, true, type::PRIVATE),
+																						   new binary('+', new cast(pointer_type::t_p_const_char, __FreeOCL_args), args_shift)), false))));
 				args_shift = new binary('+', args_shift, new size_of(native_type::t_size_t));
 				last_shift = __shift;
 				shifts[j] = __shift;

@@ -27,17 +27,18 @@
 
 namespace FreeOCL
 {
+	class vm;
+
 	// Return a string to the .so/.o file built
 	// In case an error occurs, it returns an empty string
 	// In any case it'll write logs
-	std::string build_program(const std::string &options,
-							  const std::string &code,
-							  std::stringstream &log,
-							  FreeOCL::set<std::string> &kernels,
-							  bool &b_valid_options,
-							  const bool b_compile_only = false,
-							  const FreeOCL::map<std::string, std::string> &headers = FreeOCL::map<std::string, std::string>(),
-							  std::string *temporary_filename = NULL);
+	vm *build_program(const std::string &options,
+					  const std::string &code,
+					  std::stringstream &log,
+					  FreeOCL::set<std::string> &kernels,
+					  bool &b_valid_options,
+					  const bool b_compile_only = false,
+					  const FreeOCL::map<std::string, std::string> &headers = FreeOCL::map<std::string, std::string>());
 
 	// Return the output of the C preprocessor on the parameter 'code'
 	std::string preprocess_code(const std::string &code,
@@ -46,11 +47,11 @@ namespace FreeOCL
 								const std::vector<std::string> &include_paths,
 								const map<std::string, std::string> &headers);
 
-	// Validate the code and does the OpenCL C -> C++ conversion
-	std::string validate_code(const std::string &code,
-							  std::stringstream &log,
-							  FreeOCL::set<std::string> &kernels,
-							  const bool b_debug_mode);
+	// Validate the code and does the OpenCL C -> LLVM IR conversion
+	vm *validate_code(const std::string &code,
+					  std::stringstream &log,
+					  FreeOCL::set<std::string> &kernels,
+					  const bool b_debug_mode);
 
 	// Return a string to the .so/.a file built
 	// In case an error occurs, it returns an empty string

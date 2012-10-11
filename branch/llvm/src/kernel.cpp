@@ -27,6 +27,7 @@
 #include <cstring>
 #include <dlfcn.h>
 #include "prototypes.h"
+#include <vm/vm.h>
 
 namespace
 {
@@ -201,12 +202,19 @@ extern "C"
 		cl_kernel kernel = new _cl_kernel;
 		kernel->program = program;
 		kernel->function_name = kernel_name;
-		kernel->__FCL_info = (size_t (*)(size_t, int*, const char **, const char **, int *, int *)) dlsym(program->handle, ("__FCL_info_" + kernel->function_name).c_str());
-		kernel->__FCL_init = (bool (*)(const void*,size_t,const size_t*,const size_t *,const size_t*)) dlsym(program->handle, ("__FCL_init_" + kernel->function_name).c_str());
-		kernel->__FCL_setwg = (void (*)(char * const,const size_t *, ucontext_t *, ucontext_t *)) dlsym(program->handle, ("__FCL_setwg_" + kernel->function_name).c_str());
-		kernel->__FCL_kernel = (void (*)(const int)) dlsym(program->handle, ("__FCL_kernel_" + kernel->function_name).c_str());
+//		kernel->__FCL_info = (size_t (*)(size_t, int*, const char **, const char **, int *, int *)) dlsym(program->handle, ("__FCL_info_" + kernel->function_name).c_str());
+//		kernel->__FCL_init = (bool (*)(const void*,size_t,const size_t*,const size_t *,const size_t*)) dlsym(program->handle, ("__FCL_init_" + kernel->function_name).c_str());
+//		kernel->__FCL_setwg = (void (*)(char * const,const size_t *, ucontext_t *, ucontext_t *)) dlsym(program->handle, ("__FCL_setwg_" + kernel->function_name).c_str());
+//		kernel->__FCL_kernel = (void (*)(const int)) dlsym(program->handle, ("__FCL_kernel_" + kernel->function_name).c_str());
+		kernel->__FCL_info = (size_t (*)(size_t, int*, const char **, const char **, int *, int *)) program->p_vm->get_function("__FCL_info_" + kernel->function_name);
+		kernel->__FCL_init = (bool (*)(const void*,size_t,const size_t*,const size_t *,const size_t*)) program->p_vm->get_function("__FCL_init_" + kernel->function_name);
+		kernel->__FCL_setwg = (void (*)(char * const,const size_t *, ucontext_t *, ucontext_t *)) program->p_vm->get_function("__FCL_setwg_" + kernel->function_name);
+		kernel->__FCL_kernel = (void (*)(const int)) program->p_vm->get_function("__FCL_kernel_" + kernel->function_name);
 
-		if (kernel->__FCL_info == NULL || kernel->__FCL_kernel == NULL)
+		if (kernel->__FCL_info == NULL
+				|| kernel->__FCL_kernel == NULL
+				|| kernel->__FCL_init == NULL
+				|| kernel->__FCL_setwg == NULL)
 		{
 			delete kernel;
 			SET_RET(CL_OUT_OF_RESOURCES);

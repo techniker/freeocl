@@ -22,6 +22,11 @@
 #include <string>
 #include <vector>
 
+namespace FreeOCL
+{
+	class vm;
+}
+
 struct _cl_program : public FreeOCL::icd_table, public FreeOCL::ref_counter, public FreeOCL::mutex, public FreeOCL::valid_flag, public FreeOCL::context_resource
 {
 	_cl_program(cl_context);
@@ -34,8 +39,7 @@ struct _cl_program : public FreeOCL::icd_table, public FreeOCL::ref_counter, pub
 	cl_program_binary_type binary_type;
 
 	void *handle;
-	std::string binary_file;
-	std::string temporary_file;
+	FreeOCL::vm *p_vm;
 	FreeOCL::set<std::string> kernel_names;
 	cl_build_status build_status;
 	std::string build_options;

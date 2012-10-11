@@ -23,7 +23,7 @@ include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
 
-llvm_map_components_to_libraries(LLVM_LIBRARIES jit engine)
+llvm_map_components_to_libraries(LLVM_LIBRARIES jit interpreter engine)
 
 # Default is debug build
 if(NOT CMAKE_BUILD_TYPE)
