@@ -19,6 +19,7 @@
 #include "native_type.h"
 #include "../parser.h"
 #include <vm/vm.h>
+#include <iostream>
 
 namespace FreeOCL
 {
@@ -210,11 +211,10 @@ namespace FreeOCL
 		case '=':				return left->set_value(p_vm, type::cast_to(p_vm, right->get_type(), left->get_type(), vr));
 		}
 
-		vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
-		vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
-
 		if (vl->getType()->isIntOrIntVectorTy() && vr->getType()->isIntOrIntVectorTy())
 		{
+			vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
+			vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
 			switch(op)
 			{
 			case '+':	return builder->CreateAdd(vl, vr, "add");
@@ -249,6 +249,8 @@ namespace FreeOCL
 		else if ((vl->getType()->isFloatingPointTy() || vl->getType()->isVectorTy())
 				 && (vr->getType()->isFloatingPointTy() || vr->getType()->isVectorTy()))
 		{
+			vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
+			vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
 			switch(op)
 			{
 			case '+':	return builder->CreateFAdd(vl, vr, "add");
@@ -266,6 +268,30 @@ namespace FreeOCL
 			case parser::DIV_ASSIGN:	return left->set_value(p_vm, builder->CreateFDiv(vl, vr, "div"));
 			case parser::ADD_ASSIGN:	return left->set_value(p_vm, builder->CreateFAdd(vl, vr, "add"));
 			case parser::SUB_ASSIGN:	return left->set_value(p_vm, builder->CreateFSub(vl, vr, "sub"));
+			}
+		}
+		else if (vl->getType()->isPointerTy() && vr->getType()->isIntegerTy())
+		{
+			switch(op)
+			{
+			case '+':	return builder->CreateGEP(vl, vr, "ptradd");
+			case '-':	return builder->CreateGEP(vl, builder->CreateNeg(vr), "ptrsub");
+			case parser::ADD_ASSIGN:	return left->set_value(p_vm, builder->CreateGEP(vl, vr, "ptradd"));
+			case parser::SUB_ASSIGN:	return left->set_value(p_vm, builder->CreateGEP(vl, builder->CreateNeg(vr), "ptrsub"));
+			}
+		}
+		else if (vl->getType()->isIntegerTy() && vr->getType()->isPointerTy())
+		{
+			switch(op)
+			{
+			case '+':	return builder->CreateGEP(vr, vl, "add");
+			}
+		}
+		else if (vl->getType()->isPointerTy() && vr->getType()->isPointerTy())
+		{
+			switch(op)
+			{
+			case '-':	return builder->CreatePtrDiff(vl, vr, "ptrdiff");
 			}
 		}
 

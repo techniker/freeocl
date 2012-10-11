@@ -1,5 +1,6 @@
 #include "switch.h"
 #include <vm/vm.h>
+#include "native_type.h"
 
 namespace FreeOCL
 {
@@ -58,10 +59,11 @@ namespace FreeOCL
 		for(size_t i = 0 ; i < cases.size() ; ++i)
 			blocks.push_back(llvm::BasicBlock::Create(p_vm->get_context(), "case", fn));
 		blocks.push_back(blockPost);
+		smartptr<native_type> switch_type = exp->get_type();
 		for(size_t i = 0 ; i < cases.size() ; ++i)
 		{
 			llvm::BasicBlock *blockCase = blocks[i];
-			si->addCase(builder->getInt32(cases[i].first), blockCase);
+			si->addCase(llvm::ConstantInt::get((llvm::IntegerType*)switch_type->to_LLVM_type(p_vm), cases[i].first, switch_type->is_signed()), blockCase);
 
 			builder->SetInsertPoint(blockCase);
 			cases[i].second->to_IR(p_vm);

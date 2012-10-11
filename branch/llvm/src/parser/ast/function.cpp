@@ -41,14 +41,17 @@ namespace FreeOCL
         // This is required to respect overloaded_builtin::all_types_weak_match semantics
         arg_types.push_front((type*)NULL);
         this->arg_types.swap(arg_types);
-		this->arguments->pop_front();
-		this->arguments->pop_back();
-		if (body)
+		if (this->arguments)
+		{
+			this->arguments->pop_front();
+			this->arguments->pop_back();
+		}
+		if (body && body->size() > 0)
 		{
 			this->body->pop_front();
 			this->body->pop_back();
 		}
-		if (this->arguments->size() == 1)
+		if (this->arguments && this->arguments->size() == 1)
 			this->arguments = this->arguments->front();
 		else
 			this->arguments = new chunk();
@@ -137,7 +140,7 @@ namespace FreeOCL
 			llvm::BasicBlock *BB = llvm::BasicBlock::Create(p_vm->get_context(), "fonction_entry", fn);
 			p_vm->get_builder()->SetInsertPoint(BB);
 			size_t var_id = 0;
-			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < arguments->size() ; ++arg, ++var_id)
+			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < variable_args.size() ; ++arg, ++var_id)
 				variable_args[var_id]->set_value(p_vm, arg);
 			body->to_IR(p_vm);
 			if (*native_type::t_void == *(return_type->clone(true, type::CONSTANT)))
