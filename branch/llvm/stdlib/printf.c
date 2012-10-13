@@ -20,6 +20,27 @@
 #include <stdarg.h>
 //#include "atomic.h"
 
+//#define DEFINE_TN(T,N)	typedef struct	{	T v[N == 3 ? 4 : N];	} T##N
+//#define DEFINE(T)	DEFINE_TN(T,2);\
+//	DEFINE_TN(T,3);\
+//	DEFINE_TN(T,4);\
+//	DEFINE_TN(T,8);\
+//	DEFINE_TN(T,16)
+
+//DEFINE(__char);
+//DEFINE(__short);
+//DEFINE(__int);
+//DEFINE(__long);
+//DEFINE(__uchar);
+//DEFINE(__ushort);
+//DEFINE(__uint);
+//DEFINE(__ulong);
+//DEFINE(__float);
+//DEFINE(__double);
+
+//#undef DEFINE
+//#undef DEFINE_TN
+
 __int _Z3maxii(__int x, __int y);
 __int _Z3minii(__int x, __int y);
 __double _Z5isnand(__double);
@@ -364,45 +385,66 @@ int _Z6printfPrKU2A2cz(const char *format, ...)
 			{\
 				typedef T##2 _type;\
 				const _type a = va_arg(ap, _type);\
-				for(int j = 0 ; j < dimension ; ++j)\
-				v[j] = a.v[j];\
+				v[0] = a.x;\
+				v[1] = a.y;\
 			}\
 			break;\
 		case 3:\
 			{\
 				typedef T##3 _type;\
 				const _type a = va_arg(ap, _type);\
-				for(int j = 0 ; j < dimension ; ++j)\
-					v[j] = a.v[j];\
+				v[0] = a.x;\
+				v[1] = a.y;\
+				v[2] = a.z;\
 			}\
 			break;\
 		case 4:\
 			{\
 				typedef T##4 _type;\
 				const _type a = va_arg(ap, _type);\
-				for(int j = 0 ; j < dimension ; ++j)\
-					v[j] = a.v[j];\
+				v[0] = a.x;\
+				v[1] = a.y;\
+				v[2] = a.z;\
+				v[3] = a.w;\
 			}\
 			break;\
 		case 8:\
 			{\
 				typedef T##8 _type;\
 				const _type a = va_arg(ap, _type);\
-				for(int j = 0 ; j < dimension ; ++j)\
-					v[j] = a.v[j];\
+				v[0] = a.s0;\
+				v[1] = a.s1;\
+				v[2] = a.s2;\
+				v[3] = a.s3;\
+				v[4] = a.s4;\
+				v[5] = a.s5;\
+				v[6] = a.s6;\
+				v[7] = a.s7;\
 			}\
 			break;\
 		case 16:\
 			{\
 				typedef T##16 _type;\
 				const _type a = va_arg(ap, _type);\
-				for(int j = 0 ; j < dimension ; ++j)\
-					v[j] = a.v[j];\
+				v[0] = a.s0;\
+				v[1] = a.s1;\
+				v[2] = a.s2;\
+				v[3] = a.s3;\
+				v[4] = a.s4;\
+				v[5] = a.s5;\
+				v[6] = a.s6;\
+				v[7] = a.s7;\
+				v[8] = a.s8;\
+				v[9] = a.s9;\
+				v[10] = a.sA;\
+				v[11] = a.sB;\
+				v[12] = a.sC;\
+				v[13] = a.sD;\
+				v[14] = a.sE;\
+				v[15] = a.sF;\
 			}\
 			break;\
 		}
-#undef READ_ARG
-#define READ_ARG(T)
 
 				const int convertion_specifier = format[i];
 				switch(convertion_specifier)

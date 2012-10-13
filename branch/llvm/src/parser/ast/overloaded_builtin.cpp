@@ -533,6 +533,10 @@ namespace FreeOCL
 		for(size_t i = 0 ; i < arg_types.size() ; ++i)
 			symbol_name += arg_types[i]->mangled_name();
 
+		llvm::Function *fn = p_vm->get_registered_function(symbol_name);
+		if (fn)
+			return fn;
+
 		std::vector<llvm::Type*> params;
 		if (has_implicit_lts_parameter())
 		{
@@ -548,7 +552,9 @@ namespace FreeOCL
 		for(size_t i = 0 ; i < arg_types.size() ; ++i)
 			params.push_back(arg_types[i]->to_LLVM_type(p_vm));
 		llvm::FunctionType *fntype = llvm::FunctionType::get(ret_type->to_LLVM_type(p_vm), params, false);
-		return llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+		fn = llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+		p_vm->register_function(symbol_name, fn);
+		return fn;
 	}
 
 	bool overloaded_builtin::has_implicit_lts_parameter() const

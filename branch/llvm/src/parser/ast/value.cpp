@@ -139,7 +139,7 @@ namespace FreeOCL
 
 	template<> llvm::Value *value<std::string>::to_IR(vm *p_vm) const
 	{
-		llvm::Value *str = p_vm->get_builder()->CreateGlobalString(v.substr(1, v.size() - 2), "constant_string");
+		llvm::Value *str = p_vm->get_builder()->CreateGlobalString(v, "constant_string");
 		return p_vm->get_builder()->CreatePointerCast(str, llvm::Type::getInt8PtrTy(p_vm->get_context()));
 	}
 

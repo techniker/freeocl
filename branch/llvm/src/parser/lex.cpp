@@ -98,9 +98,9 @@ lex_start:
 				{
 					switch(c)
 					{
-					case 'n':	str += "\\n";	break;
-					case 'r':	str += "\\r";	break;
-					case 't':	str += "\\t";	break;
+					case 'n':	str += '\n';	break;
+					case 'r':	str += '\r';	break;
+					case 't':	str += '\t';	break;
 					default:	str += std::string("\\") + c;		break;
 					};
 				}
@@ -111,7 +111,7 @@ lex_start:
 
 			if (!in)                  // end of input
 				return 0;
-			d_val__ = new value<string>('"' + str + '"');
+			d_val__ = new value<string>(str);
 			return STRING_LITERAL;
 		}
 

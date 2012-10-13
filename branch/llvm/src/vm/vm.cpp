@@ -117,4 +117,17 @@ namespace FreeOCL
 			module->setModuleIdentifier(filename);
 		return module;
 	}
+
+	llvm::Function *vm::get_registered_function(const std::string &function_name)
+	{
+		map<std::string, llvm::Function*>::iterator it = functions.find(function_name);
+		if (it == functions.end())
+			return NULL;
+		return it->second;
+	}
+
+	void vm::register_function(const std::string &function_name, llvm::Function *fn)
+	{
+		functions[function_name] = fn;
+	}
 }

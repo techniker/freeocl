@@ -432,8 +432,8 @@ namespace FreeOCL
 			smartptr<chunk> new_case = new chunk;
 			sw->add_case(j, new_case);
 			new_case->push_back(new binary('=', new unary('*', __FCL_info_type), new value<int>(type_id)));
-			new_case->push_back(new binary('=', new unary('*', __FCL_info_name), new value<std::string>('"' + name + '"')));
-			new_case->push_back(new binary('=', new unary('*', __FCL_info_type_name), new value<std::string>('"' + type_name + '"')));
+			new_case->push_back(new binary('=', new unary('*', __FCL_info_name), new value<std::string>(name)));
+			new_case->push_back(new binary('=', new unary('*', __FCL_info_type_name), new value<std::string>(type_name)));
 			if (b_const)
 				new_case->push_back(new binary(parser::OR_ASSIGN, new unary('*', __FCL_info_type_qualifier), new value<int>(CL_KERNEL_ARG_TYPE_CONST)));
 			if (b_restrict)

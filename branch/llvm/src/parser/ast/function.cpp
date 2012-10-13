@@ -143,7 +143,8 @@ namespace FreeOCL
 			llvm::BasicBlock *BB = llvm::BasicBlock::Create(p_vm->get_context(), "fonction_entry", fn);
 			p_vm->get_builder()->SetInsertPoint(BB);
 			size_t var_id = 0;
-			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < variable_args.size() ; ++arg, ++var_id)
+			const size_t max_var = variable_args.size() + b_has_implicit_lts_parameter;
+			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < max_var ; ++arg, ++var_id)
 			{
 				if (var_id == 0)
 					p_vm->set_lts(arg);

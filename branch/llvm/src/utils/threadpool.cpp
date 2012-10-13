@@ -123,7 +123,7 @@ namespace FreeOCL
 		const size_t l_size = pool->local_size[0] * pool->local_size[1] * pool->local_size[2];
 		const size_t g_size = pool->num_groups[0] * pool->num_groups[1] * pool->num_groups[2];
 		char local_memory[0x8000];
-		lts.local_memory = local_memory;
+		lts.local_memory = &(local_memory[0]);
 		if (!pool->b_require_sync || l_size == 1)
 		{
 			lts.threads = NULL;

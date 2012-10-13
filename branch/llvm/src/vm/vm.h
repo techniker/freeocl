@@ -22,6 +22,7 @@
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/PassManager.h>
 #include <utils/smartptr.h>
+#include <utils/map.h>
 
 namespace FreeOCL
 {
@@ -45,6 +46,8 @@ namespace FreeOCL
 
 		llvm::Value *get_lts() const	{	return lts_value;	}
 		void set_lts(llvm::Value *lts)	{	lts_value = lts;	}
+		llvm::Function *get_registered_function(const std::string &function_name);
+		void register_function(const std::string &function_name, llvm::Function *fn);
 
 	private:
 		llvm::Module *load_module(const std::string &filename);
@@ -57,6 +60,7 @@ namespace FreeOCL
 		llvm::FunctionPassManager *pFPM;
 		llvm::Value *lts_value;
 		std::string error;
+		map<std::string, llvm::Function*> functions;
 	};
 }
 

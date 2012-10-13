@@ -86,10 +86,16 @@ namespace FreeOCL
 	llvm::Function *printf::get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const
 	{
 		const std::string &symbol_name = "_Z6printfPrKU2A2cz";
+		llvm::Function *fn = p_vm->get_registered_function(symbol_name);
+		if (fn)
+			return fn;
+
 		std::vector<llvm::Type*> params;
 		params.push_back(pointer_type::t_p_const_char->to_LLVM_type(p_vm));
 		llvm::FunctionType *fntype = llvm::FunctionType::get(native_type::t_int->to_LLVM_type(p_vm), params, true);
-		return llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+		fn = llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+		p_vm->register_function(symbol_name, fn);
+		return fn;
 	}
 
 	bool printf::has_implicit_lts_parameter() const
