@@ -7,6 +7,10 @@ typedef uint64_t __ulong;
 typedef uint32_t __uint;
 typedef uint16_t __ushort;
 typedef uint8_t  __uchar;
+typedef uint8_t	bool;
+
+#define false	0
+#define true	1
 
 typedef uintptr_t	__size_t;
 

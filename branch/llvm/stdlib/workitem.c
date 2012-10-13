@@ -34,60 +34,53 @@ typedef struct
 } __FreeOCL_lts_t;
 
 // Built-in work-item functions
-__uint get_work_dim()
+__uint _Z12get_work_dim()
 {
 	return __FreeOCL_dim;
 }
 
-__size_t get_global_size(__uint dimindx)
+__size_t _Z15get_global_sizej(__uint dimindx)
 {
 	return dimindx < __FreeOCL_dim ? __FreeOCL_global_size[dimindx] : 1;
 }
 
-__size_t get_local_id(const __FreeOCL_lts_t *lts, __uint dimindx);
+__size_t _Z12get_local_idj(const __FreeOCL_lts_t *lts, __uint dimindx);
 __size_t _Z13get_global_idj(const __FreeOCL_lts_t *lts, __uint dimindx)
 {
-	return dimindx < __FreeOCL_dim ? lts->group_id[dimindx] * __FreeOCL_local_size[dimindx] + get_local_id(lts, dimindx) + __FreeOCL_global_offset[dimindx] : 0;
+	return dimindx < __FreeOCL_dim ? lts->group_id[dimindx] * __FreeOCL_local_size[dimindx] + _Z12get_local_idj(lts, dimindx) + __FreeOCL_global_offset[dimindx] : 0;
 }
 
-__size_t get_local_size(__uint dimindx)
+__size_t _Z14get_local_sizej(__uint dimindx)
 {
 	return dimindx < __FreeOCL_dim ? __FreeOCL_local_size[dimindx] : 1;
 }
 
-__size_t get_thread_num(const __FreeOCL_lts_t *lts);
-__size_t get_local_id(const __FreeOCL_lts_t *lts, __uint dimindx)
+__size_t _Z12get_local_idj(const __FreeOCL_lts_t *lts, __uint dimindx)
 {
 	switch(dimindx)
 	{
 	case 0:
-		return get_thread_num(lts) % __FreeOCL_local_size[0];
+		return lts->thread_num % __FreeOCL_local_size[0];
 	case 1:
-		return (get_thread_num(lts) / __FreeOCL_local_size[0]) % __FreeOCL_local_size[1];
+		return (lts->thread_num / __FreeOCL_local_size[0]) % __FreeOCL_local_size[1];
 	case 2:
-		return (get_thread_num(lts) / __FreeOCL_local_size[0]) / __FreeOCL_local_size[1];
+		return (lts->thread_num / __FreeOCL_local_size[0]) / __FreeOCL_local_size[1];
 	default:
 		return -1;
 	}
 }
 
-__size_t get_num_groups(__uint dimindx)
+__size_t _Z14get_num_groupsj(__uint dimindx)
 {
 	return dimindx < __FreeOCL_dim ? __FreeOCL_num_groups[dimindx] : 1;
 }
 
-__size_t get_group_id(const __FreeOCL_lts_t *lts, __uint dimindx)
+__size_t _Z12get_group_idj(const __FreeOCL_lts_t *lts, __uint dimindx)
 {
 	return lts->group_id[dimindx];
 }
 
-__size_t get_global_offset(__uint dimindx)
+__size_t _Z17get_global_offsetj(__uint dimindx)
 {
 	return dimindx < __FreeOCL_dim ? __FreeOCL_global_offset[dimindx] : 0;
 }
-
-__size_t get_thread_num(const __FreeOCL_lts_t *lts)
-{
-	return lts->thread_num;
-}
-

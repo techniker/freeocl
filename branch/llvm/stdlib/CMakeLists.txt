@@ -1,7 +1,16 @@
 set(STDLIB_SOURCES
     workitem.c
+    printf.c
+    integer.c
     )
 
-add_custom_target(stdlib ALL clang -emit-llvm -o stdlib.bc -O3 -c ${STDLIB_SOURCES}
-                    WORKING_DIRECTORY ${FreeOCL_SOURCE_DIR}/stdlib
+add_custom_target(stdlib ALL
                     SOURCES ${STDLIB_SOURCES} types.h)
+
+foreach(FILE ${STDLIB_SOURCES})
+    string(REPLACE ".c" ".bc" BITCODE_FILE ${FILE})
+    add_custom_command(TARGET stdlib
+                        PRE_BUILD
+                        COMMAND clang -emit-llvm -o ${BITCODE_FILE} -O3 -c ${FILE}
+                        WORKING_DIRECTORY ${FreeOCL_SOURCE_DIR}/stdlib)
+endforeach(FILE)

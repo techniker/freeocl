@@ -56,6 +56,7 @@ const char *source_code =
 "	int;\n"
 "	size_t i = get_global_id(0);\n"
 "	__constant char *msg = \"hello world\";\n"
+"	printf(\"Hello world!\n\");\n"
 "	out[i] = msg[i];\n"
 "/*	test[i] = msg[11 - i];\n"
 "	barrier(CLK_LOCAL_MEM_FENCE);\n"
