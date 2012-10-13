@@ -54,9 +54,10 @@ const char *source_code =
 "__kernel void hello(__global char *out, __local char *test)\n"
 "{\n"
 "	int;\n"
-"	const size_t i = get_global_id(0);\n"
+"	size_t i = get_global_id(0);\n"
 "	__constant char *msg = \"hello world\";\n"
-"	test[i] = msg[11 - i];\n"
+"	out[i] = msg[i];\n"
+"/*	test[i] = msg[11 - i];\n"
 "	barrier(CLK_LOCAL_MEM_FENCE);\n"
 "	int4 a;\n"
 "	a.x = 1;\n"
@@ -67,7 +68,7 @@ const char *source_code =
 "	float4 f = (float4)(0.f,1.01f,M_PI_F,3e3f);\n"
 "	printf(\"(0x%x) int4 = % 3v4hld, string = %s, float4 = %.3v4hlg\\n\", i, a, \"Hello world!\", f);\n"
 "	barrier(CLK_LOCAL_MEM_FENCE);\n"
-"	printf(\"end\\n\");\n"
+"	printf(\"end\\n\");*/\n"
 ""
 "}\n";
 

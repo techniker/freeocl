@@ -91,4 +91,9 @@ namespace FreeOCL
 		llvm::FunctionType *fntype = llvm::FunctionType::get(native_type::t_int->to_LLVM_type(p_vm), params, true);
 		return llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
 	}
+
+	bool printf::has_implicit_lts_parameter() const
+	{
+		return false;
+	}
 }

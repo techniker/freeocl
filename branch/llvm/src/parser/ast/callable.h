@@ -34,6 +34,7 @@ namespace FreeOCL
         virtual std::deque<smartptr<type> > get_arg_types(const std::deque<smartptr<type> > &param_types) const = 0;
 		virtual llvm::Value *to_IR(vm *p_vm) const;
 		virtual llvm::Function *get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const = 0;
+		virtual bool has_implicit_lts_parameter() const = 0;
 	};
 }
 

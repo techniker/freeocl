@@ -85,28 +85,64 @@ namespace FreeOCL
 	{
 		if (t)
 			return t;
+		smartptr<type> p_type = base->get_type();
+		const type_def *p_type_def = p_type.as<type_def>();
+		if (p_type_def)	p_type = p_type_def->get_type();
+
+		const pointer_type *ptr = p_type.as<pointer_type>();
+		const struct_type *s_type;
+		if (ptr)
+		{
+			p_type = ptr->get_base_type();
+			p_type_def = p_type.as<type_def>();
+			if (p_type_def)	p_type = p_type_def->get_type();
+			s_type = p_type.as<struct_type>();
+		}
+		else
+			s_type = p_type.as<struct_type>();
+
 		Builder *builder = p_vm->get_builder();
 		smartptr<pointer_type> ptr_type = base->get_type();
-		smartptr<struct_type> p_type = get_type();
 		t = ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
 		if (!t)
 		{
 			std::vector<unsigned> idx;
-			idx.push_back(p_type->get_member_id(member_name));
+			idx.push_back(s_type->get_member_id(member_name));
 			t = builder->CreateExtractValue(base->to_IR(p_vm), idx);
 			return t;
 		}
 		std::vector<llvm::Value*> idx;
 		idx.push_back(builder->getInt32(0));
-		idx.push_back(builder->getInt32(p_type->get_member_id(member_name)));
+		idx.push_back(builder->getInt32(s_type->get_member_id(member_name)));
 		t = builder->CreateGEP(t, idx, "member");
 		return t = builder->CreateLoad(t, false);
 	}
 
 	llvm::Value *member::get_ptr(vm *p_vm) const
 	{
+		smartptr<type> p_type = base->get_type();
+		const type_def *p_type_def = p_type.as<type_def>();
+		if (p_type_def)	p_type = p_type_def->get_type();
+
+		const pointer_type *ptr = p_type.as<pointer_type>();
+		const struct_type *s_type;
+		if (ptr)
+		{
+			p_type = ptr->get_base_type();
+			p_type_def = p_type.as<type_def>();
+			if (p_type_def)	p_type = p_type_def->get_type();
+			s_type = p_type.as<struct_type>();
+		}
+		else
+			s_type = p_type.as<struct_type>();
+
+		Builder *builder = p_vm->get_builder();
 		smartptr<pointer_type> ptr_type = base->get_type();
-		return ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
+		llvm::Value *q = ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
+		std::vector<llvm::Value*> idx;
+		idx.push_back(builder->getInt32(0));
+		idx.push_back(builder->getInt32(s_type->get_member_id(member_name)));
+		return builder->CreateGEP(q, idx, "member_ptr");
 	}
 
 	llvm::Value *member::set_value(vm *p_vm, llvm::Value *v) const

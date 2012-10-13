@@ -97,6 +97,8 @@ namespace FreeOCL
 	{
 		std::vector<llvm::Value*> vargs;
 		std::deque<smartptr<type> > param_types;
+		if (fn->has_implicit_lts_parameter())
+			vargs.push_back(p_vm->get_lts());
 		if (args)
 			for(size_t i = 0 ; i < args->size() ; ++i)
 				param_types.push_back((*args)[i].as<expression>()->get_type());

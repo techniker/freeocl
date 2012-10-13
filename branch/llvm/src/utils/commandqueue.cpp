@@ -483,7 +483,7 @@ unsigned long _cl_command_queue::proc()
 											   ptr->global_size[1] / ptr->local_size[1],
 											   ptr->global_size[2] / ptr->local_size[2] };
 				device->pool->set_num_groups(num_groups);
-				device->pool->run(ptr->kernel->__FCL_setwg, ptr->kernel->__FCL_kernel);
+				device->pool->run(ptr->kernel->__FCL_kernel);
 				if (ptr->args)
 					free(ptr->args);
 			}

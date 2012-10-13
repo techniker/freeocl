@@ -24,6 +24,8 @@
 #include <llvm/Function.h>
 #include "llvm/Analysis/Verifier.h"
 #include <llvm/Module.h>
+#include "struct_type.h"
+#include "array_type.h"
 
 namespace FreeOCL
 {
@@ -36,7 +38,8 @@ namespace FreeOCL
 		return_type(return_type),
 		arguments(arguments),
 		body(body),
-		fn(NULL)
+		fn(NULL),
+		b_has_implicit_lts_parameter(true)
 	{
         // This is required to respect overloaded_builtin::all_types_weak_match semantics
         arg_types.push_front((type*)NULL);
@@ -141,11 +144,20 @@ namespace FreeOCL
 			p_vm->get_builder()->SetInsertPoint(BB);
 			size_t var_id = 0;
 			for(llvm::Function::arg_iterator arg = fn->arg_begin() ; arg != fn->arg_end() && var_id < variable_args.size() ; ++arg, ++var_id)
-				variable_args[var_id]->set_value(p_vm, arg);
+			{
+				if (var_id == 0)
+					p_vm->set_lts(arg);
+				if (b_has_implicit_lts_parameter)
+				{
+					if (var_id > 0)
+						variable_args[var_id - 1]->set_value(p_vm, arg);
+				}
+				else if (!b_has_implicit_lts_parameter)
+					variable_args[var_id]->set_value(p_vm, arg);
+			}
 			body->to_IR(p_vm);
 			if (*native_type::t_void == *(return_type->clone(true, type::CONSTANT)))
 				p_vm->get_builder()->CreateRetVoid();
-			fn->dump();
 			llvm::verifyFunction(*fn);
 
 			//! TODO: implement optimization passes
@@ -160,6 +172,17 @@ namespace FreeOCL
 			return fn;
 		const std::string &symbol_name = get_name();
 		std::vector<llvm::Type*> params;
+		if (b_has_implicit_lts_parameter)
+		{
+			smartptr<struct_type> __FreeOCL_lts_t = new struct_type("__FreeOCL_lts_t");
+			*__FreeOCL_lts_t << std::make_pair(std::string("group_id"), new array_type(native_type::t_size_t, false, type::PRIVATE, 3))
+							 << std::make_pair(std::string("local_memory"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+							 << std::make_pair(std::string("scheduler"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+							 << std::make_pair(std::string("threads"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+							 << std::make_pair(std::string("thread_num"), native_type::t_size_t);
+			smartptr<type> ptr = new pointer_type(__FreeOCL_lts_t, true, type::PRIVATE);
+			params.push_back(ptr->to_LLVM_type(p_vm));
+		}
 		for(size_t i = 1 ; i < arg_types.size() ; ++i)
 			params.push_back(arg_types[i]->to_LLVM_type(p_vm));
 		llvm::FunctionType *fntype = llvm::FunctionType::get(return_type->to_LLVM_type(p_vm), params, false);
@@ -170,5 +193,15 @@ namespace FreeOCL
 	void function::push_arg(const smartptr<var> &arg)
 	{
 		variable_args.push_back(arg);
+	}
+
+	bool function::has_implicit_lts_parameter() const
+	{
+		return b_has_implicit_lts_parameter;
+	}
+
+	void function::disable_implicit_lts_parameter()
+	{
+		b_has_implicit_lts_parameter = false;
 	}
 }

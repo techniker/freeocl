@@ -334,7 +334,7 @@ namespace FreeOCL
 					return 1;
 				}
 				warning("declaration doesn't declare anything!");
-				d_val__ = new token("", 0);
+				d_val__ = new noop;
 				return 1;
 			}
 
@@ -446,7 +446,6 @@ namespace FreeOCL
 					return 0;
 				ERROR("syntax error, init_declarator expected");
 			}
-			N->push_back(d_val__);
 			// register variables
 			{
 				smartptr<chunk> p_declarator = d_val__.as<chunk>()->front().as<chunk>();
@@ -503,58 +502,64 @@ namespace FreeOCL
 						}
 					}
 				}
+				smartptr<var> v;
 				if (decl)
 					symbols->insert(name, new type_def(name, l_type));
 				else
-					symbols->insert(name, new var(name, l_type, b_in_function_body));
+					symbols->insert(name, v = new var(name, l_type, b_in_function_body));
 
 				if (d_val__.as<chunk>()->size() == 3)		// Check initializer
 				{
 					// If it's not an expression, then it's a vector/struct initializer which will be handleded by the C++ compiler
 					smartptr<expression> init = d_val__.as<chunk>()->back().as<expression>();
-					if (init && init->get_type().as<native_type>() && l_type.as<native_type>())
+					if (init && v)
 					{
-						smartptr<native_type> init_type = init->get_type().as<native_type>();
-						smartptr<native_type> v_type = l_type.as<native_type>();
-						const std::string v_type_name = native_type(v_type->get_type_id(), false, native_type::PRIVATE).get_cxx_name();
-						if (v_type->is_vector() && init_type->is_scalar())
-							d_val__.as<chunk>()->back() = new chunk(new token(v_type_name + "::make(", parser::SPECIAL), init, new token(")", ')'));
-						else if (v_type->is_vector() && init_type->is_vector())
-						{
-							if (v_type->get_dim() != init_type->get_dim())
-								ERROR("vector dimensions must match!");
-							if (v_type->get_scalar_type() != init_type->get_scalar_type())
-								d_val__.as<chunk>()->back() = new call(symbols->get<callable>("convert_" + v_type_name), new chunk(init));
-						}
+						d_val__ = new binary('=', v, init);
+//						if (init && init->get_type().as<native_type>() && l_type.as<native_type>())
+//						{
+//							smartptr<native_type> init_type = init->get_type().as<native_type>();
+//							smartptr<native_type> v_type = l_type.as<native_type>();
+//							const std::string v_type_name = native_type(v_type->get_type_id(), false, native_type::PRIVATE).get_cxx_name();
+//							if (v_type->is_vector() && init_type->is_scalar())
+//								d_val__.as<chunk>()->back() = new chunk(new token(v_type_name + "::make(", parser::SPECIAL), init, new token(")", ')'));
+//							else if (v_type->is_vector() && init_type->is_vector())
+//							{
+//								if (v_type->get_dim() != init_type->get_dim())
+//									ERROR("vector dimensions must match!");
+//								if (v_type->get_scalar_type() != init_type->get_scalar_type())
+//									d_val__.as<chunk>()->back() = new call(symbols->get<callable>("convert_" + v_type_name), new chunk(init));
+//							}
+//						}
 					}
 				}
-				// Special hack for local values (use references to template generated static variables)
-				if (b_use_local_hack)
-				{
-					smartptr<chunk> ch = d_val__.as<chunk>();
-					const std::string regular_type_name = l_type.as<array_type>() ? l_type.as<array_type>()->complete_name() : l_type->get_cxx_name();
-					const size_t ID = (line << 10) ^ current_line.size();
-					if (d_val__.as<chunk>()->size() == 1)
-					{
-						ch->push_back(new token("=", '='));
-						ch->push_back(new token("__create_local<" + regular_type_name + ", " + FreeOCL::to_string(ID) + ">()", parser::SPECIAL));
-					}
-					else
-					{
-						smartptr<node> init = ch->at(2);
-						ch->at(2) = new chunk(new token("__create_local<" + regular_type_name + ", " + FreeOCL::to_string(ID) + ">(", parser::SPECIAL),
-											  init,
-											  new token(")", ')'));
-					}
-				}
+//				// Special hack for local values (use references to template generated static variables)
+//				if (b_use_local_hack)
+//				{
+//					smartptr<chunk> ch = d_val__.as<chunk>();
+//					const std::string regular_type_name = l_type.as<array_type>() ? l_type.as<array_type>()->complete_name() : l_type->get_cxx_name();
+//					const size_t ID = (line << 10) ^ current_line.size();
+//					if (d_val__.as<chunk>()->size() == 1)
+//					{
+//						ch->push_back(new token("=", '='));
+//						ch->push_back(new token("__create_local<" + regular_type_name + ", " + FreeOCL::to_string(ID) + ">()", parser::SPECIAL));
+//					}
+//					else
+//					{
+//						smartptr<node> init = ch->at(2);
+//						ch->at(2) = new chunk(new token("__create_local<" + regular_type_name + ", " + FreeOCL::to_string(ID) + ">(", parser::SPECIAL),
+//											  init,
+//											  new token(")", ')'));
+//					}
+//				}
 			}
+			N->push_back(d_val__);
 			l = processed.size();
 			if (!__token<','>())
 			{
 				d_val__ = N;
 				return 1;
 			}
-			N->push_back(d_val__);
+//			N->push_back(d_val__);
 		}
 //		if (__init_declarator())
 //		{

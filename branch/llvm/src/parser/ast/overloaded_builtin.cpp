@@ -18,6 +18,8 @@
 #include "overloaded_builtin.h"
 #include "native_type.h"
 #include "pointer_type.h"
+#include "array_type.h"
+#include "struct_type.h"
 #include "freeocl.h"
 #include <utils/map.h>
 #include <sstream>
@@ -532,9 +534,31 @@ namespace FreeOCL
 			symbol_name += arg_types[i]->mangled_name();
 
 		std::vector<llvm::Type*> params;
+		if (has_implicit_lts_parameter())
+		{
+			smartptr<struct_type> __FreeOCL_lts_t = new struct_type("__FreeOCL_lts_t");
+			*__FreeOCL_lts_t << std::make_pair(std::string("group_id"), new array_type(native_type::t_size_t, false, type::PRIVATE, 3))
+							 << std::make_pair(std::string("local_memory"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+							 << std::make_pair(std::string("scheduler"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+							 << std::make_pair(std::string("threads"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+							 << std::make_pair(std::string("thread_num"), native_type::t_size_t);
+			smartptr<type> ptr = new pointer_type(__FreeOCL_lts_t, true, type::PRIVATE);
+			params.push_back(ptr->to_LLVM_type(p_vm));
+		}
 		for(size_t i = 0 ; i < arg_types.size() ; ++i)
 			params.push_back(arg_types[i]->to_LLVM_type(p_vm));
 		llvm::FunctionType *fntype = llvm::FunctionType::get(ret_type->to_LLVM_type(p_vm), params, false);
 		return llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+	}
+
+	bool overloaded_builtin::has_implicit_lts_parameter() const
+	{
+		return name == "get_global_id"
+				|| name == "get_local_id"
+				|| name == "get_group_id"
+				|| name == "barrier"
+				|| name == "async_work_group_copy"
+				|| name == "async_work_group_strided_copy"
+				|| name == "wait_group_events";
 	}
 }

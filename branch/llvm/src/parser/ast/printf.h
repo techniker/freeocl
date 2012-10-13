@@ -43,7 +43,8 @@ namespace FreeOCL
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
 		virtual llvm::Function *get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const;
-    private:
+		virtual bool has_implicit_lts_parameter() const;
+	private:
 		const std::string name;
 	};
 }

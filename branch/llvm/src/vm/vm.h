@@ -43,12 +43,20 @@ namespace FreeOCL
 		llvm::Module *get_module() {	return module;	}
         llvm::LLVMContext &get_context() {	return *context;	}
 
+		llvm::Value *get_lts() const	{	return lts_value;	}
+		void set_lts(llvm::Value *lts)	{	lts_value = lts;	}
+
+	private:
+		llvm::Module *load_module(const std::string &filename);
+
 	private:
 		llvm::IRBuilder<> *builder;
 		llvm::Module* module;
 		llvm::ExecutionEngine *engine;
 		llvm::LLVMContext *context;
 		llvm::FunctionPassManager *pFPM;
+		llvm::Value *lts_value;
+		std::string error;
 	};
 }
 

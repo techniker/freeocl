@@ -35,6 +35,9 @@
 #include "call.h"
 #include "cast.h"
 #include <utils/string.h>
+#include "struct_type.h"
+#include "member.h"
+#include <vm/vm.h>
 
 namespace FreeOCL
 {
@@ -310,6 +313,21 @@ namespace FreeOCL
 			cur->front() = p_type;
 		}
 
+		smartptr<var> __FreeOCL_args = new var("__FreeOCL_args", new pointer_type(native_type::t_void, true, type::PRIVATE), false);
+		smartptr<var> __FreeOCL_dim = new var("__FreeOCL_dim", native_type::t_size_t, false);
+		smartptr<var> __FreeOCL_global_offset = new var("__FreeOCL_global_offset", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
+		smartptr<var> __FreeOCL_global_size = new var("__FreeOCL_global_size", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
+		smartptr<var> __FreeOCL_local_size = new var("__FreeOCL_local_size", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
+		smartptr<var> __FreeOCL_num_groups = new var("__FreeOCL_num_groups", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false);
+
+		smartptr<struct_type> __FreeOCL_lts_t = new struct_type("__FreeOCL_lts_t");
+		*__FreeOCL_lts_t << std::make_pair(std::string("group_id"), new array_type(native_type::t_size_t, false, type::PRIVATE, 3))
+						 << std::make_pair(std::string("local_memory"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+						 << std::make_pair(std::string("scheduler"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+						 << std::make_pair(std::string("threads"), new pointer_type(native_type::t_char, false, type::PRIVATE))
+						 << std::make_pair(std::string("thread_num"), native_type::t_size_t);
+
+
 		/*-------------------------------------------------__FCL_info-------------------------------------------------*/
 		smartptr<chunk> __FCL_info_body = new chunk;
 		std::deque<smartptr<type> > __FCL_info_args;
@@ -327,6 +345,7 @@ namespace FreeOCL
 		__FCL_info_args.push_back(__FCL_info_type_qualifier->get_type());
 		__FCL_info_args.push_back(__FCL_info_type_access_qualifier->get_type());
 		smartptr<function> __FCL_info = new function(native_type::t_size_t, "__FCL_info_" + get_name(), smartptr<chunk>(), __FCL_info_body, __FCL_info_args);
+		__FCL_info->disable_implicit_lts_parameter();
 		__FCL_info->push_arg(__FCL_info_idx);
 		__FCL_info->push_arg(__FCL_info_type);
 		__FCL_info->push_arg(__FCL_info_name);
@@ -413,8 +432,8 @@ namespace FreeOCL
 			smartptr<chunk> new_case = new chunk;
 			sw->add_case(j, new_case);
 			new_case->push_back(new binary('=', new unary('*', __FCL_info_type), new value<int>(type_id)));
-			new_case->push_back(new binary('=', new unary('*', __FCL_info_name), new value<std::string>(name)));
-			new_case->push_back(new binary('=', new unary('*', __FCL_info_type_name), new value<std::string>(type_name)));
+			new_case->push_back(new binary('=', new unary('*', __FCL_info_name), new value<std::string>('"' + name + '"')));
+			new_case->push_back(new binary('=', new unary('*', __FCL_info_type_name), new value<std::string>('"' + type_name + '"')));
 			if (b_const)
 				new_case->push_back(new binary(parser::OR_ASSIGN, new unary('*', __FCL_info_type_qualifier), new value<int>(CL_KERNEL_ARG_TYPE_CONST)));
 			if (b_restrict)
@@ -445,18 +464,12 @@ namespace FreeOCL
 		__FCL_init_args.push_back(__FCL_init_global_size->get_type());
 		__FCL_init_args.push_back(__FCL_init_local_size->get_type());
 		smartptr<function> __FCL_init = new function(native_type::t_bool, "__FCL_init_" + get_name(), smartptr<chunk>(), __FCL_init_body, __FCL_init_args);
+		__FCL_init->disable_implicit_lts_parameter();
 		__FCL_init->push_arg(__FCL_init_pargs);
 		__FCL_init->push_arg(__FCL_init_dim);
 		__FCL_init->push_arg(__FCL_init_global_offset);
 		__FCL_init->push_arg(__FCL_init_global_size);
 		__FCL_init->push_arg(__FCL_init_local_size);
-
-		smartptr<var> __FreeOCL_args = new var("__FreeOCL_args", new pointer_type(native_type::t_void, true, type::PRIVATE), false, true);
-		smartptr<var> __FreeOCL_dim = new var("__FreeOCL_dim", native_type::t_size_t, false, true);
-		smartptr<var> __FreeOCL_global_offset = new var("__FreeOCL_global_offset", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
-		smartptr<var> __FreeOCL_global_size = new var("__FreeOCL_global_size", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
-		smartptr<var> __FreeOCL_local_size = new var("__FreeOCL_local_size", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
-		smartptr<var> __FreeOCL_num_groups = new var("__FreeOCL_num_groups", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
 
 		__FCL_init_body->push_back(new binary('=', __FreeOCL_args, __FCL_init_pargs));
 		__FCL_init_body->push_back(new binary('=', __FreeOCL_dim, __FCL_init_dim));
@@ -480,47 +493,18 @@ namespace FreeOCL
 
 		__FCL_init->to_IR(p_vm);
 
-		/*-------------------------------------------------__FCL_setwg------------------------------------------------*/
-
-		smartptr<chunk> __FCL_setwg_body = new chunk;
-		std::deque<smartptr<type> > __FCL_setwg_args;
-
-		smartptr<var> __FCL_setwg_local_memory = new var("local_memory", new pointer_type(native_type::t_char, false, type::PRIVATE), true);
-		smartptr<var> __FCL_setwg_thread_group_id = new var("thread_group_id", new pointer_type(native_type::t_size_t, true, type::PRIVATE), true);
-		smartptr<var> __FCL_setwg_scheduler = new var("global_size", new pointer_type(native_type::t_void, false, type::PRIVATE), true);
-		smartptr<var> __FCL_setwg_threads = new var("local_size", new pointer_type(native_type::t_void, false, type::PRIVATE), true);
-		__FCL_setwg_args.push_back(__FCL_setwg_local_memory->get_type());
-		__FCL_setwg_args.push_back(__FCL_setwg_thread_group_id->get_type());
-		__FCL_setwg_args.push_back(__FCL_setwg_scheduler->get_type());
-		__FCL_setwg_args.push_back(__FCL_setwg_threads->get_type());
-		smartptr<function> __FCL_setwg = new function(native_type::t_void, "__FCL_setwg_" + get_name(), smartptr<chunk>(), __FCL_setwg_body, __FCL_setwg_args);
-		__FCL_setwg->push_arg(__FCL_setwg_local_memory);
-		__FCL_setwg->push_arg(__FCL_setwg_thread_group_id);
-		__FCL_setwg->push_arg(__FCL_setwg_scheduler);
-		__FCL_setwg->push_arg(__FCL_setwg_threads);
-
-		smartptr<var> __FreeOCL_group_id = new var("__FreeOCL_group_id", new array_type(native_type::t_size_t, false, type::PRIVATE, 3), false, true);
-		smartptr<var> __FreeOCL_local_memory = new var("__FreeOCL_local_memory", new pointer_type(native_type::t_char, false, type::PRIVATE), false, true);
-		smartptr<var> __FreeOCL_scheduler = new var("__FreeOCL_scheduler", new pointer_type(native_type::t_void, false, type::PRIVATE), false, true);
-		smartptr<var> __FreeOCL_threads = new var("__FreeOCL_threads", new pointer_type(native_type::t_void, false, type::PRIVATE), false, true);
-		__FCL_setwg_body->push_back(new binary('=', __FreeOCL_local_memory, __FCL_setwg_local_memory));
-		for(size_t i = 0 ; i < 3 ; ++i)
-			__FCL_setwg_body->push_back(new binary('=', new index(__FreeOCL_group_id, new value<int>(i)), new index(__FCL_setwg_thread_group_id, new value<int>(i))));
-		__FCL_setwg_body->push_back(new binary('=', __FreeOCL_scheduler, __FCL_setwg_scheduler));
-		__FCL_setwg_body->push_back(new binary('=', __FreeOCL_threads, __FCL_setwg_threads));
-
-		__FCL_setwg->to_IR(p_vm);
-
 		/*------------------------------------------------__FCL_kernel------------------------------------------------*/
 		smartptr<chunk> __FCL_kernel_body = new chunk;
 		std::deque<smartptr<type> > __FCL_kernel_args;
 
 		smartptr<var> __FCL_kernel_thread_id = new var("thread_id", native_type::t_int, true);
+		smartptr<var> __FCL_kernel_lts = new var("__FCL_lts", new pointer_type(__FreeOCL_lts_t, true, type::PRIVATE), true);
+		__FCL_kernel_args.push_back(__FCL_kernel_lts->get_type());
 		__FCL_kernel_args.push_back(__FCL_kernel_thread_id->get_type());
 		smartptr<function> __FCL_kernel = new function(native_type::t_void, "__FCL_kernel_" + get_name(), smartptr<chunk>(), __FCL_kernel_body, __FCL_kernel_args);
+		__FCL_kernel->disable_implicit_lts_parameter();
+		__FCL_kernel->push_arg(__FCL_kernel_lts);
 		__FCL_kernel->push_arg(__FCL_kernel_thread_id);
-
-		smartptr<var> __FreeOCL_thread_num = new var("__FreeOCL_thread_num", native_type::t_size_t, false, true);
 
 		smartptr<expression> last_shift = new value<int>(0x8000);
 		smartptr<expression> args_shift = new value<int>(0);
@@ -558,25 +542,25 @@ namespace FreeOCL
 			const bool b_local = b_pointer && ptr->get_base_type()->get_address_space() == type::LOCAL;
 
 			if (b_local)
-				call_args->push_back(new cast(p_type, new binary('+', __FreeOCL_local_memory, shifts[j])));
+				call_args->push_back(new cast(p_type, new binary('+', new member(__FCL_kernel_lts, "local_memory"), shifts[j])));
 			else
-				call_args->push_back(new cast(p_type, new binary('+', new cast(pointer_type::t_p_const_char, __FreeOCL_args), args_shift)));
+				call_args->push_back(new unary('*', new cast(new pointer_type(p_type, false, type::PRIVATE), new binary('+', new cast(pointer_type::t_p_const_char, __FreeOCL_args), args_shift))));
 			args_shift = new binary('+', args_shift, new size_of(p_type));
 		}
 
 		smartptr<call> kernel_call = new call(this, call_args);
 		if (b_needs_sync)
 		{
-			__FCL_kernel->push_arg(new binary('=', __FreeOCL_thread_num, __FCL_kernel_thread_id));
+			__FCL_kernel->push_arg(new binary('=', new member(__FCL_kernel_lts, "thread_num"), __FCL_kernel_thread_id));
 			__FCL_kernel->push_arg(kernel_call);
 		}
 		else
 		{
-			smartptr<var> i = new var("i", native_type::t_int, true);
+			smartptr<var> i = new var("i", native_type::t_size_t, true);
 			smartptr<chunk> loop_body = new chunk;
 			smartptr<_for> loop = new _for(new binary('=', i, new value<int>(0)), new binary('<', i, __FCL_kernel_thread_id), new unary(parser::INC_OP, i), loop_body);
 			__FCL_kernel_body->push_back(loop);
-			loop_body->push_back(new binary('=', __FreeOCL_thread_num, i));
+			loop_body->push_back(new binary('=', new member(__FCL_kernel_lts, "thread_num"), i));
 			loop_body->push_back(kernel_call);
 		}
 

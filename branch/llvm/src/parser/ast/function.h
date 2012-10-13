@@ -56,7 +56,11 @@ namespace FreeOCL
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
 		virtual llvm::Function *get_callee(vm *p_vm, const std::deque<smartptr<type> > &param_types) const;
-    private:
+
+		virtual bool has_implicit_lts_parameter() const;
+
+		void disable_implicit_lts_parameter();
+	private:
 		const std::string name;
 		smartptr<type>	return_type;
 		smartptr<chunk>	arguments;
@@ -64,6 +68,7 @@ namespace FreeOCL
         std::deque<smartptr<type> > arg_types;
 		std::vector<smartptr<var> > variable_args;
 		mutable llvm::Function *fn;
+		bool b_has_implicit_lts_parameter;
 	};
 }
 

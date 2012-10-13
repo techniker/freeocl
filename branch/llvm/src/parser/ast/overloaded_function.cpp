@@ -112,4 +112,9 @@ namespace FreeOCL
 	{
 		return get_function(param_types)->get_callee(p_vm, param_types);
 	}
+
+	bool overloaded_function::has_implicit_lts_parameter() const
+	{
+		return fn.front()->has_implicit_lts_parameter();
+	}
 }

@@ -20,6 +20,7 @@
 #include <sched.h>
 #include <atomic_ops.h>
 #include <utils/time.h>
+#include <iostream>
 
 namespace FreeOCL
 {
@@ -74,9 +75,8 @@ namespace FreeOCL
 		}
 	}
 
-	void threadpool::run(void (*setwg)(char * const,const size_t *, ucontext_t *, ucontext_t *), void (*kernel)(const int))
+	void threadpool::run(void (*kernel)(__FreeOCL_lts_t *, const int))
 	{
-		this->setwg = setwg;
 		this->kernel = kernel;
 
 		next_workgroup = 0;
@@ -118,21 +118,23 @@ namespace FreeOCL
 
 	void threadpool::worker::work()
 	{
+		__FreeOCL_lts_t lts;
+
 		const size_t l_size = pool->local_size[0] * pool->local_size[1] * pool->local_size[2];
 		const size_t g_size = pool->num_groups[0] * pool->num_groups[1] * pool->num_groups[2];
 		char local_memory[0x8000];
+		lts.local_memory = local_memory;
 		if (!pool->b_require_sync || l_size == 1)
 		{
 			for(size_t gid = pool->get_next_workgroup() ; gid < g_size ; gid = pool->get_next_workgroup())
 			{
-				const size_t group_id[3] = { gid % pool->num_groups[0],
-											 (gid / pool->num_groups[0]) % pool->num_groups[1],
-											 gid / pool->num_groups[0] / pool->num_groups[1] };
-				pool->setwg(local_memory, group_id, NULL, NULL);
+				lts.group_id[0] = gid % pool->num_groups[0];
+				lts.group_id[1] = (gid / pool->num_groups[0]) % pool->num_groups[1];
+				lts.group_id[2]	= gid / pool->num_groups[0] / pool->num_groups[1];
 				if (pool->b_require_sync)
-					pool->kernel(0);
+					pool->kernel(&lts, 0);
 				else
-					pool->kernel(l_size);
+					pool->kernel(&lts, l_size);
 			}
 		}
 		else
@@ -157,16 +159,17 @@ namespace FreeOCL
 				ucontext_t *t = &(fibers[i]);
 				t->uc_link = (i + 1 < l_size) ? t + 1 : &scheduler;
 			}
+			lts.scheduler = (char*)&scheduler;
+			lts.threads = (char*)fibers.data();
 			for(size_t gid = pool->get_next_workgroup() ; gid < g_size ; gid = pool->get_next_workgroup())
 			{
-				const size_t group_id[3] = { gid % pool->num_groups[0],
-											 (gid / pool->num_groups[0]) % pool->num_groups[1],
-											 gid / pool->num_groups[0] / pool->num_groups[1] };
-				pool->setwg(local_memory, group_id, &scheduler, fibers.data());
+				lts.group_id[0] = gid % pool->num_groups[0];
+				lts.group_id[1] = (gid / pool->num_groups[0]) % pool->num_groups[1];
+				lts.group_id[2]	= gid / pool->num_groups[0] / pool->num_groups[1];
 				for(size_t i = 0 ; i < l_size ; ++i)
 				{
 					ucontext_t *t = &(fibers[i]);
-					makecontext(t, (void(*)())pool->kernel, 1, int(i));
+					makecontext(t, (void(*)())pool->kernel, 2, (void*)&lts, int(i));
 				}
 				swapcontext(&scheduler, &(fibers[0]));
 			}

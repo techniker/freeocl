@@ -122,9 +122,9 @@ namespace FreeOCL
 			{
 				llvm::Value *v;
 				if (t->getType()->isFloatingPointTy())
-					v = builder->CreateFAdd(t, llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(1.0f)));
+					v = builder->CreateFAdd(t, llvm::ConstantFP::get(t->getType(), 1.0));
 				else if (t->getType()->isIntegerTy())
-					v = builder->CreateAdd(t, builder->getInt32(1));
+					v = builder->CreateAdd(t, llvm::ConstantInt::get(t->getType(), 1, false));
 				else
 					v = builder->CreateGEP(t, builder->getInt32(1));
 				builder->CreateStore(v, exp->get_ptr(p_vm));
@@ -137,9 +137,9 @@ namespace FreeOCL
 			{
 				llvm::Value *v;
 				if (t->getType()->isFloatingPointTy())
-					v = builder->CreateFSub(t, llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(1.0f)));
+					v = builder->CreateFSub(t, llvm::ConstantFP::get(t->getType(), 1.0));
 				else if (t->getType()->isIntegerTy())
-					v = builder->CreateSub(t, builder->getInt32(1));
+					v = builder->CreateSub(t, llvm::ConstantInt::get(t->getType(), 1, false));
 				else
 					v = builder->CreateGEP(t, builder->getInt32(-1));
 				builder->CreateStore(v, exp->get_ptr(p_vm));
@@ -183,6 +183,12 @@ namespace FreeOCL
 
 	llvm::Value *unary::set_value(vm *p_vm, llvm::Value *v) const
 	{
+		switch(op)
+		{
+		case '*':
+			return p_vm->get_builder()->CreateStore(v, get_ptr(p_vm), false);
+		}
+
 		return NULL;
 	}
 }

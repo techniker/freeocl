@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include <ucontext.h>
+#include <utils/threadpool.h>
 
 struct _cl_kernel : public FreeOCL::icd_table, public FreeOCL::ref_counter, public FreeOCL::mutex, public FreeOCL::valid_flag
 {
@@ -30,8 +31,7 @@ struct _cl_kernel : public FreeOCL::icd_table, public FreeOCL::ref_counter, publ
 
 	size_t (*__FCL_info)(size_t, int*, const char **, const char **, int *, int *);
 	bool (*__FCL_init)(const void*,size_t,const size_t*,const size_t *,const size_t*);
-	void (*__FCL_setwg)(char * const,const size_t *, ucontext_t *, ucontext_t *);
-	void (*__FCL_kernel)(const int);
+	void (*__FCL_kernel)(struct __FreeOCL_lts_t *, const int);
 	std::deque<size_t> args_size;
 	std::deque<size_t> args_offset;
 	std::deque<int> args_type;

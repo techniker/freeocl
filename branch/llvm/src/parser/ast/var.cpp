@@ -75,10 +75,9 @@ namespace FreeOCL
 																	 false,
 																	 llvm::GlobalVariable::ExternalLinkage,
 																	 NULL,
-																	 get_name(),
-																	 0,
-																	 b_thread_local ? llvm::GlobalVariable::GeneralDynamicTLSModel : llvm::GlobalVariable::NotThreadLocal,
-																	 0);
+																	 get_name());
+				if (b_thread_local)
+					var->setThreadLocalMode(llvm::GlobalVariable::GeneralDynamicTLSModel);
 //                if (!b_extern)
 					var->setInitializer(llvm::ConstantAggregateZero::get(p_type->to_LLVM_type(p_vm)));
                 v = var;

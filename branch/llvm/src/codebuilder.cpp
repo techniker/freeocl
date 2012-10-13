@@ -329,7 +329,6 @@ namespace FreeOCL
 
 		vm *p_vm = new vm;
 		p.get_ast()->to_IR(p_vm);
-		p_vm->get_module()->dump();
 
 		for(FreeOCL::map<std::string, smartptr<kernel> >::const_iterator i = p.get_kernels().begin(), end = p.get_kernels().end() ; i != end ; ++i)
 			kernels.insert(i->first);

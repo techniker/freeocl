@@ -23,6 +23,15 @@
 #include <vector>
 #include <ucontext.h>
 
+struct __FreeOCL_lts_t
+{
+	size_t group_id[3];
+	char *local_memory;
+	char *scheduler;
+	char *threads;
+	size_t thread_num;
+};
+
 namespace FreeOCL
 {
 	class threadpool
@@ -59,15 +68,14 @@ namespace FreeOCL
 		void set_local_size(const size_t *local_size);
 		void set_thread_num(const size_t nb_threads);
 
-		void run(void (*setwg)(char * const,const size_t *, ucontext_t *, ucontext_t *), void (*kernel)(const int));
+		void run(void (*kernel)(__FreeOCL_lts_t *, const int));
 
 		void set_require_sync(bool b_require_sync);
 	private:
 		inline unsigned int get_next_workgroup();
 
 	private:
-		void (*kernel)(const int);
-		void (*setwg)(char * const,const size_t *, ucontext_t *, ucontext_t *);
+		void (*kernel)(__FreeOCL_lts_t *, const int);
 		size_t num_groups[3];
 		size_t local_size[3];
 		size_t nb_threads;
