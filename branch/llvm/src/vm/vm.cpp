@@ -54,7 +54,8 @@ namespace FreeOCL
 										  "integer.bc",
 										  "printf.bc",
 										  "common.bc",
-										  "relational.bc"};
+										  "relational.bc",
+										  "sync.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 

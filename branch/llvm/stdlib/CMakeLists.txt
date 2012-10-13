@@ -4,6 +4,7 @@ set(STDLIB_SOURCES
     integer.c
     common.c
     relational.c
+    sync.c
     )
 
 add_custom_target(stdlib ALL

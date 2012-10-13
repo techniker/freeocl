@@ -551,8 +551,8 @@ namespace FreeOCL
 		smartptr<call> kernel_call = new call(this, call_args);
 		if (b_needs_sync)
 		{
-			__FCL_kernel->push_arg(new binary('=', new member(__FCL_kernel_lts, "thread_num"), __FCL_kernel_thread_id));
-			__FCL_kernel->push_arg(kernel_call);
+			__FCL_kernel_body->push_back(new binary('=', new member(__FCL_kernel_lts, "thread_num"), __FCL_kernel_thread_id));
+			__FCL_kernel_body->push_back(kernel_call);
 		}
 		else
 		{
@@ -565,6 +565,7 @@ namespace FreeOCL
 		}
 
 		__FCL_kernel->to_IR(p_vm);
+		__FCL_kernel->write(std::cout);
 
 		return ret;
 	}

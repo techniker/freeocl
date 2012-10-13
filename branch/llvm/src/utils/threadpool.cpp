@@ -126,6 +126,7 @@ namespace FreeOCL
 		lts.local_memory = local_memory;
 		if (!pool->b_require_sync || l_size == 1)
 		{
+			lts.threads = NULL;
 			for(size_t gid = pool->get_next_workgroup() ; gid < g_size ; gid = pool->get_next_workgroup())
 			{
 				lts.group_id[0] = gid % pool->num_groups[0];
