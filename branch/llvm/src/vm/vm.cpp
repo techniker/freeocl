@@ -50,7 +50,7 @@ namespace FreeOCL
 
 		llvm::Linker linker("FreeOCL", "__FreeOCL_program__", get_context());
 
-		const char *modules_to_link[] = { "workitem.bc"};
+		const char *modules_to_link[] = { "stdlib.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 

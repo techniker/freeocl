@@ -81,6 +81,7 @@ endif(LIBRT)
 
 add_subdirectory(samples)
 add_subdirectory(src)
+add_subdirectory(stdlib)
 
 install(FILES icd/freeocl.icd DESTINATION /etc/OpenCL/vendors/)
 # OpenCL headers shouldn't be needed in the runtime package
