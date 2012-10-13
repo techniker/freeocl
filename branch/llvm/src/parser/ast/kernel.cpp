@@ -565,7 +565,6 @@ namespace FreeOCL
 		}
 
 		__FCL_kernel->to_IR(p_vm);
-		__FCL_kernel->write(std::cout);
 
 		return ret;
 	}
