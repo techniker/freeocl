@@ -2,6 +2,8 @@ set(STDLIB_SOURCES
     workitem.c
     printf.c
     integer.c
+    common.c
+    relational.c
     )
 
 add_custom_target(stdlib ALL

@@ -22,6 +22,8 @@
 
 __int _Z3maxii(__int x, __int y);
 __int _Z3minii(__int x, __int y);
+__double _Z5isnand(__double);
+__double _Z5isinfd(__double);
 
 #define FLAG_MINUS			0x01		// -
 #define FLAG_PLUS			0x02		// +
@@ -93,7 +95,7 @@ static void __print_double(double d, int precision, double base, bool b_upper_ca
 		__print_char('-');
 		d = -d;
 	}
-	if (isinf(d))
+	if (_Z5isinfd(d))
 	{
 		if (b_upper_case)
 		{
@@ -109,7 +111,7 @@ static void __print_double(double d, int precision, double base, bool b_upper_ca
 		}
 		return;
 	}
-	if (isnan(d))
+	if (_Z5isnand(d))
 	{
 		if (b_upper_case)
 		{
@@ -141,7 +143,7 @@ static void __print_double_e(double d, int precision, bool b_upper_case)
 		__print_char('-');
 		d = -d;
 	}
-	if (isinf(d))
+	if (_Z5isinfd(d))
 	{
 		if (b_upper_case)
 		{
@@ -157,7 +159,7 @@ static void __print_double_e(double d, int precision, bool b_upper_case)
 		}
 		return;
 	}
-	if (isnan(d))
+	if (_Z5isnand(d))
 	{
 		if (b_upper_case)
 		{
@@ -204,7 +206,7 @@ static void __print_double_a(double d, int precision, bool b_upper_case)
 		__print_char('-');
 		d = -d;
 	}
-	if (isinf(d))
+	if (_Z5isinfd(d))
 	{
 		if (b_upper_case)
 		{
@@ -220,7 +222,7 @@ static void __print_double_a(double d, int precision, bool b_upper_case)
 		}
 		return;
 	}
-	if (isnan(d))
+	if (_Z5isnand(d))
 	{
 		if (b_upper_case)
 		{
@@ -264,7 +266,7 @@ static void __print_double_a(double d, int precision, bool b_upper_case)
 
 static void __print_double_g(double d, int precision, bool b_upper_case)
 {
-	if (isinf(d) || isnan(d) || d == 0.0)
+	if (_Z5isinfd(d) || _Z5isnand(d) || d == 0.0)
 	{
 		__print_double(d, precision, 10.0, b_upper_case);
 		return;
