@@ -91,27 +91,13 @@ namespace FreeOCL
 
 	llvm::Value *index::to_IR(vm *p_vm) const
 	{
-		if (!t0)
-			t0 = ptr->to_IR(p_vm);
-		if (!t1)
-			t1 = idx->to_IR(p_vm);
-		llvm::Value *r;
-		if (ptr->get_type().as<array_type>())
-		{
-			std::vector<llvm::Value*> idxs;
-			idxs.push_back(p_vm->get_builder()->getInt32(0));
-			idxs.push_back(t1);
-			r = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
-		}
-		else
-			r = p_vm->get_builder()->CreateGEP(t0, t1, "index");
-		return p_vm->get_builder()->CreateLoad(r);
+		return p_vm->get_builder()->CreateLoad(get_ptr(p_vm));
 	}
 
 	llvm::Value *index::get_ptr(vm *p_vm) const
 	{
 		if (!t0)
-			t0 = ptr->to_IR(p_vm);
+			t0 = ptr->get_type().as<array_type>() ? ptr->get_ptr(p_vm) : ptr->to_IR(p_vm);
 		if (!t1)
 			t1 = idx->to_IR(p_vm);
 		llvm::Value *r;
@@ -120,10 +106,18 @@ namespace FreeOCL
 			std::vector<llvm::Value*> idxs;
 			idxs.push_back(p_vm->get_builder()->getInt32(0));
 			idxs.push_back(t1);
+			std::cerr << *ptr << std::endl;
+			std::cerr << *idx << std::endl;
+			std::cerr << "o<" << std::endl;
 			r = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
+			std::cerr << "x<" << std::endl;
 		}
 		else
+		{
+			std::cerr << "@<" << std::endl;
 			r = p_vm->get_builder()->CreateGEP(t0, t1, "index");
+			std::cerr << "X<" << std::endl;
+		}
 		return r;
 	}
 

@@ -20,6 +20,7 @@
 #include "struct_type.h"
 #include "typedef.h"
 #include <vm/vm.h>
+#include "array_type.h"
 
 namespace FreeOCL
 {

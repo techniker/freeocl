@@ -65,12 +65,14 @@ namespace FreeOCL
 
 		const char *modules_to_link[] = { "workitem.bc",
 										  "integer.bc",
+										  "asm_integer.bc",
 										  "printf.bc",
 										  "common.bc",
 										  "relational.bc",
 										  "sync.bc",
 										  "geometric.bc",
-										  "math.bc"};
+										  "math.bc",
+										  "asm_math.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 
@@ -93,10 +95,14 @@ namespace FreeOCL
 		if (optimization_level >= 1)
 		{
 			passmanager.add(llvm::createStripDeadPrototypesPass());
+			passmanager.add(llvm::createSimplifyLibCallsPass());
+			passmanager.add(llvm::createArgumentPromotionPass());
+			passmanager.add(llvm::createDeadArgEliminationPass());
 
 			if (optimization_level >= 2)
 			{
 				passmanager.add(llvm::createBasicAliasAnalysisPass());
+//				passmanager.add(llvm::createGVNPass());
 				passmanager.add(llvm::createLICMPass());
 				passmanager.add(llvm::createDeadInstEliminationPass());
 				passmanager.add(llvm::createLCSSAPass());
@@ -109,18 +115,20 @@ namespace FreeOCL
 
 				passmanager.add(llvm::createFunctionAttrsPass());
 				passmanager.add(llvm::createFunctionInliningPass());
+				passmanager.add(llvm::createFunctionInliningPass());
 				passmanager.add(llvm::createDeadStoreEliminationPass());
 				passmanager.add(llvm::createDeadCodeEliminationPass());
-				passmanager.add(llvm::createGlobalOptimizerPass());
-				passmanager.add(llvm::createGlobalsModRefPass());
-				passmanager.add(llvm::createPromoteMemoryToRegisterPass());
 
+				passmanager.add(llvm::createReassociatePass());
 				passmanager.add(llvm::createConstantMergePass());
 				passmanager.add(llvm::createConstantPropagationPass());
-//				passmanager.add(llvm::createInstructionCombiningPass());
 				passmanager.add(llvm::createSROAPass());
 				passmanager.add(llvm::createInstructionSimplifierPass());
+				passmanager.add(llvm::createDeadArgEliminationPass());
 				passmanager.add(llvm::createBBVectorizePass());
+
+				passmanager.add(llvm::createGlobalOptimizerPass());
+				passmanager.add(llvm::createGlobalsModRefPass());
 			}
 			if (optimization_level >= 3)
 			{
@@ -135,6 +143,12 @@ namespace FreeOCL
 		llvm::TargetOptions target_opts;
 		target_opts.JITEmitDebugInfo = 1;
 		target_opts.JITEmitDebugInfoToDisk = 1;
+		target_opts.AllowFPOpFusion = llvm::FPOpFusion::Fast;
+		target_opts.LessPreciseFPMADOption = 1;
+		target_opts.NoInfsFPMath = 1;
+		target_opts.NoNaNsFPMath = 1;
+		target_opts.RealignStack = 0;
+		target_opts.UnsafeFPMath = 1;
 
 		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::Aggressive).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();
 		if (!error.empty())
@@ -187,5 +201,17 @@ namespace FreeOCL
 	void vm::register_function(const std::string &function_name, llvm::Function *fn)
 	{
 		functions[function_name] = fn;
+	}
+
+	void vm::push_break_continue_blocks(llvm::BasicBlock *break_dest, llvm::BasicBlock *continue_dest)
+	{
+		this->break_dest.push_back(break_dest);
+		this->continue_dest.push_back(continue_dest);
+	}
+
+	void vm::pop_break_continue_blocks()
+	{
+		break_dest.pop_back();
+		continue_dest.pop_back();
 	}
 }

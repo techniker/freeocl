@@ -61,6 +61,8 @@ namespace FreeOCL
 		llvm::BasicBlock *blockBody = llvm::BasicBlock::Create(p_vm->get_context(), "for_body", fn);
 		llvm::BasicBlock *blockEnd = llvm::BasicBlock::Create(p_vm->get_context(), "for_end", fn);
 
+		p_vm->push_break_continue_blocks(blockEnd, blockStep);
+
 		init->to_IR(p_vm);
 
 		builder->CreateBr(blockTest);
@@ -79,6 +81,8 @@ namespace FreeOCL
 		builder->CreateBr(blockStep);
 
 		builder->SetInsertPoint(blockEnd);
+
+		p_vm->pop_break_continue_blocks();
 
 		return NULL;
 	}

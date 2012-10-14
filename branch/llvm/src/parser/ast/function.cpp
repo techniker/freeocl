@@ -26,6 +26,7 @@
 #include <llvm/Module.h>
 #include "struct_type.h"
 #include "array_type.h"
+#include "kernel.h"
 
 namespace FreeOCL
 {
@@ -39,7 +40,8 @@ namespace FreeOCL
 		arguments(arguments),
 		body(body),
 		fn(NULL),
-		b_has_implicit_lts_parameter(true)
+		b_has_implicit_lts_parameter(true),
+		b_external_linkage(false)
 	{
         // This is required to respect overloaded_builtin::all_types_weak_match semantics
         arg_types.push_front((type*)NULL);
@@ -159,6 +161,9 @@ namespace FreeOCL
 			body->to_IR(p_vm);
 			if (*native_type::t_void == *(return_type->clone(true, type::CONSTANT)))
 				p_vm->get_builder()->CreateRetVoid();
+			else
+				p_vm->get_builder()->CreateRet(llvm::UndefValue::get(return_type->to_LLVM_type(p_vm)));
+			fn->dump();
 			llvm::verifyFunction(*fn);
 
 			//! TODO: implement optimization passes
@@ -187,7 +192,10 @@ namespace FreeOCL
 		for(size_t i = 1 ; i < arg_types.size() ; ++i)
 			params.push_back(arg_types[i]->to_LLVM_type(p_vm));
 		llvm::FunctionType *fntype = llvm::FunctionType::get(return_type->to_LLVM_type(p_vm), params, false);
-		fn = llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+		if (b_external_linkage)
+			fn = llvm::Function::Create(fntype, llvm::Function::ExternalLinkage, symbol_name, p_vm->get_module());
+		else
+			fn = llvm::Function::Create(fntype, llvm::Function::InternalLinkage, symbol_name, p_vm->get_module());
 		return fn;
 	}
 
@@ -204,5 +212,10 @@ namespace FreeOCL
 	void function::disable_implicit_lts_parameter()
 	{
 		b_has_implicit_lts_parameter = false;
+	}
+
+	void function::set_external_linkage(bool b_external_linkage)
+	{
+		this->b_external_linkage = b_external_linkage;
 	}
 }

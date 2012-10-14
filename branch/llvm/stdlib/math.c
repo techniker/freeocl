@@ -34,12 +34,14 @@ __double _Z7atan2pidd(__double y, __double x)	{	return atan2(y, x) / M_PI;	}
 __double _Z4cbrtd(__double x)	{	return cbrt(x);	}
 __double _Z4ceild(__double x)	{	return ceil(x);	}
 __double _Z8copysigndd(__double x, __double y)	{	return copysign(x, y);	}
-__double _Z3cosd(__double x)	{	return cos(x);	}
+//__double _Z3cosd(__double x)	{	return cos(x);	}
+__double _Z3cosd(__double x);
 __double _Z4coshd(__double x)	{	return cosh(x);	}
-__double _Z5cospid(__double x)	{	return cos(M_PI * x);	}
+__double _Z5cospid(__double x)	{	return _Z3cosd(M_PI * x);	}
 __double _Z4erfcd(__double x)	{	return erfc(x);	}
 __double _Z3erfd(__double x)	{	return erf(x);	}
-__double _Z3expd(__double x)	{	return exp(x);	}
+//__double _Z3expd(__double x)	{	return exp(x);	}
+__double _Z3expd(__double x);
 __double _Z4exp2d(__double x)	{	return exp2(x);	}
 __double _Z5exp10d(__double x)
 {
@@ -50,50 +52,58 @@ __double _Z5exp10d(__double x)
 #endif
 }
 __double _Z5expm1d(__double x)	{	return expm1(x);	}
-__double _Z4fabsd(__double x)	{	return fabs(x);	}
+//__double _Z4fabsd(__double x)	{	return fabs(x);	}
+__double _Z4fabsd(__double x);
 __double _Z4fdimd(__double x, __double y)	{	return fdim(x, y);	}
-__double _Z5floord(__double x)	{	return floor(x);	}
-__double _Z3fmaddd(__double a, __double b, __double c)	{	return fma(a, b, c);	}
+//__double _Z5floord(__double x)	{	return floor(x);	}
+__double _Z5floord(__double x);
+//__double _Z3fmaddd(__double a, __double b, __double c)	{	return fma(a, b, c);	}
+__double _Z3fmaddd(__double a, __double b, __double c);
 __double _Z4fmaxdd(__double x, __double y)	{	return fmax(x, y);	}
 __double _Z4fmindd(__double x, __double y)	{	return fmin(x, y);	}
 __double _Z4fmoddd(__double x, __double y)	{	return fmod(x, y);	}
 __double _Z5fractdPd(__double x, __double *iptr)
 {
-	const __double _x = floor(x);
+	const __double _x = _Z5floord(x);
 	*iptr = _x;
-	return fmin(x - _x, 0x1.fffffep-1f);
+	return _Z4fmindd(x - _x, 0x1.fffffep-1f);
 }
 __double _Z5frexpdPi(__double x, __int *exp)	{	return frexp(x, exp);	}
 __double _Z5hypotdd(__double x, __double y)	{	return hypot(x, y);	}
 __double _Z5ldexpdi(__double x, __int n)	{	return ldexp(x, n);	}
 __double _Z6lgammad(__double x)	{	return lgamma(x);	}
 __double _Z8lgamma_rdPi(__double x, __int *signp)	{	return lgamma_r(x, signp);	}
-__double _Z3logd(__double x)	{	return log(x);	}
+//__double _Z3logd(__double x)	{	return log(x);	}
+__double _Z3logd(__double x);
 __double _Z4log2d(__double x)	{	return log2(x);	}
 __double _Z5log10d(__double x)	{	return log10(x);	}
 __double _Z5log1pd(__double x)	{	return log1p(x);	}
 __double _Z4logbd(__double x)	{	return logb(x);	}
 __double _Z3madddd(__double a, __double b, __double c)	{	return a * b + c;	}
-__double _Z6maxmagdd(__double x, __double y)	{	return fmax(fabs(x), fabs(y));	}
-__double _Z6minmagdd(__double x, __double y)	{	return fmin(fabs(x), fabs(y));	}
-__double _Z4powndi(__double x, __int n)
-{
-	__double _m = 1.0;
-	if (n < 0)
-	{
-		x = 1.0 / x;
-		n = -n;
-	}
-	for( ; n > 0 ; n >>= 1)
-	{
-		if (n & 1)
-			_m *= x;
-	}
-	return _m;
-}
-__double _Z4powrdd(__double x, __double y)	{	return pow(x, y);	}
-__double _Z5rootndi(__double x, __int y)	{	return pow(x, 1.0 / y);	}
-__double _Z5rsqrtd(__double x)	{	return 1.0 / sqrt(x);	}
+__double _Z6maxmagdd(__double x, __double y)	{	return _Z4fmaxdd(_Z4fabsd(x), _Z4fabsd(y));	}
+__double _Z6minmagdd(__double x, __double y)	{	return _Z4fmindd(_Z4fabsd(x), _Z4fabsd(y));	}
+//__double _Z3powdd(__double x, __double y)	{	return pow(x, y);	}
+__double _Z3powdd(__double x, __double y);
+//__double _Z4powndi(__double x, __int n)
+//{
+//	__double _m = 1.0;
+//	if (n < 0)
+//	{
+//		x = 1.0 / x;
+//		n = -n;
+//	}
+//	for( ; n > 0 ; n >>= 1)
+//	{
+//		if (n & 1)
+//			_m *= x;
+//	}
+//	return _m;
+//}
+__double _Z4powrdd(__double x, __double y)	{	return _Z3powdd(x, y);	}
+__double _Z5rootndi(__double x, __int y)	{	return _Z3powdd(x, 1.0 / y);	}
+__double _Z4sqrtd(__double x);
+__double _Z5rsqrtd(__double x)	{	return 1.0 / _Z4sqrtd(x);	}
+__double _Z3sind(__double x);
 __double _Z6sincosdPd(__double x, __double *cosval)
 {
 #ifdef _GNU_SOURCE
@@ -101,11 +111,14 @@ __double _Z6sincosdPd(__double x, __double *cosval)
 	sincos(x, &_sin, cosval);
 	return _sin;
 #else
-	*cosval = cos(x);
-	return sin(x);
+	*cosval = _Z3cosd(x);
+	return _Z3sind(x);
 #endif
 }
-__double _Z5sinpid(__double x)	{	return sin(M_PI * x);	}
+//__double _Z3sind(__double x)	{	return sin(x);	}
+__double _Z4sinhd(__double x)	{	return sinh(x);	}
+__double _Z5sinpid(__double x)	{	return _Z3sind(M_PI * x);	}
+//__double _Z4sqrtd(__double x)	{	return sqrt(x);	}
 __double _Z5tanpid(__double x)	{	return tan(M_PI * x);	}
 
 // for float
@@ -123,12 +136,14 @@ __float _Z7atan2piff(__float y, __float x)	{	return atan2f(y, x) / ((__float)M_P
 __float _Z4cbrtf(__float x)	{	return cbrtf(x);	}
 __float _Z4ceilf(__float x)	{	return ceilf(x);	}
 __float _Z8copysignff(__float x, __float y)	{	return copysignf(x, y);	}
-__float _Z3cosf(__float x)	{	return cosf(x);	}
+//__float _Z3cosf(__float x)	{	return cosf(x);	}
+__float _Z3cosf(__float x);
 __float _Z4coshf(__float x)	{	return coshf(x);	}
 __float _Z5cospif(__float x)	{	return cosf(((__float)M_PI) * x);	}
 __float _Z4erfcf(__float x)	{	return erfcf(x);	}
 __float _Z3erff(__float x)	{	return erff(x);	}
-__float _Z3expf(__float x)	{	return expf(x);	}
+//__float _Z3expf(__float x)	{	return expf(x);	}
+__float _Z3expf(__float x);
 __float _Z4exp2f(__float x)	{	return exp2f(x);	}
 __float _Z5exp10f(__float x)
 {
@@ -139,10 +154,13 @@ __float _Z5exp10f(__float x)
 #endif
 }
 __float _Z5expm1f(__float x)	{	return expm1f(x);	}
-__float _Z4fabsf(__float x)	{	return fabsf(x);	}
+//__float _Z4fabsf(__float x)	{	return fabsf(x);	}
+__float _Z4fabsf(__float x);
 __float _Z4fdimf(__float x, __float y)	{	return fdimf(x, y);	}
-__float _Z5floorf(__float x)	{	return floorf(x);	}
-__float _Z3fmafff(__float a, __float b, __float c)	{	return fmaf(a, b, c);	}
+//__float _Z5floorf(__float x)	{	return floorf(x);	}
+__float _Z5floorf(__float x);
+//__float _Z3fmafff(__float a, __float b, __float c)	{	return fmaf(a, b, c);	}
+__float _Z3fmafff(__float a, __float b, __float c);
 __float _Z4fmaxff(__float x, __float y)	{	return fmaxf(x, y);	}
 __float _Z4fminff(__float x, __float y)	{	return fminf(x, y);	}
 __float _Z4fmodff(__float x, __float y)	{	return fmodf(x, y);	}
@@ -157,7 +175,8 @@ __float _Z5hypotff(__float x, __float y)	{	return hypotf(x, y);	}
 __float _Z5ldexpfi(__float x, __int n)	{	return ldexpf(x, n);	}
 __float _Z6lgammaf(__float x)	{	return lgammaf(x);	}
 __float _Z8lgamma_rfPi(__float x, __int *signp)	{	return lgammaf_r(x, signp);	}
-__float _Z3logf(__float x)	{	return logf(x);	}
+//__float _Z3logf(__float x)	{	return logf(x);	}
+__float _Z3logf(__float x);
 __float _Z4log2f(__float x)	{	return log2f(x);	}
 __float _Z5log10f(__float x)	{	return log10f(x);	}
 __float _Z5log1pf(__float x)	{	return log1pf(x);	}
@@ -177,30 +196,33 @@ __float _Z3nanj(__uint nancode)
 	return v.f;
 }
 __float _Z9nextafterff(__float x, __float y)	{	return nextafterf(x, y);	}
-__float _Z3powff(__float x, __float y)	{	return powf(x, y);	}
-__float _Z4pownfi(__float x, __int n)
-{
-	__float _m = 1.0f;
-	if (n < 0)
-	{
-		x = 1.0f / x;
-		n = -n;
-	}
-	for( ; n > 0 ; n >>= 1)
-	{
-		if (n & 1)
-			_m *= x;
-	}
-	return _m;
-}
-__float _Z4powrff(__float x, __float y)	{	return powf(x, y);	}
+//__float _Z3powff(__float x, __float y)	{	return powf(x, y);	}
+__float _Z3powff(__float x, __float y);
+//__float _Z4pownfi(__float x, __int n)
+//{
+//	__float _m = 1.0f;
+//	if (n < 0)
+//	{
+//		x = 1.0f / x;
+//		n = -n;
+//	}
+//	for( ; n > 0 ; n >>= 1)
+//	{
+//		if (n & 1)
+//			_m *= x;
+//	}
+//	return _m;
+//}
+__float _Z4powrff(__float x, __float y)	{	return _Z3powff(x, y);	}
 __float _Z9remainderff(__float x, __float y)	{	return remainderf(x, y);	}
 __float _Z6remquoffPi(__float x, __float y, __int *quo)	{	return remquof(x, y, quo);	}
 __float _Z4rintf(__float x)	{	return rintf(x);	}
-__float _Z5rootnfi(__float x, __int y)	{	return pow(x, 1.0f / y);	}
+__float _Z5rootnfi(__float x, __int y)	{	return _Z3powff(x, 1.0f / y);	}
 __float _Z5roundf(__float x)	{	return roundf(x);	}
-__float _Z5rsqrtf(__float x)	{	return 1.0f / sqrtf(x);	}
-__float _Z3sinf(__float x)	{	return sinf(x);	}
+__float _Z4sqrtf(__float x);
+__float _Z5rsqrtf(__float x)	{	return 1.0f / _Z4sqrtf(x);	}
+//__float _Z3sinf(__float x)	{	return sinf(x);	}
+__float _Z3sinf(__float x);
 __float _Z6sincosfPf(__float x, __float *cosval)
 {
 #ifdef _GNU_SOURCE
@@ -208,16 +230,16 @@ __float _Z6sincosfPf(__float x, __float *cosval)
 	sincosf(x, &_sin, cosval);
 	return _sin;
 #else
-	*cosval = cos(x);
-	return sin(x);
+	*cosval = _Z3cosf(x);
+	return _Z3sinf(x);
 #endif
 }
 __float _Z4sinhf(__float x)	{	return sinhf(x);	}
-__float _Z5sinpif(__float x)	{	return sin(((__float)M_PI) * x);	}
-__float _Z4sqrtf(__float x)	{	return sqrtf(x);	}
+__float _Z5sinpif(__float x)	{	return _Z3sinf(((__float)M_PI) * x);	}
+//__float _Z4sqrtf(__float x)	{	return sqrtf(x);	}
 __float _Z3tanf(__float x)	{	return tanf(x);	}
 __float _Z4tanhf(__float x)	{	return tanhf(x);	}
-__float _Z5tanpif(__float x)	{	return tan(((__float)M_PI) * x);	}
+__float _Z5tanpif(__float x)	{	return _Z3tanf(((__float)M_PI) * x);	}
 __float _Z6tgammaf(__float x)	{	return tgammaf(x);	}
 __float _Z5truncf(__float x)	{	return truncf(x);	}
 
@@ -332,7 +354,7 @@ __float _Z10native_expf(const __float x)
 //		return 0.0f;
 	__float y = x * (__float)(1.0 / M_LN2);
 	const __int j = y;
-	y = fmodf(y, 1.0f);
+	y = _Z4fmodff(y, 1.0f);
 	y *= (__float)(M_LN2);
 	__float z;
 	z = (__float)(1.0 / 720.0);
@@ -422,61 +444,53 @@ __float _Z11native_powrff(const __float x, const __float y)
 //VECTOR_IMPLEMENTATION_FROM_SCALAR_IMPLEMENTATION2PB(modf)
 __float2 _Z3nanu2v2j(__uint2 nancode)
 {
-	__float2 ret;
-	ret.x = _Z3nanj(nancode.x);
-	ret.y = _Z3nanj(nancode.y);
-	return ret;
+	union
+	{
+		__uint2 i;
+		__float2 f;
+	} v;
+	v.i = (nancode | 0x7F800000U);
+	return v.f;
 }
 __float3 _Z3nanu2v3j(__uint3 nancode)
 {
-	__float3 ret;
-	ret.x = _Z3nanj(nancode.x);
-	ret.y = _Z3nanj(nancode.y);
-	ret.z = _Z3nanj(nancode.z);
-	return ret;
+	union
+	{
+		__uint3 i;
+		__float3 f;
+	} v;
+	v.i = (nancode | 0x7F800000U);
+	return v.f;
 }
 __float4 _Z3nanu2v4j(__uint4 nancode)
 {
-	__float4 ret;
-	ret.x = _Z3nanj(nancode.x);
-	ret.y = _Z3nanj(nancode.y);
-	ret.z = _Z3nanj(nancode.z);
-	ret.w = _Z3nanj(nancode.w);
-	return ret;
+	union
+	{
+		__uint4 i;
+		__float4 f;
+	} v;
+	v.i = (nancode | 0x7F800000U);
+	return v.f;
 }
 __float8 _Z3nanu2v8j(__uint8 nancode)
 {
-	__float8 ret;
-	ret.x = _Z3nanj(nancode.x);
-	ret.y = _Z3nanj(nancode.y);
-	ret.z = _Z3nanj(nancode.z);
-	ret.w = _Z3nanj(nancode.w);
-	ret.s4 = _Z3nanj(nancode.s4);
-	ret.s5 = _Z3nanj(nancode.s5);
-	ret.s6 = _Z3nanj(nancode.s6);
-	ret.s7 = _Z3nanj(nancode.s7);
-	return ret;
+	union
+	{
+		__uint8 i;
+		__float8 f;
+	} v;
+	v.i = (nancode | 0x7F800000U);
+	return v.f;
 }
 __float16 _Z3nanu3v16j(__uint16 nancode)
 {
-	__float16 ret;
-	ret.x = _Z3nanj(nancode.x);
-	ret.y = _Z3nanj(nancode.y);
-	ret.z = _Z3nanj(nancode.z);
-	ret.w = _Z3nanj(nancode.w);
-	ret.s4 = _Z3nanj(nancode.s4);
-	ret.s5 = _Z3nanj(nancode.s5);
-	ret.s6 = _Z3nanj(nancode.s6);
-	ret.s7 = _Z3nanj(nancode.s7);
-	ret.s8 = _Z3nanj(nancode.s8);
-	ret.s9 = _Z3nanj(nancode.s9);
-	ret.sA = _Z3nanj(nancode.sA);
-	ret.sB = _Z3nanj(nancode.sB);
-	ret.sC = _Z3nanj(nancode.sC);
-	ret.sD = _Z3nanj(nancode.sD);
-	ret.sE = _Z3nanj(nancode.sE);
-	ret.sF = _Z3nanj(nancode.sF);
-	return ret;
+	union
+	{
+		__uint16 i;
+		__float16 f;
+	} v;
+	v.i = (nancode | 0x7F800000U);
+	return v.f;
 }
 //VECTOR_IMPLEMENTATION_FROM_SCALAR_IMPLEMENTATION2(nextafter)
 //VECTOR_IMPLEMENTATION_FROM_SCALAR_IMPLEMENTATION2(pow)

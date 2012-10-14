@@ -50,18 +50,25 @@ namespace FreeOCL
 		llvm::Function *fn = builder->GetInsertBlock()->getParent();
 
 		llvm::BasicBlock *blockBody = llvm::BasicBlock::Create(p_vm->get_context(), "do_body", fn);
+		llvm::BasicBlock *blockTest = llvm::BasicBlock::Create(p_vm->get_context(), "do_test", fn);
 		llvm::BasicBlock *blockEnd = llvm::BasicBlock::Create(p_vm->get_context(), "do_end", fn);
+
+		p_vm->push_break_continue_blocks(blockEnd, blockTest);
 
 		builder->CreateBr(blockBody);
 
 		builder->SetInsertPoint(blockBody);
 		stmt->to_IR(p_vm);
+		builder->CreateBr(blockTest);
 
+		builder->SetInsertPoint(blockTest);
 		llvm::Value *c = test->to_IR(p_vm);
 		c = type::cast_to_bool(p_vm, c);
 		builder->CreateCondBr(c, blockBody, blockEnd);
 
 		builder->SetInsertPoint(blockEnd);
+
+		p_vm->pop_break_continue_blocks();
 
 		return NULL;
 	}

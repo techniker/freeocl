@@ -38,16 +38,17 @@ __int _Z5rhaddii(__int x, __int y)
 __int _Z3maxii(__int, __int);
 __int _Z3minii(__int, __int);
 __int _Z5clampiii(__int x, __int minval, __int maxval)	{	return _Z3minii(_Z3maxii(x, minval), maxval);	}
-__int _Z3clzi(__int x)
-{
-	const __uint y = (__uint)x;
-	__int c = ((y >> 16) == 0) << 4;
-	c += ((y >> (24 - c)) == 0) << 3;
-	c += ((y >> (28 - c)) == 0) << 2;
-	c += ((y >> (30 - c)) == 0) << 1;
-	c += ((y >> (31 - c)) == 0);
-	return c;
-}
+__int _Z3clzi(__int x);
+//__int _Z3clzi(__int x)
+//{
+//	const __uint y = (__uint)x;
+//	__int c = ((y >> 16) == 0) << 4;
+//	c += ((y >> (24 - c)) == 0) << 3;
+//	c += ((y >> (28 - c)) == 0) << 2;
+//	c += ((y >> (30 - c)) == 0) << 1;
+//	c += ((y >> (31 - c)) == 0);
+//	return c;
+//}
 __int _Z7mul_hiii(__int, __int);
 __int _Z7mad_hiiii(__int a, __int b, __int c)	{	return _Z7mul_hiii(a, b) + c;	}
 __int _Z7mad_satiii(__int a, __int b, __int c)
@@ -82,16 +83,17 @@ __uint _Z8upsamplett(__ushort hi, __ushort lo)	{	return ((__uint)hi << 16) | lo;
 __long _Z8upsampleij(__int hi, __uint lo)	{	return ((long long)hi << 32) | lo;	}
 __ulong _Z8upsamplejj(__uint hi, __uint lo)	{	return ((long long)hi << 32) | lo;	}
 
-__ulong _Z8popcountm(__ulong x)
-{
-	x = ((x & 0xAAAAAAAAAAAAAAAA) >> 1) + (x & 0x5555555555555555);
-	x = ((x & 0xCCCCCCCCCCCCCCCC) >> 2) + (x & 0x3333333333333333);
-	x = ((x & 0xF0F0F0F0F0F0F0F0) >> 4) + (x & 0x0F0F0F0F0F0F0F0F);
-	x = ((x & 0xFF00FF00FF00FF00) >> 8) + (x & 0x00FF00FF00FF00FF);
-	x = ((x & 0xFFFF0000FFFF0000) >> 16) + (x & 0x0000FFFF0000FFFF);
-	x = ((x & 0xFFFFFFFF00000000) >> 32) + (x & 0x00000000FFFFFFFF);
-	return x;
-}
+__ulong _Z8popcountm(__ulong x);
+//__ulong _Z8popcountm(__ulong x)
+//{
+//	x = ((x & 0xAAAAAAAAAAAAAAAA) >> 1) + (x & 0x5555555555555555);
+//	x = ((x & 0xCCCCCCCCCCCCCCCC) >> 2) + (x & 0x3333333333333333);
+//	x = ((x & 0xF0F0F0F0F0F0F0F0) >> 4) + (x & 0x0F0F0F0F0F0F0F0F);
+//	x = ((x & 0xFF00FF00FF00FF00) >> 8) + (x & 0x00FF00FF00FF00FF);
+//	x = ((x & 0xFFFF0000FFFF0000) >> 16) + (x & 0x0000FFFF0000FFFF);
+//	x = ((x & 0xFFFFFFFF00000000) >> 32) + (x & 0x00000000FFFFFFFF);
+//	return x;
+//}
 
 // fast integer built-in functions
 __int _Z5mad24iii(__int x, __int y, __int z)	{	return x * y + z;	}

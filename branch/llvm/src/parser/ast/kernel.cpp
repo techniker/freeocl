@@ -346,6 +346,7 @@ namespace FreeOCL
 		__FCL_info_args.push_back(__FCL_info_type_access_qualifier->get_type());
 		smartptr<function> __FCL_info = new function(native_type::t_size_t, "__FCL_info_" + get_name(), smartptr<chunk>(), __FCL_info_body, __FCL_info_args);
 		__FCL_info->disable_implicit_lts_parameter();
+		__FCL_info->set_external_linkage(true);
 		__FCL_info->push_arg(__FCL_info_idx);
 		__FCL_info->push_arg(__FCL_info_type);
 		__FCL_info->push_arg(__FCL_info_name);
@@ -464,6 +465,7 @@ namespace FreeOCL
 		__FCL_init_args.push_back(__FCL_init_global_size->get_type());
 		__FCL_init_args.push_back(__FCL_init_local_size->get_type());
 		smartptr<function> __FCL_init = new function(native_type::t_bool, "__FCL_init_" + get_name(), smartptr<chunk>(), __FCL_init_body, __FCL_init_args);
+		__FCL_init->set_external_linkage(true);
 		__FCL_init->disable_implicit_lts_parameter();
 		__FCL_init->push_arg(__FCL_init_pargs);
 		__FCL_init->push_arg(__FCL_init_dim);
@@ -503,6 +505,7 @@ namespace FreeOCL
 		__FCL_kernel_args.push_back(__FCL_kernel_thread_id->get_type());
 		smartptr<function> __FCL_kernel = new function(native_type::t_void, "__FCL_kernel_" + get_name(), smartptr<chunk>(), __FCL_kernel_body, __FCL_kernel_args);
 		__FCL_kernel->disable_implicit_lts_parameter();
+		__FCL_kernel->set_external_linkage(true);
 		__FCL_kernel->push_arg(__FCL_kernel_lts);
 		__FCL_kernel->push_arg(__FCL_kernel_thread_id);
 
@@ -541,10 +544,12 @@ namespace FreeOCL
 			const bool b_pointer = ptr;
 			const bool b_local = b_pointer && ptr->get_base_type()->get_address_space() == type::LOCAL;
 
+			smartptr<var> arg = new var("arg" + to_string(j), p_type, true);
 			if (b_local)
-				call_args->push_back(new cast(p_type, new binary('+', new member(__FCL_kernel_lts, "local_memory"), shifts[j])));
+				__FCL_kernel_body->push_back(new binary('=', arg, new cast(p_type, new binary('+', new member(__FCL_kernel_lts, "local_memory"), shifts[j]))));
 			else
-				call_args->push_back(new unary('*', new cast(new pointer_type(p_type, false, type::PRIVATE), new binary('+', new cast(pointer_type::t_p_const_char, __FreeOCL_args), args_shift))));
+				__FCL_kernel_body->push_back(new binary('=', arg, new unary('*', new cast(new pointer_type(p_type, false, type::PRIVATE), new binary('+', new cast(pointer_type::t_p_const_char, __FreeOCL_args), args_shift)))));
+			call_args->push_back(arg);
 			args_shift = new binary('+', args_shift, new size_of(p_type));
 		}
 

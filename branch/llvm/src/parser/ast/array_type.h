@@ -33,6 +33,7 @@ namespace FreeOCL
 			: pointer_type(base_type, b_const, addr_space), size(size)	{}
 
 		virtual smartptr<type> clone(const bool b_const, const address_space addr_space) const;
+		smartptr<type> clone_as_ptr() const;
 
 		virtual std::string suffix() const;
 		virtual std::string prefix() const;

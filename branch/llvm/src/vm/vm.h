@@ -51,6 +51,12 @@ namespace FreeOCL
 		llvm::Function *get_registered_function(const std::string &function_name);
 		void register_function(const std::string &function_name, llvm::Function *fn);
 
+		void push_break_continue_blocks(llvm::BasicBlock *break_dest, llvm::BasicBlock *continue_dest);
+		void pop_break_continue_blocks();
+
+		llvm::BasicBlock *get_break_block() const	{	return break_dest.back();	}
+		llvm::BasicBlock *get_continue_block() const	{	return continue_dest.back();	}
+
 	private:
 		llvm::Module *load_module(const std::string &filename);
 
@@ -63,6 +69,9 @@ namespace FreeOCL
 		llvm::Value *lts_value;
 		std::string error;
 		map<std::string, llvm::Function*> functions;
+
+		std::vector<llvm::BasicBlock*> break_dest;
+		std::vector<llvm::BasicBlock*> continue_dest;
 	};
 }
 

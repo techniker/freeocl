@@ -47,12 +47,7 @@ namespace FreeOCL
 		llvm::BasicBlock *blockPost = llvm::BasicBlock::Create(p_vm->get_context(), "post", fn);
 		llvm::BasicBlock *blockDef = _default ? llvm::BasicBlock::Create(p_vm->get_context(), "default", fn) : blockPost;
 
-		if (_default)
-		{
-			builder->SetInsertPoint(blockDef);
-			_default->to_IR(p_vm);
-			builder->CreateBr(blockPost);
-		}
+		p_vm->push_break_continue_blocks(blockPost, NULL);
 
 		llvm::SwitchInst *si = builder->CreateSwitch(exp->to_IR(p_vm), blockDef, cases.size());
 		std::vector<llvm::BasicBlock*> blocks;
@@ -70,7 +65,16 @@ namespace FreeOCL
 			builder->CreateBr(blocks[i + 1]);
 		}
 
+		if (_default)
+		{
+			builder->SetInsertPoint(blockDef);
+			_default->to_IR(p_vm);
+			builder->CreateBr(blockPost);
+		}
+
 		builder->SetInsertPoint(blockPost);
+
+		p_vm->pop_break_continue_blocks();
 
 		return NULL;
 	}

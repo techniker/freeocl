@@ -47,6 +47,8 @@ set(PARSER_SOURCES
     parser/ast/switch.h         parser/ast/switch.cpp
     parser/ast/noop.h           parser/ast/noop.cpp
     parser/ast/return.h         parser/ast/return.cpp
+    parser/ast/break.h          parser/ast/break.cpp
+    parser/ast/continue.h       parser/ast/continue.cpp
     )
 
 set(VM_SOURCES

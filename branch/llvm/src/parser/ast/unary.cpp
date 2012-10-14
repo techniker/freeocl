@@ -153,7 +153,10 @@ namespace FreeOCL
 		case '~':
 			return builder->CreateNot(t, "not");
 		case '-':
-			return t->getType()->isFloatingPointTy() ? builder->CreateFNeg(t, "fneg") : builder->CreateNeg(t, "neg");
+			if (t->getType()->isFPOrFPVectorTy())
+				return builder->CreateFNeg(t, "fneg");
+			else
+				return builder->CreateNeg(t, "neg");
 		case '+':
 			return t;
 		case '*':

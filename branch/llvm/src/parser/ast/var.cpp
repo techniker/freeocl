@@ -88,8 +88,6 @@ namespace FreeOCL
     llvm::Value *var::to_IR(vm *p_vm) const
     {
         allocate(p_vm);
-		if (p_type.as<array_type>())
-			return v;
         return p_vm->get_builder()->CreateLoad(v, "load_var");
     }
 

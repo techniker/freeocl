@@ -26,6 +26,11 @@ namespace FreeOCL
 		return new array_type(base_type->clone(b_const, addr_space), b_const, addr_space, size);
 	}
 
+	smartptr<type> array_type::clone_as_ptr() const
+	{
+		return new pointer_type(base_type, is_const(), get_address_space());
+	}
+
 	std::string array_type::suffix() const
 	{
 		return base_type->suffix() + '[' + to_string(size) + ']';

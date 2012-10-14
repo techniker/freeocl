@@ -20,6 +20,8 @@
 #include "../parser.h"
 #include <vm/vm.h>
 #include <iostream>
+#include <llvm/Module.h>
+#include "array_type.h"
 
 namespace FreeOCL
 {
@@ -198,10 +200,10 @@ namespace FreeOCL
 		case '=':
 			break;
 		default:
-			vl = left->to_IR(p_vm);
+			vl = left->get_type().as<array_type>() ? left->get_ptr(p_vm) : left->to_IR(p_vm);
 		}
 
-		llvm::Value *vr = right->to_IR(p_vm);
+		llvm::Value *vr = right->get_type().as<array_type>() ? right->get_ptr(p_vm) : right->to_IR(p_vm);
 
 		switch(op)
 		{
@@ -213,8 +215,35 @@ namespace FreeOCL
 
 		if (vl->getType()->isIntOrIntVectorTy() && vr->getType()->isIntOrIntVectorTy())
 		{
-			vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
-			vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
+			switch(op)
+			{
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+			case '%':
+			case '|':
+			case '^':
+			case '&':
+			case parser::LEFT_OP:
+			case parser::RIGHT_OP:
+				vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
+				vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
+				break;
+			default:
+				if (left->get_type().as<native_type>() && left->get_type().as<native_type>()->is_vector())
+					vr = type::cast_to(p_vm, right->get_type(), left->get_type(), vr);
+				else if (right->get_type().as<native_type>() && right->get_type().as<native_type>()->is_vector())
+					vl = type::cast_to(p_vm, left->get_type(), right->get_type(), vl);
+				else
+				{
+					smartptr<type> tmp_type = type::compute_resulting_type(left->get_type(), right->get_type());
+					vl = type::cast_to(p_vm, left->get_type(), tmp_type, vl);
+					vr = type::cast_to(p_vm, right->get_type(), tmp_type, vr);
+				}
+				break;
+			}
+
 			switch(op)
 			{
 			case '+':	return builder->CreateAdd(vl, vr, "add");
@@ -246,11 +275,30 @@ namespace FreeOCL
 			case parser::OR_ASSIGN:		return left->set_value(p_vm, builder->CreateOr(vl, vr, "or"));
 			}
 		}
-		else if ((vl->getType()->isFloatingPointTy() || (vl->getType()->isVectorTy() && !vl->getType()->isIntOrIntVectorTy()))
-				 && (vr->getType()->isFloatingPointTy() || (vr->getType()->isVectorTy() && !vr->getType()->isIntOrIntVectorTy())))
+		else if (vl->getType()->isFPOrFPVectorTy() && vr->getType()->isFPOrFPVectorTy())
 		{
-			vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
-			vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
+			switch(op)
+			{
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+				vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
+				vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
+				break;
+			default:
+				if (left->get_type().as<native_type>() && left->get_type().as<native_type>()->is_vector())
+					vr = type::cast_to(p_vm, right->get_type(), left->get_type(), vr);
+				else if (right->get_type().as<native_type>() && right->get_type().as<native_type>()->is_vector())
+					vl = type::cast_to(p_vm, left->get_type(), right->get_type(), vl);
+				else
+				{
+					smartptr<type> tmp_type = type::compute_resulting_type(left->get_type(), right->get_type());
+					vl = type::cast_to(p_vm, left->get_type(), tmp_type, vl);
+					vr = type::cast_to(p_vm, right->get_type(), tmp_type, vr);
+				}
+				break;
+			}
 			switch(op)
 			{
 			case '+':	return builder->CreateFAdd(vl, vr, "add");
@@ -268,6 +316,37 @@ namespace FreeOCL
 			case parser::DIV_ASSIGN:	return left->set_value(p_vm, builder->CreateFDiv(vl, vr, "div"));
 			case parser::ADD_ASSIGN:	return left->set_value(p_vm, builder->CreateFAdd(vl, vr, "add"));
 			case parser::SUB_ASSIGN:	return left->set_value(p_vm, builder->CreateFSub(vl, vr, "sub"));
+			}
+		}
+		else if (vl->getType()->isArrayTy() && vr->getType()->isIntegerTy())
+		{
+			std::vector<llvm::Value*> idxs;
+			idxs.push_back(builder->getInt32(0));
+			switch(op)
+			{
+			case '+':
+				idxs.push_back(vr);
+				return builder->CreateGEP(vl, idxs, "array_add");
+			case '-':
+				idxs.push_back(builder->CreateNeg(vr));
+				return builder->CreateGEP(vl, idxs, "array_sub");
+			case parser::ADD_ASSIGN:
+				idxs.push_back(vr);
+				return left->set_value(p_vm, builder->CreateGEP(vl, idxs, "array_add"));
+			case parser::SUB_ASSIGN:
+				idxs.push_back(builder->CreateNeg(vr));
+				return left->set_value(p_vm, builder->CreateGEP(vl, idxs, "ptrsub"));
+			}
+		}
+		else if (vl->getType()->isIntegerTy() && vr->getType()->isArrayTy())
+		{
+			switch(op)
+			{
+			case '+':
+				std::vector<llvm::Value*> idxs;
+				idxs.push_back(builder->getInt32(0));
+				idxs.push_back(vl);
+				return builder->CreateGEP(vr, idxs, "array_add");
 			}
 		}
 		else if (vl->getType()->isPointerTy() && vr->getType()->isIntegerTy())
@@ -294,6 +373,13 @@ namespace FreeOCL
 			case '-':	return builder->CreatePtrDiff(vl, vr, "ptrdiff");
 			}
 		}
+
+		p_vm->get_module()->dump();
+		std::cerr << *left << std::endl;
+		std::cerr << *left->get_type() << std::endl;
+		std::cerr << *right << std::endl;
+		std::cerr << *right->get_type() << std::endl;
+		*(int*)NULL = 0;
 
 		return NULL;
 	}

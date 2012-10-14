@@ -18,6 +18,7 @@
 #include "type.h"
 #include "native_type.h"
 #include "pointer_type.h"
+#include "array_type.h"
 #include <vm/vm.h>
 
 namespace FreeOCL
@@ -54,6 +55,10 @@ namespace FreeOCL
 			return native_type::t_void;
 		}
 		// Pointer arithmetics
+		if (t0.as<array_type>() && n1)
+			return t0.as<array_type>()->clone_as_ptr();
+		if (t1.as<array_type>() && n0)
+			return t1.as<array_type>()->clone_as_ptr();
 		if (t0.as<pointer_type>() && n1)
 			return t0;
 		if (t1.as<pointer_type>() && n0)
@@ -92,7 +97,7 @@ namespace FreeOCL
 		if (v->getType()->isPointerTy())
 			return p_vm->get_builder()->CreateICmpNE(v, llvm::ConstantPointerNull::get(static_cast<llvm::PointerType*>(v->getType())), "not_null");
 		if (v->getType()->isFloatingPointTy())
-			return p_vm->get_builder()->CreateFCmpONE(v, llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(0.0f)));
+			return p_vm->get_builder()->CreateFCmpONE(v, llvm::ConstantFP::get(v->getType(), 0.0));
 		return p_vm->get_builder()->CreateICmpNE(v, llvm::ConstantInt::get(v->getType(), 0, false), "not_0");
 	}
 
@@ -122,7 +127,7 @@ namespace FreeOCL
 					if (tnt->is_integer() && tnt->is_scalar())
 					{
 						if (fnt->get_size() == tnt->get_size())
-							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast");
+							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast_isis");
 						if (fnt->get_size() < tnt->get_size())
 							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
 						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
@@ -131,7 +136,7 @@ namespace FreeOCL
 					{
 						smartptr<native_type> scalar_type = new native_type(tnt->get_scalar_type(), false, type::PRIVATE);
 						if (fnt->get_size() == scalar_type->get_size())
-							in = builder->CreateBitCast(in, scalar_type->to_LLVM_type(p_vm), "bitcast");
+							in = builder->CreateBitCast(in, scalar_type->to_LLVM_type(p_vm), "bitcast_iiv");
 						else if (fnt->get_size() < scalar_type->get_size())
 							in = builder->CreateZExt(in, scalar_type->to_LLVM_type(p_vm), "zext");
 						else
@@ -154,20 +159,20 @@ namespace FreeOCL
 					if (tnt->is_floatting() && tnt->is_scalar())
 					{
 						if (fnt->get_size() == tnt->get_size())
-							return builder->CreateFPCast(in, to->to_LLVM_type(p_vm), "bitcast");
+							return builder->CreateFPCast(in, to->to_LLVM_type(p_vm), "fpcast_fsfs");
 						if (fnt->get_size() < tnt->get_size())
-							return builder->CreateFPExt(in, to->to_LLVM_type(p_vm), "zext");
-						return builder->CreateFPTrunc(in, to->to_LLVM_type(p_vm), "trunc");
+							return builder->CreateFPExt(in, to->to_LLVM_type(p_vm), "fpext");
+						return builder->CreateFPTrunc(in, to->to_LLVM_type(p_vm), "fptrunc");
 					}
 					if (tnt->is_floatting() && tnt->is_vector())
 					{
 						smartptr<native_type> scalar_type = new native_type(tnt->get_scalar_type(), false, type::PRIVATE);
 						if (fnt->get_size() == scalar_type->get_size())
-							in = builder->CreateFPCast(in, scalar_type->to_LLVM_type(p_vm), "bitcast");
+							in = builder->CreateFPCast(in, scalar_type->to_LLVM_type(p_vm), "fpcast_fsfv");
 						else if (fnt->get_size() < scalar_type->get_size())
-							in = builder->CreateFPExt(in, scalar_type->to_LLVM_type(p_vm), "zext");
+							in = builder->CreateFPExt(in, scalar_type->to_LLVM_type(p_vm), "fpext");
 						else
-							in = builder->CreateFPTrunc(in, scalar_type->to_LLVM_type(p_vm), "trunc");
+							in = builder->CreateFPTrunc(in, scalar_type->to_LLVM_type(p_vm), "fptrunc");
 						in = builder->CreateInsertElement(llvm::UndefValue::get(to->to_LLVM_type(p_vm)), in, builder->getInt32(0));
 						std::vector<llvm::Constant*> constant_values;
 						for(size_t i = 0 ; i < tnt->get_dim() ; ++i)
@@ -186,7 +191,7 @@ namespace FreeOCL
 					if (tnt->is_integer() && tnt->is_vector())
 					{
 						if (fnt->get_size() == tnt->get_size())
-							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast");
+							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast_iviv");
 						if (fnt->get_size() < tnt->get_size())
 							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
 						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
@@ -202,10 +207,10 @@ namespace FreeOCL
 					if (tnt->is_floatting() && tnt->is_vector())
 					{
 						if (fnt->get_size() == tnt->get_size())
-							return builder->CreateFPCast(in, to->to_LLVM_type(p_vm), "bitcast");
+							return builder->CreateFPCast(in, to->to_LLVM_type(p_vm), "fpcast_fvfv");
 						if (fnt->get_size() < tnt->get_size())
-							return builder->CreateFPExt(in, to->to_LLVM_type(p_vm), "zext");
-						return builder->CreateFPTrunc(in, to->to_LLVM_type(p_vm), "trunc");
+							return builder->CreateFPExt(in, to->to_LLVM_type(p_vm), "fpext");
+						return builder->CreateFPTrunc(in, to->to_LLVM_type(p_vm), "fptrunc");
 					}
 				}
 			}

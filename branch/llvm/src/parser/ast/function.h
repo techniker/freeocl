@@ -35,6 +35,8 @@ namespace FreeOCL
 
 		virtual bool is_defined() const;
 
+		void set_external_linkage(bool b_external_linkage);
+
 		bool operator==(const function &f) const;
 		inline bool operator!=(const function &f) const	{	return !(*this == f);	}
 
@@ -69,6 +71,7 @@ namespace FreeOCL
 		std::vector<smartptr<var> > variable_args;
 		mutable llvm::Function *fn;
 		bool b_has_implicit_lts_parameter;
+		bool b_external_linkage;
 	};
 }
 
