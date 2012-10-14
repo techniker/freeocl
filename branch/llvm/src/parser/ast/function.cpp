@@ -162,7 +162,7 @@ namespace FreeOCL
 			llvm::verifyFunction(*fn);
 
 			//! TODO: implement optimization passes
-//			vm->getFunctionPassManager()->run(*fn);
+			p_vm->get_function_pass_manager()->run(*fn);
 		}
 		return fn;
 	}

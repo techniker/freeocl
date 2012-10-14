@@ -246,8 +246,8 @@ namespace FreeOCL
 			case parser::OR_ASSIGN:		return left->set_value(p_vm, builder->CreateOr(vl, vr, "or"));
 			}
 		}
-		else if ((vl->getType()->isFloatingPointTy() || vl->getType()->isVectorTy())
-				 && (vr->getType()->isFloatingPointTy() || vr->getType()->isVectorTy()))
+		else if ((vl->getType()->isFloatingPointTy() || (vl->getType()->isVectorTy() && !vl->getType()->isIntOrIntVectorTy()))
+				 && (vr->getType()->isFloatingPointTy() || (vr->getType()->isVectorTy() && !vr->getType()->isIntOrIntVectorTy())))
 		{
 			vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
 			vr = type::cast_to(p_vm, right->get_type(), p_type, vr);

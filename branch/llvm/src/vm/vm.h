@@ -34,7 +34,7 @@ namespace FreeOCL
 
 		void *get_function(const std::string &function_name);
 
-		void link();
+		void link(const int optimization_level = 1);
 
 //		void save(const std::string &filename);
 
@@ -43,6 +43,8 @@ namespace FreeOCL
         llvm::IRBuilder<> *get_builder() {	return builder;	}
 		llvm::Module *get_module() {	return module;	}
         llvm::LLVMContext &get_context() {	return *context;	}
+		llvm::FunctionPassManager *get_function_pass_manager() const	{	return pFPM;	}
+		void set_function_pass_manager(llvm::FunctionPassManager *pFPM)	{	this->pFPM = pFPM;	}
 
 		llvm::Value *get_lts() const	{	return lts_value;	}
 		void set_lts(llvm::Value *lts)	{	lts_value = lts;	}

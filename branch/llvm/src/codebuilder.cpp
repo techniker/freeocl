@@ -35,6 +35,18 @@
 #include <algorithm>
 #include "vm/vm.h"
 #include <llvm/Module.h>
+#include <llvm/PassManager.h>
+#include <llvm/Analysis/Verifier.h>
+#include <llvm/Analysis/Passes.h>
+#include <llvm/Target/TargetData.h>
+#include <llvm/Target/TargetOptions.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Transforms/Scalar.h>
+#include <llvm/Transforms/IPO.h>
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
+#include <llvm/LLVMContext.h>
+#include <llvm/DerivedTypes.h>
+#include <llvm/ExecutionEngine/JIT.h>
 
 namespace FreeOCL
 {
@@ -328,8 +340,37 @@ namespace FreeOCL
 			return NULL;
 
 		vm *p_vm = new vm;
+
+		const int optimization_level = 2;
+
+		p_vm->set_function_pass_manager(new llvm::FunctionPassManager(p_vm->get_module()));
+
+//		p_vm->get_function_pass_manager()->add(new llvm::TargetData(p_vm->get_module()->getTargetTriple()));
+//		passmanager.add(new llvm::TargetData(p_vm->get_module()->getTargetTriple()));
+		if (optimization_level >= 1)
+		{
+			p_vm->get_function_pass_manager()->add(llvm::createBasicAliasAnalysisPass());
+			p_vm->get_function_pass_manager()->add(llvm::createReassociatePass());
+			p_vm->get_function_pass_manager()->add(llvm::createCFGSimplificationPass());
+			p_vm->get_function_pass_manager()->add(llvm::createPromoteMemoryToRegisterPass());
+			if (optimization_level >= 2)
+			{
+				p_vm->get_function_pass_manager()->add(llvm::createMemCpyOptPass());
+				p_vm->get_function_pass_manager()->add(llvm::createScalarReplAggregatesPass());
+				p_vm->get_function_pass_manager()->add(llvm::createSimplifyLibCallsPass());
+				p_vm->get_function_pass_manager()->add(llvm::createBlockPlacementPass());
+				p_vm->get_function_pass_manager()->add(llvm::createLazyValueInfoPass());
+			}
+			if (optimization_level >= 3)
+			{
+				p_vm->get_function_pass_manager()->add(llvm::createGVNPass());
+				p_vm->get_function_pass_manager()->add(llvm::createInstructionCombiningPass());
+			}
+		}
+
 		p.get_ast()->to_IR(p_vm);
-		p_vm->get_module()->dump();
+
+		p_vm->link(optimization_level);
 
 		for(FreeOCL::map<std::string, smartptr<kernel> >::const_iterator i = p.get_kernels().begin(), end = p.get_kernels().end() ; i != end ; ++i)
 			kernels.insert(i->first);
