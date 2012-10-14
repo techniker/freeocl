@@ -6,6 +6,7 @@ set(STDLIB_SOURCES
     relational.c
     sync.c
     geometric.c
+    math.c
     )
 
 add_custom_target(stdlib ALL

@@ -25,7 +25,7 @@ namespace FreeOCL
 	class _for : public node
 	{
 	public:
-		_for(const smartptr<expression> &init,
+		_for(const smartptr<node> &init,
 			 const smartptr<expression> &test,
 			 const smartptr<expression> &step,
 			 const smartptr<node> &stmt);
@@ -38,7 +38,7 @@ namespace FreeOCL
 
 		virtual llvm::Value *to_IR(vm *p_vm) const;
 	private:
-		const smartptr<expression> init;
+		const smartptr<node> init;
 		const smartptr<expression> test;
 		const smartptr<expression> step;
 		const smartptr<node> stmt;

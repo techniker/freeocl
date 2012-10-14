@@ -1489,36 +1489,32 @@ namespace FreeOCL
 		case FOR:
 			MATCH4(token<FOR>, token<'('>, expression_statement, expression_statement)
 			{
-				const smartptr<node> N0 = N[0];
-				const smartptr<node> N1 = N[1];
 				const smartptr<node> N2 = N[2];
 				const smartptr<node> N3 = N[3];
 				MATCH2(token<')'>, statement)
 				{
-					d_val__ = new _for(N2.as<chunk>()->front(), N3.as<chunk>()->front(), new noop, N[1]);
+					d_val__ = new _for(N2, N3.as<chunk>()->front(), new noop, N[1]);
 					return 1;
 				}
 				MATCH3(expression, token<')'>, statement)
 				{
-					d_val__ = new _for(N2.as<chunk>()->front(), N3.as<chunk>()->front(), N[0], N[2]);
+					d_val__ = new _for(N2, N3.as<chunk>()->front(), N[0], N[2]);
 					return 1;
 				}
 				ERROR("syntax error");
 			}
 			MATCH4(token<FOR>, token<'('>, declaration, expression_statement)
 			{
-				const smartptr<node> N0 = N[0];
-				const smartptr<node> N1 = N[1];
 				const smartptr<node> N2 = N[2];
 				const smartptr<node> N3 = N[3];
 				MATCH2(token<')'>, statement)
 				{
-					d_val__ = new _for(N2.as<chunk>()->front(), N3.as<chunk>()->front(), new noop, N[1]);
+					d_val__ = new _for(N2, N3.as<chunk>()->front(), new noop, N[1]);
 					return 1;
 				}
 				MATCH3(expression, token<')'>, statement)
 				{
-					d_val__ = new _for(N2.as<chunk>()->front(), N3.as<chunk>()->front(), N[0], N[2]);
+					d_val__ = new _for(N2, N3.as<chunk>()->front(), N[0], N[2]);
 					return 1;
 				}
 				ERROR("syntax error");

@@ -56,7 +56,8 @@ namespace FreeOCL
 										  "common.bc",
 										  "relational.bc",
 										  "sync.bc",
-										  "geometric.bc"};
+										  "geometric.bc",
+										  "math.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 

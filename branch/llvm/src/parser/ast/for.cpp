@@ -21,7 +21,7 @@
 
 namespace FreeOCL
 {
-	_for::_for(const smartptr<expression> &init,
+	_for::_for(const smartptr<node> &init,
 			   const smartptr<expression> &test,
 			   const smartptr<expression> &step,
 			   const smartptr<node> &stmt)

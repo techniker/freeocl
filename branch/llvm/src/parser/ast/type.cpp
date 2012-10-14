@@ -127,6 +127,22 @@ namespace FreeOCL
 							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
 						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
 					}
+					if (tnt->is_integer() && tnt->is_vector())
+					{
+						smartptr<native_type> scalar_type = new native_type(tnt->get_scalar_type(), false, type::PRIVATE);
+						if (fnt->get_size() == scalar_type->get_size())
+							in = builder->CreateBitCast(in, scalar_type->to_LLVM_type(p_vm), "bitcast");
+						else if (fnt->get_size() < scalar_type->get_size())
+							in = builder->CreateZExt(in, scalar_type->to_LLVM_type(p_vm), "zext");
+						else
+							in = builder->CreateTrunc(in, scalar_type->to_LLVM_type(p_vm), "trunc");
+						in = builder->CreateInsertElement(llvm::UndefValue::get(to->to_LLVM_type(p_vm)), in, builder->getInt32(0));
+						std::vector<llvm::Constant*> constant_values;
+						for(size_t i = 0 ; i < tnt->get_dim() ; ++i)
+							constant_values.push_back(builder->getInt32(0));
+						llvm::Value *mask = llvm::ConstantVector::get(constant_values);
+						return builder->CreateShuffleVector(in, in, mask);
+					}
 				}
 			}
 			if (fnt->is_floatting() && fnt->is_scalar())
@@ -138,10 +154,26 @@ namespace FreeOCL
 					if (tnt->is_floatting() && tnt->is_scalar())
 					{
 						if (fnt->get_size() == tnt->get_size())
-							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast");
+							return builder->CreateFPCast(in, to->to_LLVM_type(p_vm), "bitcast");
 						if (fnt->get_size() < tnt->get_size())
-							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
-						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
+							return builder->CreateFPExt(in, to->to_LLVM_type(p_vm), "zext");
+						return builder->CreateFPTrunc(in, to->to_LLVM_type(p_vm), "trunc");
+					}
+					if (tnt->is_floatting() && tnt->is_vector())
+					{
+						smartptr<native_type> scalar_type = new native_type(tnt->get_scalar_type(), false, type::PRIVATE);
+						if (fnt->get_size() == scalar_type->get_size())
+							in = builder->CreateFPCast(in, scalar_type->to_LLVM_type(p_vm), "bitcast");
+						else if (fnt->get_size() < scalar_type->get_size())
+							in = builder->CreateFPExt(in, scalar_type->to_LLVM_type(p_vm), "zext");
+						else
+							in = builder->CreateFPTrunc(in, scalar_type->to_LLVM_type(p_vm), "trunc");
+						in = builder->CreateInsertElement(llvm::UndefValue::get(to->to_LLVM_type(p_vm)), in, builder->getInt32(0));
+						std::vector<llvm::Constant*> constant_values;
+						for(size_t i = 0 ; i < tnt->get_dim() ; ++i)
+							constant_values.push_back(builder->getInt32(0));
+						llvm::Value *mask = llvm::ConstantVector::get(constant_values);
+						return builder->CreateShuffleVector(in, in, mask);
 					}
 				}
 			}
@@ -170,10 +202,10 @@ namespace FreeOCL
 					if (tnt->is_floatting() && tnt->is_vector())
 					{
 						if (fnt->get_size() == tnt->get_size())
-							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast");
+							return builder->CreateFPCast(in, to->to_LLVM_type(p_vm), "bitcast");
 						if (fnt->get_size() < tnt->get_size())
-							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
-						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
+							return builder->CreateFPExt(in, to->to_LLVM_type(p_vm), "zext");
+						return builder->CreateFPTrunc(in, to->to_LLVM_type(p_vm), "trunc");
 					}
 				}
 			}
