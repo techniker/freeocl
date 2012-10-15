@@ -72,7 +72,9 @@ namespace FreeOCL
 										  "sync.bc",
 										  "geometric.bc",
 										  "math.bc",
-										  "asm_math.bc"};
+										  "asm_math.bc",
+										  "converters.bc",
+										  "asm_converters.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 

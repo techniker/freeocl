@@ -7,11 +7,13 @@ set(STDLIB_SOURCES
     sync.c
     geometric.c
     math.c
+    converters.c
     )
 
 set(STDLIB_BYTECODE_SOURCES
     integer.ll
     math.ll
+    converters.ll
     )
 add_custom_target(stdlib ALL
                     SOURCES ${STDLIB_SOURCES} ${STDLIB_BYTECODE_SOURCES} types.h)
