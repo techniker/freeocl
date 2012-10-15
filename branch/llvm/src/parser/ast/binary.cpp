@@ -19,8 +19,6 @@
 #include "native_type.h"
 #include "../parser.h"
 #include <vm/vm.h>
-#include <iostream>
-#include <llvm/Module.h>
 #include "array_type.h"
 
 namespace FreeOCL
@@ -318,7 +316,7 @@ namespace FreeOCL
 			case parser::SUB_ASSIGN:	return left->set_value(p_vm, builder->CreateFSub(vl, vr, "sub"));
 			}
 		}
-		else if (vl->getType()->isArrayTy() && vr->getType()->isIntegerTy())
+		else if (left->get_type().as<array_type>() && vr->getType()->isIntegerTy())
 		{
 			std::vector<llvm::Value*> idxs;
 			idxs.push_back(builder->getInt32(0));
@@ -338,7 +336,7 @@ namespace FreeOCL
 				return left->set_value(p_vm, builder->CreateGEP(vl, idxs, "ptrsub"));
 			}
 		}
-		else if (vl->getType()->isIntegerTy() && vr->getType()->isArrayTy())
+		else if (vl->getType()->isIntegerTy() && right->get_type().as<array_type>())
 		{
 			switch(op)
 			{
@@ -373,13 +371,6 @@ namespace FreeOCL
 			case '-':	return builder->CreatePtrDiff(vl, vr, "ptrdiff");
 			}
 		}
-
-		p_vm->get_module()->dump();
-		std::cerr << *left << std::endl;
-		std::cerr << *left->get_type() << std::endl;
-		std::cerr << *right << std::endl;
-		std::cerr << *right->get_type() << std::endl;
-		*(int*)NULL = 0;
 
 		return NULL;
 	}

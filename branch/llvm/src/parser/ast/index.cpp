@@ -19,9 +19,7 @@
 #include "pointer_type.h"
 #include "array_type.h"
 #include <vm/vm.h>
-#include <iostream>
 #include "native_type.h"
-#include <llvm/Module.h>
 
 namespace FreeOCL
 {
@@ -106,17 +104,11 @@ namespace FreeOCL
 			std::vector<llvm::Value*> idxs;
 			idxs.push_back(p_vm->get_builder()->getInt32(0));
 			idxs.push_back(t1);
-			std::cerr << *ptr << std::endl;
-			std::cerr << *idx << std::endl;
-			std::cerr << "o<" << std::endl;
 			r = p_vm->get_builder()->CreateGEP(t0, idxs, "index");
-			std::cerr << "x<" << std::endl;
 		}
 		else
 		{
-			std::cerr << "@<" << std::endl;
 			r = p_vm->get_builder()->CreateGEP(t0, t1, "index");
-			std::cerr << "X<" << std::endl;
 		}
 		return r;
 	}
