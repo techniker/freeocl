@@ -74,7 +74,8 @@ namespace FreeOCL
 										  "math.bc",
 										  "asm_math.bc",
 										  "converters.bc",
-										  "asm_converters.bc"};
+										  "asm_converters.bc",
+										  "asm_select.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 

@@ -14,6 +14,7 @@ set(STDLIB_BYTECODE_SOURCES
     integer.ll
     math.ll
     converters.ll
+    select.ll
     )
 add_custom_target(stdlib ALL
                     SOURCES ${STDLIB_SOURCES} ${STDLIB_BYTECODE_SOURCES} types.h)
