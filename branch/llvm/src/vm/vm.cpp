@@ -75,7 +75,8 @@ namespace FreeOCL
 										  "asm_math.bc",
 										  "converters.bc",
 										  "asm_converters.bc",
-										  "asm_select.bc"};
+										  "asm_select.bc",
+										  "asm_common.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 
@@ -153,7 +154,7 @@ namespace FreeOCL
 		target_opts.RealignStack = 0;
 		target_opts.UnsafeFPMath = 1;
 
-		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::Aggressive).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();
+		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::None).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();
 		if (!error.empty())
 		{
 			std::cerr << "LLVM error at engine creation: " << error << std::endl;
