@@ -369,6 +369,7 @@ namespace FreeOCL
 		}
 
 		p.get_ast()->to_IR(p_vm);
+		p_vm->create_global_constructors_table();
 
 		p_vm->link(optimization_level);
 

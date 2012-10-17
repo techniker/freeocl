@@ -49,6 +49,7 @@ set(PARSER_SOURCES
     parser/ast/return.h         parser/ast/return.cpp
     parser/ast/break.h          parser/ast/break.cpp
     parser/ast/continue.h       parser/ast/continue.cpp
+    parser/ast/local_initializer.h       parser/ast/local_initializer.cpp
     )
 
 set(VM_SOURCES

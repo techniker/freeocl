@@ -112,22 +112,21 @@ namespace FreeOCL
 				llvm::Value *v;
 				if (param_types[i].as<array_type>())
 				{
-					v = args->at(i).as<expression>()->get_ptr(p_vm);
-					std::vector<llvm::Value*> idxs;
-					idxs.push_back(p_vm->get_builder()->getInt32(0));
-					idxs.push_back(p_vm->get_builder()->getInt32(0));
-					v = p_vm->get_builder()->CreateGEP(v, idxs);
-				}
-				else
-				{
-					if (i < arg_types.size())
+					if (param_types[i]->get_address_space() != type::LOCAL)
 					{
-						v = args->at(i)->to_IR(p_vm);
-						v = type::cast_to(p_vm, args->at(i).as<expression>()->get_type(), arg_types[i], v);
+						v = args->at(i).as<expression>()->get_ptr(p_vm);
+						std::vector<llvm::Value*> idxs;
+						idxs.push_back(p_vm->get_builder()->getInt32(0));
+						idxs.push_back(p_vm->get_builder()->getInt32(0));
+						v = p_vm->get_builder()->CreateGEP(v, idxs);
 					}
 					else
-						v = args->at(i)->to_IR(p_vm);
+						v = args->at(i).as<expression>()->get_ptr(p_vm);
 				}
+				else
+					v = args->at(i)->to_IR(p_vm);
+				if (i < arg_types.size())
+					v = type::cast_to(p_vm, args->at(i).as<expression>()->get_type(), arg_types[i], v);
 				vargs.push_back(v);
 			}
 		llvm::Value *callee = fn->get_callee(p_vm, arg_types);

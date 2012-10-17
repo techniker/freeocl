@@ -48,14 +48,20 @@ namespace FreeOCL
 
 		llvm::Value *get_lts() const	{	return lts_value;	}
 		void set_lts(llvm::Value *lts)	{	lts_value = lts;	}
-		llvm::Function *get_registered_function(const std::string &function_name);
+		llvm::Function *get_registered_function(const std::string &function_name) const;
 		void register_function(const std::string &function_name, llvm::Function *fn);
+		void register_global_constructor(llvm::Function *fn);
+
+		void register_global_variable(const std::string &variable_name, llvm::GlobalVariable *gv);
+		llvm::GlobalVariable *get_registered_global_variable(const std::string &variable_name) const;
 
 		void push_break_continue_blocks(llvm::BasicBlock *break_dest, llvm::BasicBlock *continue_dest);
 		void pop_break_continue_blocks();
 
 		llvm::BasicBlock *get_break_block() const	{	return break_dest.back();	}
 		llvm::BasicBlock *get_continue_block() const	{	return continue_dest.back();	}
+
+		void create_global_constructors_table();
 
 	private:
 		llvm::Module *load_module(const std::string &filename);
@@ -69,6 +75,8 @@ namespace FreeOCL
 		llvm::Value *lts_value;
 		std::string error;
 		map<std::string, llvm::Function*> functions;
+		map<std::string, llvm::GlobalVariable*> globals;
+		std::vector<llvm::Constant*> global_constructors;
 
 		std::vector<llvm::BasicBlock*> break_dest;
 		std::vector<llvm::BasicBlock*> continue_dest;

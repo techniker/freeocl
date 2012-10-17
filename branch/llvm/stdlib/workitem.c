@@ -18,6 +18,8 @@
 
 #include "types.h"
 
+__uint __next_local_address = 0;
+
 extern __size_t __FreeOCL_dim;
 extern __size_t __FreeOCL_global_size[3];
 extern __size_t __FreeOCL_global_offset[3];

@@ -20,6 +20,7 @@
 #include "array_type.h"
 #include <vm/vm.h>
 #include "native_type.h"
+#include <llvm/Module.h>
 
 namespace FreeOCL
 {
@@ -94,12 +95,13 @@ namespace FreeOCL
 
 	llvm::Value *index::get_ptr(vm *p_vm) const
 	{
+		const smartptr<type> &p_type = ptr->get_type();
 		if (!t0)
-			t0 = ptr->get_type().as<array_type>() ? ptr->get_ptr(p_vm) : ptr->to_IR(p_vm);
+			t0 = p_type.as<array_type>() ? ptr->get_ptr(p_vm) : ptr->to_IR(p_vm);
 		if (!t1)
 			t1 = idx->to_IR(p_vm);
 		llvm::Value *r;
-		if (ptr->get_type().as<array_type>())
+		if (p_type.as<array_type>() && p_type->get_address_space() != type::LOCAL)
 		{
 			std::vector<llvm::Value*> idxs;
 			idxs.push_back(p_vm->get_builder()->getInt32(0));

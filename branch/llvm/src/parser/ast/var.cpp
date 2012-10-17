@@ -19,6 +19,7 @@
 #include <vm/vm.h>
 #include <llvm/GlobalVariable.h>
 #include <llvm/Function.h>
+#include <llvm/Support/IRBuilder.h>
 #include "array_type.h"
 
 namespace FreeOCL

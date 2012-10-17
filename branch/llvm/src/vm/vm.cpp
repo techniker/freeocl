@@ -160,6 +160,9 @@ namespace FreeOCL
 			std::cerr << "LLVM error at engine creation: " << error << std::endl;
 			error.clear();
 		}
+
+		if (engine)
+			engine->runStaticConstructorsDestructors(false);
 	}
 
 	void *vm::get_function(const std::string &function_name)
@@ -194,9 +197,9 @@ namespace FreeOCL
 		return module;
 	}
 
-	llvm::Function *vm::get_registered_function(const std::string &function_name)
+	llvm::Function *vm::get_registered_function(const std::string &function_name) const
 	{
-		map<std::string, llvm::Function*>::iterator it = functions.find(function_name);
+		map<std::string, llvm::Function*>::const_iterator it = functions.find(function_name);
 		if (it == functions.end())
 			return NULL;
 		return it->second;
@@ -217,5 +220,36 @@ namespace FreeOCL
 	{
 		break_dest.pop_back();
 		continue_dest.pop_back();
+	}
+
+	void vm::register_global_variable(const std::string &variable_name, llvm::GlobalVariable *gv)
+	{
+		globals[variable_name] = gv;
+	}
+
+	llvm::GlobalVariable *vm::get_registered_global_variable(const std::string &variable_name) const
+	{
+		map<std::string, llvm::GlobalVariable*>::const_iterator it = globals.find(variable_name);
+		if (it == globals.end())
+			return NULL;
+		return it->second;
+	}
+
+	void vm::register_global_constructor(llvm::Function *fn)
+	{
+		global_constructors.push_back(fn);
+	}
+
+	void vm::create_global_constructors_table()
+	{
+		llvm::FunctionType *ctor_type = llvm::FunctionType::get(builder->getVoidTy(), false);
+		llvm::ArrayType *table_type = llvm::ArrayType::get(ctor_type, global_constructors.size());
+		llvm::Constant *init = llvm::ConstantArray::get(table_type, global_constructors);
+		llvm::GlobalVariable *gv_ctor = new llvm::GlobalVariable(*module,
+																 table_type,
+																 true,
+																 llvm::GlobalVariable::AppendingLinkage,
+																 init,
+																 "llvm.global_ctors");
 	}
 }

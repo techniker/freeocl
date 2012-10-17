@@ -24,6 +24,7 @@ namespace FreeOCL
 {
 	class var : public expression
 	{
+		friend class local_initializer;
 	public:
 		var(const std::string &name, const smartptr<type> &p_type, const bool b_local, const bool b_thread_local = false);
 		virtual ~var();
