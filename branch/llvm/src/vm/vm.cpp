@@ -84,7 +84,9 @@ namespace FreeOCL
 										  "asm_select.bc",
 										  "asm_common.bc",
 										  "asm_vector_math.bc",
-										  "vloadstore.bc"};
+										  "vloadstore.bc",
+										  "atomic.bc",
+										  "asm_atomic.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 
@@ -158,12 +160,12 @@ namespace FreeOCL
 		target_opts.NoFramePointerElim = 1;
 		target_opts.JITEmitDebugInfo = 1;
 		target_opts.JITEmitDebugInfoToDisk = 1;
-		target_opts.AllowFPOpFusion = llvm::FPOpFusion::Fast;
-		target_opts.LessPreciseFPMADOption = 1;
-		target_opts.NoInfsFPMath = 1;
-		target_opts.NoNaNsFPMath = 1;
+		target_opts.AllowFPOpFusion = llvm::FPOpFusion::Strict;
+		target_opts.LessPreciseFPMADOption = 0;
+		target_opts.NoInfsFPMath = 0;
+		target_opts.NoNaNsFPMath = 0;
 		target_opts.RealignStack = 1;
-		target_opts.UnsafeFPMath = 1;
+		target_opts.UnsafeFPMath = 0;
 
 		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::None).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();
 		if (!error.empty())

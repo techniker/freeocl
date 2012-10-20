@@ -9,6 +9,7 @@ set(STDLIB_SOURCES
     math.c
     converters.c
     vloadstore.c
+    atomic.c
     )
 
 set(STDLIB_BYTECODE_SOURCES
@@ -18,6 +19,7 @@ set(STDLIB_BYTECODE_SOURCES
     select.ll
     common.ll
     vector_math.ll
+    atomic.ll
     )
 add_custom_target(stdlib ALL
                     SOURCES ${STDLIB_SOURCES} ${STDLIB_BYTECODE_SOURCES} types.h)
