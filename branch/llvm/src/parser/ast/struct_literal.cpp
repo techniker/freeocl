@@ -20,6 +20,7 @@
 #include "chunk.h"
 #include "typedef.h"
 #include <vm/vm.h>
+#include <iostream>
 
 namespace FreeOCL
 {
@@ -73,8 +74,29 @@ namespace FreeOCL
 	llvm::Value *struct_literal::to_IR(vm *p_vm) const
 	{
 		Builder *builder = p_vm->get_builder();
-		//! \todo implement struct literals
-		return NULL;
+		llvm::StructType *llvm_type = (llvm::StructType*)p_type->to_LLVM_type(p_vm);
+
+		const struct_type *s_type = p_type.as<struct_type>();
+		if (!s_type && p_type.as<type_def>())
+			s_type = p_type.as<type_def>()->get_type().as<struct_type>();
+
+		std::cerr << *p_type << std::endl;
+		std::cerr << *initializer << std::endl;
+
+		const chunk *p_chunk = initializer.as<chunk>();
+		llvm::Value *t = llvm::UndefValue::get(llvm_type);
+		std::vector<unsigned> idxs;
+		idxs.resize(1);
+		for(size_t i = 0 ; i < p_chunk->size() ; ++i)
+		{
+			const smartptr<type> &m_type = s_type->get_type_of_member(i);
+			llvm::Value *v = p_chunk->at(i)->to_IR(p_vm);
+			v = type::cast_to(p_vm, p_chunk->at(i).as<expression>()->get_type(), m_type, v);
+			idxs[0] = i;
+			t = builder->CreateInsertValue(t, v, idxs);
+		}
+
+		return t;
 	}
 
 	llvm::Value *struct_literal::set_value(vm *p_vm, llvm::Value *v) const

@@ -145,17 +145,61 @@ __int _Z8isnormald(__double x)
 //typename __scalar<S>::type select(S a, S b, I c)
 //{	return c ? b : a;	}
 
-//// for vector types
+// for vector types
 
-//template<typename I>
-//__int any(I x)
-//{
-//	const __size_t mask = 1U << (sizeof(typename __vector<I>::base_type) * 8 - 1);
-//	for(__size_t i = 0 ; i < __vector<I>::components ; ++i)
-//		if (x.v[i] & mask)
-//			return 1;
-//	return 0;
-//}
+// any
+__int _Z3anyc(__char x)	{	return (x & 0x80) ? 1 : 0;	}
+__int _Z3anyh(__uchar x)	{	return (x & 0x80) ? 1 : 0;	}
+__int _Z3anys(__short x)	{	return (x & 0x8000) ? 1 : 0;	}
+__int _Z3anyt(__ushort x)	{	return (x & 0x8000) ? 1 : 0;	}
+__int _Z3anyi(__int x)	{	return (x & 0x80000000) ? 1 : 0;	}
+__int _Z3anyj(__uint x)	{	return (x & 0x80000000) ? 1 : 0;	}
+__int _Z3anyl(__long x)	{	return (x & 0x8000000000000000) ? 1 : 0;	}
+__int _Z3anym(__ulong x)	{	return (x & 0x8000000000000000) ? 1 : 0;	}
+__int _Z3anyu2v2c(__char2 x)	{	x &= (__char2)0x80;	return (x.x | x.y) ? 1 : 0;	}
+__int _Z3anyu2v2h(__uchar2 x)	{	x &= (__uchar2)0x80;	return (x.x | x.y) ? 1 : 0;	}
+__int _Z3anyu2v2s(__short2 x)	{	x &= (__short2)0x8000;	return (x.x | x.y) ? 1 : 0;	}
+__int _Z3anyu2v2t(__ushort2 x)	{	x &= (__ushort2)0x8000;	return (x.x | x.y) ? 1 : 0;	}
+__int _Z3anyu2v2i(__int2 x)	{	x &= (__int2)0x80000000;	return (x.x | x.y) ? 1 : 0;	}
+__int _Z3anyu2v2j(__uint2 x)	{	x &= (__uint2)0x80000000;	return (x.x | x.y) ? 1 : 0;	}
+__int _Z3anyu2v2l(__long2 x)	{	x &= (__long2)0x8000000000000000;	return (x.x | x.y) ? 1 : 0;	}
+__int _Z3anyu2v2m(__ulong2 x)	{	x &= (__ulong2)0x8000000000000000;	return (x.x | x.y) ? 1 : 0;	}
+
+__int _Z3anyu2v3c(__char3 x)	{	x &= (__char3)0x80;	return (x.x | x.y | x.z) ? 1 : 0;	}
+__int _Z3anyu2v3h(__uchar3 x)	{	x &= (__uchar3)0x80;	return (x.x | x.y | x.z) ? 1 : 0;	}
+__int _Z3anyu2v3s(__short3 x)	{	x &= (__short3)0x8000;	return (x.x | x.y | x.z) ? 1 : 0;	}
+__int _Z3anyu2v3t(__ushort3 x)	{	x &= (__ushort3)0x8000;	return (x.x | x.y | x.z) ? 1 : 0;	}
+__int _Z3anyu2v3i(__int3 x)	{	x &= (__int3)0x80000000;	return (x.x | x.y | x.z) ? 1 : 0;	}
+__int _Z3anyu2v3j(__uint3 x)	{	x &= (__uint3)0x80000000;	return (x.x | x.y | x.z) ? 1 : 0;	}
+__int _Z3anyu2v3l(__long3 x)	{	x &= (__long3)0x8000000000000000;	return (x.x | x.y | x.z) ? 1 : 0;	}
+__int _Z3anyu2v3m(__ulong3 x)	{	x &= (__ulong3)0x8000000000000000;	return (x.x | x.y | x.z) ? 1 : 0;	}
+
+__int _Z3anyu2v4c(__char4 x)	{	x &= (__char4)0x80;	return (x.x | x.y | x.z | x.w) ? 1 : 0;	}
+__int _Z3anyu2v4h(__uchar4 x)	{	x &= (__uchar4)0x80;	return (x.x | x.y | x.z | x.w) ? 1 : 0;	}
+__int _Z3anyu2v4s(__short4 x)	{	x &= (__short4)0x8000;	return (x.x | x.y | x.z | x.w) ? 1 : 0;	}
+__int _Z3anyu2v4t(__ushort4 x)	{	x &= (__ushort4)0x8000;	return (x.x | x.y | x.z | x.w) ? 1 : 0;	}
+__int _Z3anyu2v4i(__int4 x)	{	x &= (__int4)0x80000000;	return (x.x | x.y | x.z | x.w) ? 1 : 0;	}
+__int _Z3anyu2v4j(__uint4 x)	{	x &= (__uint4)0x80000000;	return (x.x | x.y | x.z | x.w) ? 1 : 0;	}
+__int _Z3anyu2v4l(__long4 x)	{	x &= (__long4)0x8000000000000000;	return (x.x | x.y | x.z | x.w) ? 1 : 0;	}
+__int _Z3anyu2v4m(__ulong4 x)	{	x &= (__ulong4)0x8000000000000000;	return (x.x | x.y | x.z | x.w) ? 1 : 0;	}
+
+__int _Z3anyu2v8c(__char8 x)	{	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x80) ? 1 : 0;	}
+__int _Z3anyu2v8h(__uchar8 x)	{	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x80) ? 1 : 0;	}
+__int _Z3anyu2v8s(__short8 x)	{	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000) ? 1 : 0;	}
+__int _Z3anyu2v8t(__ushort8 x)	{	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000) ? 1 : 0;	}
+__int _Z3anyu2v8i(__int8 x)	{	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x80000000) ? 1 : 0;	}
+__int _Z3anyu2v8j(__uint8 x)	{	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x80000000) ? 1 : 0;	}
+__int _Z3anyu2v8l(__long8 x)	{	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000000000000000) ? 1 : 0;	}
+__int _Z3anyu2v8m(__ulong8 x)	{	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000000000000000) ? 1 : 0;	}
+
+__int _Z3anyu3v16c(__char16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x80) ? 1 : 0;	}
+__int _Z3anyu3v16h(__uchar16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x80) ? 1 : 0;	}
+__int _Z3anyu3v16s(__short16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000) ? 1 : 0;	}
+__int _Z3anyu3v16t(__ushort16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000) ? 1 : 0;	}
+__int _Z3anyu3v16i(__int16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x80000000) ? 1 : 0;	}
+__int _Z3anyu3v16j(__uint16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x80000000) ? 1 : 0;	}
+__int _Z3anyu3v16l(__long16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000000000000000) ? 1 : 0;	}
+__int _Z3anyu3v16m(__ulong16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000000000000000) ? 1 : 0;	}
 
 //template<typename I>
 //__int all(I x)

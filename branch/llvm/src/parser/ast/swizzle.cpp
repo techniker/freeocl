@@ -309,7 +309,7 @@ namespace FreeOCL
 		for(size_t i = 0 ; i < dim ; ++i)
 		{
 			llvm::Value *q = builder->CreateExtractElement(v, builder->getInt32(i));
-			r = builder->CreateInsertElement(r, v, builder->getInt32(values[i]));
+			r = builder->CreateInsertElement(r, q, builder->getInt32(values[i]));
 		}
 		return r;
 	}

@@ -410,6 +410,11 @@ namespace FreeOCL
 		}
 	}
 
+	bool native_type::is_bool() const
+	{
+		return id == BOOL;
+	}
+
 	bool native_type::is_signed() const
 	{
 		switch(id)
@@ -652,12 +657,13 @@ namespace FreeOCL
 
 	llvm::Type *native_type::to_LLVM_type(vm *p_vm) const
 	{
+		Builder *builder = p_vm->get_builder();
 		switch(id)
 		{
 //		SAMPLER_T, EVENT_T,
 //		IMAGE1D_T, IMAGE1D_BUFFER_T, IMAGE1D_ARRAY_T, IMAGE2D_T, IMAGE2D_ARRAY_T, IMAGE3D_T,
 		case SIZE_T:
-			return sizeof(void*) == 8 ? llvm::Type::getInt64Ty(p_vm->get_context()) : llvm::Type::getInt32Ty(p_vm->get_context());
+			return sizeof(void*) == 8 ? builder->getInt64Ty() : builder->getInt32Ty();
 		case ULONG2:
 		case ULONG3:
 		case ULONG4:
@@ -668,10 +674,10 @@ namespace FreeOCL
 		case LONG4:
 		case LONG8:
 		case LONG16:
-			return llvm::VectorType::get( llvm::Type::getInt64Ty(p_vm->get_context()), get_dim() );
+			return llvm::VectorType::get( builder->getInt64Ty(), get_dim() );
 		case ULONG:
 		case LONG:
-			return llvm::Type::getInt64Ty(p_vm->get_context());
+			return builder->getInt64Ty();
 		case UINT2:
 		case UINT3:
 		case UINT4:
@@ -682,10 +688,10 @@ namespace FreeOCL
 		case INT4:
 		case INT8:
 		case INT16:
-			return llvm::VectorType::get( llvm::Type::getInt32Ty(p_vm->get_context()), get_dim() );
+			return llvm::VectorType::get( builder->getInt32Ty(), get_dim() );
 		case UINT:
 		case INT:
-			return llvm::Type::getInt32Ty(p_vm->get_context());
+			return p_vm->get_builder()->getInt32Ty();
 		case USHORT2:
 		case USHORT3:
 		case USHORT4:
@@ -696,10 +702,10 @@ namespace FreeOCL
 		case SHORT4:
 		case SHORT8:
 		case SHORT16:
-			return llvm::VectorType::get( llvm::Type::getInt16Ty(p_vm->get_context()), get_dim() );
+			return llvm::VectorType::get( builder->getInt16Ty(), get_dim() );
 		case USHORT:
 		case SHORT:
-			return llvm::Type::getInt16Ty(p_vm->get_context());
+			return builder->getInt16Ty();
 		case UCHAR2:
 		case UCHAR3:
 		case UCHAR4:
@@ -710,10 +716,10 @@ namespace FreeOCL
 		case CHAR4:
 		case CHAR8:
 		case CHAR16:
-			return llvm::VectorType::get( llvm::Type::getInt8Ty(p_vm->get_context()), get_dim() );
+			return llvm::VectorType::get( builder->getInt8Ty(), get_dim() );
 		case UCHAR:
 		case CHAR:
-			return llvm::Type::getInt8Ty(p_vm->get_context());
+			return builder->getInt8Ty();
 		case HALF2:
 		case HALF3:
 		case HALF4:
@@ -727,21 +733,23 @@ namespace FreeOCL
 		case FLOAT4:
 		case FLOAT8:
 		case FLOAT16:
-			return llvm::VectorType::get( llvm::Type::getFloatTy(p_vm->get_context()), get_dim() );
+			return llvm::VectorType::get( builder->getFloatTy(), get_dim() );
 		case FLOAT:
-			return llvm::Type::getFloatTy(p_vm->get_context());
+			return builder->getFloatTy();
 		case DOUBLE2:
 		case DOUBLE3:
 		case DOUBLE4:
 		case DOUBLE8:
 		case DOUBLE16:
-			return llvm::VectorType::get( llvm::Type::getDoubleTy(p_vm->get_context()), get_dim() );
+			return llvm::VectorType::get( builder->getDoubleTy(), get_dim() );
 		case DOUBLE:
-			return llvm::Type::getDoubleTy(p_vm->get_context());
+			return builder->getDoubleTy();
 		case BOOL:
-			return llvm::Type::getInt1Ty(p_vm->get_context());
+			return builder->getInt1Ty();
 		case VOID:
-			return llvm::Type::getVoidTy(p_vm->get_context());
+			return builder->getVoidTy();
+		default:
+			throw ("unhandled type " + get_name());
 		}
 	}
 

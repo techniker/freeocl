@@ -76,7 +76,8 @@ namespace FreeOCL
 										  "converters.bc",
 										  "asm_converters.bc",
 										  "asm_select.bc",
-										  "asm_common.bc"};
+										  "asm_common.bc",
+										  "asm_vector_math.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 
@@ -142,7 +143,7 @@ namespace FreeOCL
 		}
 		passmanager.run(*module);
 
-		module->dump();
+//		module->dump();
 
 		llvm::TargetOptions target_opts;
 		target_opts.JITEmitDebugInfo = 1;
@@ -242,7 +243,9 @@ namespace FreeOCL
 
 	void vm::create_global_constructors_table()
 	{
-		llvm::FunctionType *ctor_type = llvm::FunctionType::get(builder->getVoidTy(), false);
+		if (global_constructors.empty())
+			return;
+		llvm::Type *ctor_type = llvm::PointerType::get(llvm::FunctionType::get(builder->getVoidTy(), false), 0);
 		llvm::ArrayType *table_type = llvm::ArrayType::get(ctor_type, global_constructors.size());
 		llvm::Constant *init = llvm::ConstantArray::get(table_type, global_constructors);
 		llvm::GlobalVariable *gv_ctor = new llvm::GlobalVariable(*module,

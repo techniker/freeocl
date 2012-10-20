@@ -20,6 +20,8 @@
 #include "../parser.h"
 #include <vm/vm.h>
 #include "array_type.h"
+#include <iostream>
+#include <llvm/Module.h>
 
 namespace FreeOCL
 {
@@ -67,7 +69,10 @@ namespace FreeOCL
 					dim0 = t0.as<native_type>()->get_dim();
 				if (t1.as<native_type>())
 					dim1 = t1.as<native_type>()->get_dim();
-				p_type = native_type::get_int_for_dim(std::max(dim0, dim1));
+				if (dim0 == 1 && dim1 == 1)
+					p_type = native_type::t_bool;
+				else
+					p_type = native_type::get_int_for_dim(std::max(dim0, dim1));
 			}
 			break;
 
@@ -235,7 +240,7 @@ namespace FreeOCL
 					vl = type::cast_to(p_vm, left->get_type(), right->get_type(), vl);
 				else
 				{
-					smartptr<type> tmp_type = type::compute_resulting_type(left->get_type(), right->get_type());
+					const smartptr<type> &tmp_type = type::compute_resulting_type(left->get_type(), right->get_type());
 					vl = type::cast_to(p_vm, left->get_type(), tmp_type, vl);
 					vr = type::cast_to(p_vm, right->get_type(), tmp_type, vr);
 				}
@@ -252,14 +257,14 @@ namespace FreeOCL
 			case '|':	return builder->CreateOr(vl, vr, "or");
 			case '^':	return builder->CreateXor(vl, vr, "xor");
 			case '&':	return builder->CreateAnd(vl, vr, "and");
-			case '<':	return builder->CreateICmpSLT(vl, vr, "slt");
-			case '>':	return builder->CreateICmpSGT(vl, vr, "sgt");
+			case '<':	return builder->CreateZExt(builder->CreateICmpSLT(vl, vr, "slt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case '>':	return builder->CreateZExt(builder->CreateICmpSGT(vl, vr, "sgt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
 			case parser::LEFT_OP:	return builder->CreateShl(vl, vr, "ls");
 			case parser::RIGHT_OP:	return builder->CreateAShr(vl, vr, "rs");
-			case parser::EQ_OP:		return builder->CreateICmpEQ(vl, vr, "eq");
-			case parser::NE_OP:		return builder->CreateICmpNE(vl, vr, "ne");
-			case parser::LE_OP:		return builder->CreateICmpSLE(vl, vr, "le");
-			case parser::GE_OP:		return builder->CreateICmpSGE(vl, vr, "ge");
+			case parser::EQ_OP:		return builder->CreateZExt(builder->CreateICmpEQ(vl, vr, "eq"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::NE_OP:		return builder->CreateZExt(builder->CreateICmpNE(vl, vr, "ne"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::LE_OP:		return builder->CreateZExt(builder->CreateICmpSLE(vl, vr, "le"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::GE_OP:		return builder->CreateZExt(builder->CreateICmpSGE(vl, vr, "ge"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
 
 			case parser::MUL_ASSIGN:	return left->set_value(p_vm, builder->CreateMul(vl, vr, "mul"));
 			case parser::DIV_ASSIGN:	return left->set_value(p_vm, builder->CreateUDiv(vl, vr, "div"));
@@ -273,7 +278,11 @@ namespace FreeOCL
 			case parser::OR_ASSIGN:		return left->set_value(p_vm, builder->CreateOr(vl, vr, "or"));
 			}
 		}
-		else if (vl->getType()->isFPOrFPVectorTy() && vr->getType()->isFPOrFPVectorTy())
+		else if ((vl->getType()->isFPOrFPVectorTy() && vr->getType()->isFPOrFPVectorTy())
+				 || (vl->getType()->isIntOrIntVectorTy() && vr->getType()->isFloatingPointTy())
+				 || (vl->getType()->isFloatingPointTy() && vr->getType()->isIntOrIntVectorTy())
+				 || (vl->getType()->isFPOrFPVectorTy() && vr->getType()->isIntegerTy())
+				 || (vl->getType()->isIntegerTy() && vr->getType()->isFPOrFPVectorTy()))
 		{
 			switch(op)
 			{
@@ -303,12 +312,12 @@ namespace FreeOCL
 			case '-':	return builder->CreateFSub(vl, vr, "sub");
 			case '*':	return builder->CreateFMul(vl, vr, "mul");
 			case '/':	return builder->CreateFDiv(vl, vr, "div");
-			case '<':	return builder->CreateFCmpOLT(vl, vr, "lt");
-			case '>':	return builder->CreateFCmpOGT(vl, vr, "gt");
-			case parser::EQ_OP:		return builder->CreateFCmpOEQ(vl, vr, "eq");
-			case parser::NE_OP:		return builder->CreateFCmpONE(vl, vr, "ne");
-			case parser::LE_OP:		return builder->CreateFCmpOLE(vl, vr, "le");
-			case parser::GE_OP:		return builder->CreateFCmpOGE(vl, vr, "ge");
+			case '<':	return builder->CreateZExt(builder->CreateFCmpOLT(vl, vr, "lt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case '>':	return builder->CreateZExt(builder->CreateFCmpOGT(vl, vr, "gt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::EQ_OP:		return builder->CreateZExt(builder->CreateFCmpOEQ(vl, vr, "eq"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::NE_OP:		return builder->CreateZExt(builder->CreateFCmpONE(vl, vr, "ne"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::LE_OP:		return builder->CreateZExt(builder->CreateFCmpOLE(vl, vr, "le"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::GE_OP:		return builder->CreateZExt(builder->CreateFCmpOGE(vl, vr, "ge"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
 
 			case parser::MUL_ASSIGN:	return left->set_value(p_vm, builder->CreateFMul(vl, vr, "mul"));
 			case parser::DIV_ASSIGN:	return left->set_value(p_vm, builder->CreateFDiv(vl, vr, "div"));
@@ -369,8 +378,23 @@ namespace FreeOCL
 			switch(op)
 			{
 			case '-':	return builder->CreatePtrDiff(vl, vr, "ptrdiff");
+			case '<':	return builder->CreateICmpULT(vl, vr, "slt");
+			case '>':	return builder->CreateICmpUGT(vl, vr, "sgt");
+			case parser::EQ_OP:		return builder->CreateICmpEQ(vl, vr, "eq");
+			case parser::NE_OP:		return builder->CreateICmpNE(vl, vr, "ne");
+			case parser::LE_OP:		return builder->CreateICmpULE(vl, vr, "le");
+			case parser::GE_OP:		return builder->CreateICmpUGE(vl, vr, "ge");
 			}
 		}
+
+		std::cerr << "FreeOCL::binary error:" << std::endl;
+		p_vm->get_module()->dump();
+		std::cerr << *left << std::endl;
+		std::cerr << *left->get_type() << std::endl;
+		std::cerr << *right << std::endl;
+		std::cerr << *right->get_type() << std::endl;
+
+		*(int*)NULL = 0;
 
 		return NULL;
 	}

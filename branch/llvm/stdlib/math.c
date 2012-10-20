@@ -124,7 +124,7 @@ __double _Z5tanpid(__double x)	{	return tan(M_PI * x);	}
 // for float
 __float _Z4acosf(__float x)	{	return acosf(x);	}
 __float _Z5acoshf(__float x)	{	return acoshf(x);	}
-__float _Z5acospif(__float x)	{	return acosf(x) / (__float)M_PI;	}
+__float _Z6acospif(__float x)	{	return acosf(x) / (__float)M_PI;	}
 __float _Z4asinf(__float x)	{	return asinf(x);	}
 __float _Z5asinhf(__float x)	{	return asinhf(x);	}
 __float _Z6asinpif(__float x)	{	return asinf(x) / (__float)M_PI;	}
@@ -156,7 +156,7 @@ __float _Z5exp10f(__float x)
 __float _Z5expm1f(__float x)	{	return expm1f(x);	}
 //__float _Z4fabsf(__float x)	{	return fabsf(x);	}
 __float _Z4fabsf(__float x);
-__float _Z4fdimf(__float x, __float y)	{	return fdimf(x, y);	}
+__float _Z4fdimff(__float x, __float y)	{	return fdimf(x, y);	}
 //__float _Z5floorf(__float x)	{	return floorf(x);	}
 __float _Z5floorf(__float x);
 //__float _Z3fmafff(__float a, __float b, __float c)	{	return fmaf(a, b, c);	}

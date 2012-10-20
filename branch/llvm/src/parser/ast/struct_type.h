@@ -45,6 +45,7 @@ namespace FreeOCL
 		size_t get_member_id(const std::string &name) const;
 		size_t members_count() const;
 		smartptr<type> get_type_of_member(const std::string &name) const;
+		const smartptr<type> &get_type_of_member(const size_t member_id) const;
 		virtual smartptr<type> clone(const bool b_const, const address_space addr_space) const;
 
 		struct_type &operator<<(const std::pair<std::string, smartptr<type> > &member);

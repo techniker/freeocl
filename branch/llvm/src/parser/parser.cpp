@@ -2193,7 +2193,25 @@ namespace FreeOCL
 
 	int parser::__initializer_list()
 	{
-		LISTOF_LEFT_SEP(initializer, token<','>);
+		if (__initializer())
+		{
+			smartptr<chunk> N = new chunk;
+			N->push_back(d_val__);
+			size_t l = processed.size();
+			while (__token<','>())
+			{
+				const smartptr<node> N1 = d_val__;
+				if (!__initializer())
+				{
+					roll_back_to(l);
+					break;
+				}
+				N->push_back(d_val__);
+				l = processed.size();
+			}
+			d_val__ = N;
+			return 1;
+		}
 		return 0;
 	}
 

@@ -122,6 +122,13 @@ namespace FreeOCL
 		return (type*)NULL;
 	}
 
+	const smartptr<type> &struct_type::get_type_of_member(const size_t member_id) const
+	{
+		if (root)
+			return root->get_type_of_member(member_id);
+		return members[member_id].second;
+	}
+
 	smartptr<type> struct_type::clone(const bool b_const, const address_space addr_space) const
 	{
 		smartptr<struct_type> ret = root ? new struct_type(root, b_const, addr_space) : new struct_type(this, b_const, addr_space);

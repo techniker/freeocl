@@ -62,6 +62,7 @@ namespace FreeOCL
 		bool is_ulong() const;
 		bool is_uint() const;
 		bool is_signed() const;
+		bool is_bool() const;
 		type_id get_scalar_type() const;
 
 		size_t get_size() const;

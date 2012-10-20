@@ -96,6 +96,9 @@ namespace FreeOCL
 
 	llvm::Type *pointer_type::to_LLVM_type(vm *p_vm) const
 	{
+		const native_type *nt = base_type.as<native_type>();
+		if (nt && nt->get_type_id() == native_type::VOID)
+			return p_vm->get_builder()->getInt8PtrTy();
 		return llvm::PointerType::get(base_type->to_LLVM_type(p_vm), 0);
 	}
 

@@ -80,7 +80,8 @@ namespace FreeOCL
 				if (b_thread_local)
 					var->setThreadLocalMode(llvm::GlobalVariable::GeneralDynamicTLSModel);
 //                if (!b_extern)
-					var->setInitializer(llvm::ConstantAggregateZero::get(p_type->to_LLVM_type(p_vm)));
+				var->setInitializer(llvm::Constant::getNullValue(p_type->to_LLVM_type(p_vm)));
+//					var->setInitializer(llvm::ConstantAggregateZero::get(p_type->to_LLVM_type(p_vm)));
                 v = var;
             }
         }

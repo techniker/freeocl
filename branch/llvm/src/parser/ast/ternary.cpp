@@ -62,7 +62,40 @@ namespace FreeOCL
 
 	llvm::Value *ternary::to_IR(vm *p_vm) const
 	{
-		return p_vm->get_builder()->CreateSelect(exp1->to_IR(p_vm), exp2->to_IR(p_vm), exp3->to_IR(p_vm), "ternary");
+		Builder *builder = p_vm->get_builder();
+		if (exp1.as<native_type>() && exp1.as<native_type>()->is_scalar())
+		{
+			llvm::Function *fn = builder->GetInsertBlock()->getParent();
+
+			llvm::Value *t = exp1->to_IR(p_vm);
+			t = type::cast_to_bool(p_vm, t);
+			llvm::BasicBlock *blockPass = llvm::BasicBlock::Create(p_vm->get_context(), "pass", fn);
+			llvm::BasicBlock *blockFail = llvm::BasicBlock::Create(p_vm->get_context(), "fail", fn);
+			llvm::BasicBlock *blockMerge = llvm::BasicBlock::Create(p_vm->get_context(), "merge", fn);
+
+			builder->CreateCondBr(t, blockPass, blockFail);
+
+			builder->SetInsertPoint(blockPass);
+			llvm::Value *vt = type::cast_to(p_vm, exp2->get_type(), p_type, exp2->to_IR(p_vm));
+			builder->CreateBr(blockMerge);
+
+			builder->SetInsertPoint(blockFail);
+			llvm::Value *vf = type::cast_to(p_vm, exp3->get_type(), p_type, exp3->to_IR(p_vm));
+			builder->CreateBr(blockMerge);
+
+			builder->SetInsertPoint(blockMerge);
+			llvm::PHINode *phi = builder->CreatePHI(p_type->to_LLVM_type(p_vm), 2, "ternary");
+			phi->addIncoming(vt, blockPass);
+			phi->addIncoming(vf, blockFail);
+
+			return phi;
+		}
+		else
+		{
+			llvm::Value *t = exp1->to_IR(p_vm);
+			t = builder->CreateICmpNE(t, llvm::Constant::getNullValue(t->getType()));
+			return builder->CreateSelect(t, exp2->to_IR(p_vm), exp3->to_IR(p_vm), "ternary");
+		}
 	}
 
 	llvm::Value *ternary::set_value(vm *p_vm, llvm::Value *v) const
