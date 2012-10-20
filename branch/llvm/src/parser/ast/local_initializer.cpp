@@ -27,7 +27,7 @@
 namespace FreeOCL
 {
 	local_initializer::local_initializer(const smartptr<var> &v)
-		: v(v)
+		: v(v), ret(NULL)
 	{
 	}
 
@@ -51,6 +51,9 @@ namespace FreeOCL
 
 	llvm::Value *local_initializer::to_IR(vm *p_vm) const
 	{
+		if (ret)
+			return ret;
+
 		const smartptr<type> &p_type = v->get_type();
 		// Register a local memory allocator to global constructor table
 		llvm::GlobalVariable *gv_address = new llvm::GlobalVariable(*(p_vm->get_module()),
@@ -101,6 +104,6 @@ namespace FreeOCL
 		llvm::Value *lv = builder->CreatePointerCast(ptr, p_type.as<array_type>() ? p_type.as<array_type>()->clone_as_ptr()->to_LLVM_type(p_vm) : llvm::PointerType::get(p_type->to_LLVM_type(p_vm), 0));
 		v->v = lv;
 
-		return lv;
+		return ret = lv;
 	}
 }

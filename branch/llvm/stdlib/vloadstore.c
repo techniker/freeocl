@@ -31,10 +31,10 @@ type##n _Z6vload##n##u2szPU2A2K##m(__size_t offset, const type *p)	{	return ((co
 type##n _Z6vload##n##u2szPU2A3K##m(__size_t offset, const type *p)	{	return ((const type##n*)p)[offset];	}
 
 #define IMPLEMENT_VLOAD_3(type, m)\
-type##4 _Z6vload##n##u2szPK##m(__size_t offset, const type *p)	{	type##4 ret = { p[offset * 3], p[offset * 3 + 1], p[offset * 3 + 2] };	return ret;	}\
-type##4 _Z6vload##n##u2szPU2A1K##m(__size_t offset, const type *p)	{	type##4 ret = { p[offset * 3], p[offset * 3 + 1], p[offset * 3 + 2] };	return ret;	}\
-type##4 _Z6vload##n##u2szPU2A2K##m(__size_t offset, const type *p)	{	type##4 ret = { p[offset * 3], p[offset * 3 + 1], p[offset * 3 + 2] };	return ret;	}\
-type##4 _Z6vload##n##u2szPU2A3K##m(__size_t offset, const type *p)	{	type##4 ret = { p[offset * 3], p[offset * 3 + 1], p[offset * 3 + 2] };	return ret;	}
+type##4 _Z6vload3u2szPK##m(__size_t offset, const type *p)	{	type##4 ret = { p[offset * 3], p[offset * 3 + 1], p[offset * 3 + 2] };	return ret;	}\
+type##4 _Z6vload3u2szPU2A1K##m(__size_t offset, const type *p)	{	type##4 ret = { p[offset * 3], p[offset * 3 + 1], p[offset * 3 + 2] };	return ret;	}\
+type##4 _Z6vload3u2szPU2A2K##m(__size_t offset, const type *p)	{	type##4 ret = { p[offset * 3], p[offset * 3 + 1], p[offset * 3 + 2] };	return ret;	}\
+type##4 _Z6vload3u2szPU2A3K##m(__size_t offset, const type *p)	{	type##4 ret = { p[offset * 3], p[offset * 3 + 1], p[offset * 3 + 2] };	return ret;	}
 
 #define IMPLEMENT_VLOAD_T(type, m)\
 IMPLEMENT_VLOAD_N(type, 2, m)\

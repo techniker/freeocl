@@ -43,6 +43,8 @@ namespace FreeOCL
 	private:
 		const smartptr<node> initializer;
 		const smartptr<type> p_type;
+
+		mutable llvm::Value *ret;
 	};
 }
 

@@ -25,7 +25,7 @@
 namespace FreeOCL
 {
 	member::member(const smartptr<expression> &base, const std::string &member_name)
-		: base(base), member_name(member_name), t(NULL)
+		: base(base), member_name(member_name), t(NULL), ret_p(NULL)
 	{
 	}
 
@@ -121,6 +121,9 @@ namespace FreeOCL
 
 	llvm::Value *member::get_ptr(vm *p_vm) const
 	{
+		if (ret_p)
+			return ret_p;
+
 		smartptr<type> p_type = base->get_type();
 		const type_def *p_type_def = p_type.as<type_def>();
 		if (p_type_def)	p_type = p_type_def->get_type();
@@ -143,7 +146,7 @@ namespace FreeOCL
 		std::vector<llvm::Value*> idx;
 		idx.push_back(builder->getInt32(0));
 		idx.push_back(builder->getInt32(s_type->get_member_id(member_name)));
-		return builder->CreateGEP(q, idx, "member_ptr");
+		return ret_p = builder->CreateGEP(q, idx, "member_ptr");
 	}
 
 	llvm::Value *member::set_value(vm *p_vm, llvm::Value *v) const

@@ -118,29 +118,63 @@ namespace FreeOCL
 	}
 
 	template<> llvm::Value *value<uint32_t>::to_IR(vm *p_vm) const
-	{	return llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(32, u_int64_t(v), false));	}
+	{
+		if (ret)
+			return ret;
+		return ret = llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(32, u_int64_t(v), false));
+	}
 	template<> llvm::Value *value<int32_t>::to_IR(vm *p_vm) const
-	{	return llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(32, u_int64_t(v), true));	}
+	{
+		if (ret)
+			return ret;
+		return ret = llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(32, u_int64_t(v), true));
+	}
 
 	template<> llvm::Value *value<uint64_t>::to_IR(vm *p_vm) const
-	{	return llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(64, u_int64_t(v), false));	}
+	{
+		if (ret)
+			return ret;
+		return ret = llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(64, u_int64_t(v), false));
+	}
 	template<> llvm::Value *value<int64_t>::to_IR(vm *p_vm) const
-	{	return llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(64, u_int64_t(v), true));	}
+	{
+		if (ret)
+			return ret;
+		return ret = llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(64, u_int64_t(v), true));
+	}
 
 	template<> llvm::Value *value<float>::to_IR(vm *p_vm) const
-	{	return llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(v));	}
+	{
+		if (ret)
+			return ret;
+		return ret = llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(v));
+	}
 	template<> llvm::Value *value<double>::to_IR(vm *p_vm) const
-	{	return llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(v));	}
+	{
+		if (ret)
+			return ret;
+		return ret = llvm::ConstantFP::get(p_vm->get_context(), llvm::APFloat(v));
+	}
 
 	template<> llvm::Value *value<bool>::to_IR(vm *p_vm) const
-	{	return llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(1, u_int64_t(v), false));	}
+	{
+		if (ret)
+			return ret;
+		return ret = llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(1, u_int64_t(v), false));
+	}
 	template<> llvm::Value *value<char>::to_IR(vm *p_vm) const
-	{	return llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(8, u_int64_t(v), true));	}
+	{
+		if (ret)
+			return ret;
+		return ret = llvm::ConstantInt::get(p_vm->get_context(), llvm::APInt(8, u_int64_t(v), true));
+	}
 
 	template<> llvm::Value *value<std::string>::to_IR(vm *p_vm) const
 	{
+		if (ret)
+			return ret;
 		llvm::Value *str = p_vm->get_builder()->CreateGlobalString(v, "constant_string");
-		return p_vm->get_builder()->CreatePointerCast(str, llvm::Type::getInt8PtrTy(p_vm->get_context()));
+		return ret = p_vm->get_builder()->CreatePointerCast(str, llvm::Type::getInt8PtrTy(p_vm->get_context()));
 	}
 
 	llvm::Value *generic_value::set_value(vm *p_vm, llvm::Value *v) const

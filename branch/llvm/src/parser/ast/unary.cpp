@@ -27,7 +27,8 @@ namespace FreeOCL
 		: exp(exp),
 		op(op),
 		b_postfix(b_postfix),
-		t(NULL)
+		t(NULL),
+		ret(NULL)
 	{
 		const smartptr<type> &t0 = exp->get_type();
 		switch(op)
@@ -112,6 +113,9 @@ namespace FreeOCL
 
 	llvm::Value *unary::to_IR(vm *p_vm) const
 	{
+		if (ret)
+			return ret;
+
 		Builder *builder = p_vm->get_builder();
 		if (!t)
 			t = exp->to_IR(p_vm);
@@ -124,13 +128,13 @@ namespace FreeOCL
 				if (t->getType()->isFloatingPointTy())
 					v = builder->CreateFAdd(t, llvm::ConstantFP::get(t->getType(), 1.0));
 				else if (t->getType()->isIntegerTy())
-					v = builder->CreateAdd(t, llvm::ConstantInt::get(t->getType(), 1, false));
+					v = builder->CreateAdd(t, llvm::ConstantInt::get(t->getType(), 1, exp->get_type().as<native_type>()->is_signed()));
 				else
 					v = builder->CreateGEP(t, builder->getInt32(1));
 				builder->CreateStore(v, exp->get_ptr(p_vm));
 				if (b_postfix)
-					return t;
-				return v;
+					return ret = t;
+				return ret = v;
 			}
 			break;
 		case parser::DEC_OP:
@@ -139,31 +143,31 @@ namespace FreeOCL
 				if (t->getType()->isFloatingPointTy())
 					v = builder->CreateFSub(t, llvm::ConstantFP::get(t->getType(), 1.0));
 				else if (t->getType()->isIntegerTy())
-					v = builder->CreateSub(t, llvm::ConstantInt::get(t->getType(), 1, false));
+					v = builder->CreateSub(t, llvm::ConstantInt::get(t->getType(), 1, exp->get_type().as<native_type>()->is_signed()));
 				else
 					v = builder->CreateGEP(t, builder->getInt32(-1));
 				builder->CreateStore(v, exp->get_ptr(p_vm));
 				if (b_postfix)
-					return t;
-				return v;
+					return ret = t;
+				return ret = v;
 			}
 			break;
 		case '!':
-			return builder->CreateNot(type::cast_to_bool(p_vm, t), "lnot");
+			return ret = builder->CreateNot(type::cast_to_bool(p_vm, t), "lnot");
 		case '~':
-			return builder->CreateNot(t, "not");
+			return ret = builder->CreateNot(t, "not");
 		case '-':
 			if (t->getType()->isFPOrFPVectorTy())
-				return builder->CreateFNeg(t, "fneg");
+				return ret = builder->CreateFNeg(t, "fneg");
 			else
-				return builder->CreateNeg(t, "neg");
+				return ret = builder->CreateNeg(t, "neg");
 		case '+':
-			return t;
+			return ret = t;
 		case '*':
 			//! \todo implement volatile pointers
-			return builder->CreateLoad(t, false, "load");
+			return ret = builder->CreateLoad(t, false, "load");
 		case '&':
-			return exp->get_ptr(p_vm);
+			return ret = exp->get_ptr(p_vm);
 		}
 	}
 

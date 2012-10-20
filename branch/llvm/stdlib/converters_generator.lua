@@ -71,7 +71,7 @@ for k, v in pairs(vector_dims) do
 		
 			local f = "<" .. nv3 .. " x " .. v4 .. ">"
 			local fname = "convert_" .. scalar_types[k2] .. v .. "u";
-			local len = #fname
+			local len = #fname - 1
 			if v3 == 16 then
 				fname = fname .. "3v16"
 			else

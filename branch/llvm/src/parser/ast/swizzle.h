@@ -48,6 +48,7 @@ namespace FreeOCL
 		smartptr<expression> base;
 		const std::string components;
 		mutable llvm::Value *t;
+		mutable llvm::Value *ret;
 	};
 }
 

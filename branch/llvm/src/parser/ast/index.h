@@ -50,6 +50,8 @@ namespace FreeOCL
 		std::string ref;
 		mutable llvm::Value *t0;
 		mutable llvm::Value *t1;
+		mutable llvm::Value *ret_v;
+		mutable llvm::Value *ret_p;
 	};
 }
 

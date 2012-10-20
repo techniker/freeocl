@@ -27,7 +27,8 @@ namespace FreeOCL
 {
 	call::call(const smartptr<callable> &fn, const smartptr<chunk> &args)
 		: fn(fn),
-		args(args)
+		args(args),
+		ret(NULL)
 	{
 	}
 
@@ -98,6 +99,9 @@ namespace FreeOCL
 
 	llvm::Value *call::to_IR(vm *p_vm) const
 	{
+		if (ret)
+			return ret;
+
 		std::vector<llvm::Value*> vargs;
 		std::deque<smartptr<type> > param_types;
 		if (fn->has_implicit_lts_parameter())
@@ -130,7 +134,7 @@ namespace FreeOCL
 				vargs.push_back(v);
 			}
 		llvm::Value *callee = fn->get_callee(p_vm, arg_types);
-		return p_vm->get_builder()->CreateCall(callee, vargs);
+		return ret = p_vm->get_builder()->CreateCall(callee, vargs);
 	}
 
 	llvm::Value *call::set_value(vm *p_vm, llvm::Value *v) const

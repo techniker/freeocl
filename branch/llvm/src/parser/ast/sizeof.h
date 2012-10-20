@@ -43,6 +43,7 @@ namespace FreeOCL
 		virtual llvm::Value *set_value(vm *p_vm, llvm::Value *v) const;
 	private:
 		smartptr<node> n;
+		mutable llvm::Value *ret;
 	};
 }
 

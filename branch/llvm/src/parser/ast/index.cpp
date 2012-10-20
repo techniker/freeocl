@@ -29,7 +29,9 @@ namespace FreeOCL
 		idx(idx),
 		b_check_bounds(false),
 		t0(NULL),
-		t1(NULL)
+		t1(NULL),
+		ret_v(NULL),
+		ret_p(NULL)
 	{
 
 	}
@@ -90,11 +92,16 @@ namespace FreeOCL
 
 	llvm::Value *index::to_IR(vm *p_vm) const
 	{
-		return p_vm->get_builder()->CreateLoad(get_ptr(p_vm));
+		if (ret_v)
+			return ret_v;
+		return ret_v = p_vm->get_builder()->CreateLoad(get_ptr(p_vm));
 	}
 
 	llvm::Value *index::get_ptr(vm *p_vm) const
 	{
+		if (ret_p)
+			return ret_p;
+
 		const smartptr<type> &p_type = ptr->get_type();
 		if (!t0)
 			t0 = p_type.as<array_type>() ? ptr->get_ptr(p_vm) : ptr->to_IR(p_vm);
@@ -112,7 +119,7 @@ namespace FreeOCL
 		{
 			r = p_vm->get_builder()->CreateGEP(t0, t1, "index");
 		}
-		return r;
+		return ret_p = r;
 	}
 
 	llvm::Value *index::set_value(vm *p_vm, llvm::Value *v) const

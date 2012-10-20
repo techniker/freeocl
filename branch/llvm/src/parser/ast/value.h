@@ -36,7 +36,7 @@ namespace FreeOCL
 	class value : public generic_value
 	{
 	public:
-		value(const T &v) : v(v)	{}
+		value(const T &v) : v(v), ret(NULL)	{}
 		virtual ~value()	{}
 
 		const T &get_value() const	{	return v;	}
@@ -55,6 +55,7 @@ namespace FreeOCL
 		virtual llvm::Value *to_IR(vm *p_vm) const;
     private:
 		const T v;
+		mutable llvm::Value *ret;
 	};
 }
 

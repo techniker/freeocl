@@ -125,13 +125,21 @@ namespace FreeOCL
 				if (tnt)
 				{
 					if (tnt->is_floatting() && tnt->is_scalar())
-						return builder->CreateSIToFP(in, to->to_LLVM_type(p_vm), "cvtfp");
+					{
+						if (fnt->is_signed())
+							return builder->CreateSIToFP(in, to->to_LLVM_type(p_vm), "cvtsi2fp");
+						return builder->CreateUIToFP(in, to->to_LLVM_type(p_vm), "cvtui2fp");
+					}
 					if (tnt->is_integer() && tnt->is_scalar())
 					{
 						if (fnt->get_size() == tnt->get_size())
 							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast_isis");
 						if (fnt->get_size() < tnt->get_size())
+						{
+							if (fnt->is_signed())
+								return builder->CreateSExt(in, to->to_LLVM_type(p_vm), "sext");
 							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
+						}
 						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
 					}
 					if (tnt->is_integer() && tnt->is_vector())
@@ -140,7 +148,12 @@ namespace FreeOCL
 						if (fnt->get_size() == scalar_type->get_size())
 							in = builder->CreateBitCast(in, scalar_type->to_LLVM_type(p_vm), "bitcast_iiv");
 						else if (fnt->get_size() < scalar_type->get_size())
-							in = builder->CreateZExt(in, scalar_type->to_LLVM_type(p_vm), "zext");
+						{
+							if (fnt->is_signed())
+								in = builder->CreateSExt(in, scalar_type->to_LLVM_type(p_vm), "sext");
+							else
+								in = builder->CreateZExt(in, scalar_type->to_LLVM_type(p_vm), "zext");
+						}
 						else
 							in = builder->CreateTrunc(in, scalar_type->to_LLVM_type(p_vm), "trunc");
 						in = builder->CreateInsertElement(llvm::UndefValue::get(to->to_LLVM_type(p_vm)), in, builder->getInt32(0));
@@ -157,7 +170,11 @@ namespace FreeOCL
 				if (tnt)
 				{
 					if (tnt->is_integer() && tnt->is_scalar())
-						return builder->CreateFPToSI(in, to->to_LLVM_type(p_vm), "cvtfp");
+					{
+						if (tnt->is_signed())
+							return builder->CreateFPToSI(in, to->to_LLVM_type(p_vm), "cvtfp2si");
+						return builder->CreateFPToUI(in, to->to_LLVM_type(p_vm), "cvtfp2ui");
+					}
 					if (tnt->is_floatting() && tnt->is_scalar())
 					{
 						if (fnt->get_size() == tnt->get_size())
@@ -189,13 +206,21 @@ namespace FreeOCL
 				if (tnt)
 				{
 					if (tnt->is_floatting() && tnt->is_vector())
-						return builder->CreateSIToFP(in, to->to_LLVM_type(p_vm), "cvtfp");
+					{
+						if (fnt->is_signed())
+							return builder->CreateSIToFP(in, to->to_LLVM_type(p_vm), "cvtsi2fp");
+						return builder->CreateUIToFP(in, to->to_LLVM_type(p_vm), "cvtui2fp");
+					}
 					if (tnt->is_integer() && tnt->is_vector())
 					{
 						if (fnt->get_size() == tnt->get_size())
 							return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast_iviv");
 						if (fnt->get_size() < tnt->get_size())
+						{
+							if (fnt->is_signed())
+								return builder->CreateSExt(in, to->to_LLVM_type(p_vm), "sext");
 							return builder->CreateZExt(in, to->to_LLVM_type(p_vm), "zext");
+						}
 						return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
 					}
 				}
@@ -205,7 +230,11 @@ namespace FreeOCL
 				if (tnt)
 				{
 					if (tnt->is_integer() && tnt->is_vector())
-						return builder->CreateFPToSI(in, to->to_LLVM_type(p_vm), "cvtfp");
+					{
+						if (tnt->is_signed())
+							return builder->CreateFPToSI(in, to->to_LLVM_type(p_vm), "cvtfp2si");
+						return builder->CreateFPToUI(in, to->to_LLVM_type(p_vm), "cvtfp2ui");
+					}
 					if (tnt->is_floatting() && tnt->is_vector())
 					{
 						if (fnt->get_size() == tnt->get_size())
@@ -230,7 +259,7 @@ namespace FreeOCL
 						return builder->CreateBitCast(in, to->to_LLVM_type(p_vm), "bitcast");
 					return builder->CreateTrunc(in, to->to_LLVM_type(p_vm), "trunc");
 				}
-				return builder->CreateSIToFP(in, to->to_LLVM_type(p_vm), "cvtfp");
+				return builder->CreateUIToFP(in, to->to_LLVM_type(p_vm), "cvtui2fp");
 			}
 			return in;
 		}

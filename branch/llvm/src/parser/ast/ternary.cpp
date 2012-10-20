@@ -27,7 +27,8 @@ namespace FreeOCL
 	ternary::ternary(const smartptr<expression> &exp1, const smartptr<expression> &exp2, const smartptr<expression> &exp3)
 		: exp1(exp1),
 		exp2(exp2),
-		exp3(exp3)
+		exp3(exp3),
+		ret(NULL)
 	{
 		const smartptr<type> &t0 = exp2->get_type();
 		const smartptr<type> &t1 = exp3->get_type();
@@ -65,6 +66,8 @@ namespace FreeOCL
 
 	llvm::Value *ternary::to_IR(vm *p_vm) const
 	{
+		if (ret)
+			return ret;
 		Builder *builder = p_vm->get_builder();
 		const native_type *nt = exp1->get_type().as<native_type>();
 		if (nt && nt->is_scalar())
@@ -94,13 +97,13 @@ namespace FreeOCL
 			phi->addIncoming(vt, blockPass);
 			phi->addIncoming(vf, blockFail);
 
-			return phi;
+			return ret = phi;
 		}
 		else
 		{
 			llvm::Value *t = exp1->to_IR(p_vm);
 			t = builder->CreateICmpNE(t, llvm::Constant::getNullValue(t->getType()));
-			return builder->CreateSelect(t, exp2->to_IR(p_vm), exp3->to_IR(p_vm), "ternary");
+			return ret = builder->CreateSelect(t, exp2->to_IR(p_vm), exp3->to_IR(p_vm), "ternary");
 		}
 	}
 

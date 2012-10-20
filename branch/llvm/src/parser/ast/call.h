@@ -44,6 +44,7 @@ namespace FreeOCL
     private:
 		const smartptr<callable> fn;
 		const smartptr<chunk> args;
+		mutable llvm::Value *ret;
 	};
 }
 

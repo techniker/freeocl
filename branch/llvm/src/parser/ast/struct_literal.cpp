@@ -26,7 +26,8 @@ namespace FreeOCL
 {
 	struct_literal::struct_literal(const smartptr<type> &p_type, const smartptr<node> &initializer)
 		: p_type(p_type),
-		  initializer(initializer)
+		  initializer(initializer),
+		  ret(NULL)
 	{
 	}
 
@@ -73,15 +74,15 @@ namespace FreeOCL
 
 	llvm::Value *struct_literal::to_IR(vm *p_vm) const
 	{
+		if (ret)
+			return ret;
+
 		Builder *builder = p_vm->get_builder();
 		llvm::StructType *llvm_type = (llvm::StructType*)p_type->to_LLVM_type(p_vm);
 
 		const struct_type *s_type = p_type.as<struct_type>();
 		if (!s_type && p_type.as<type_def>())
 			s_type = p_type.as<type_def>()->get_type().as<struct_type>();
-
-		std::cerr << *p_type << std::endl;
-		std::cerr << *initializer << std::endl;
 
 		const chunk *p_chunk = initializer.as<chunk>();
 		llvm::Value *t = llvm::UndefValue::get(llvm_type);
@@ -96,7 +97,7 @@ namespace FreeOCL
 			t = builder->CreateInsertValue(t, v, idxs);
 		}
 
-		return t;
+		return ret = t;
 	}
 
 	llvm::Value *struct_literal::set_value(vm *p_vm, llvm::Value *v) const

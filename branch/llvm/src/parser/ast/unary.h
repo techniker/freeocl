@@ -52,6 +52,7 @@ namespace FreeOCL
 		const int op;
 		const bool b_postfix;
 		mutable llvm::Value *t;
+		mutable llvm::Value *ret;
 	};
 }
 

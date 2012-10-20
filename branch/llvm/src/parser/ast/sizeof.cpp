@@ -5,7 +5,7 @@
 namespace FreeOCL
 {
 	size_of::size_of(const smartptr<node> &n)
-		: n(n)
+		: n(n), ret(NULL)
 	{
 
 	}
@@ -43,10 +43,13 @@ namespace FreeOCL
 
 	llvm::Value *size_of::to_IR(vm *p_vm) const
 	{
+		if (ret)
+			return ret;
+
 		Builder *builder = p_vm->get_builder();
 		llvm::Type *p_type = (n.as<expression>() ? n.as<expression>()->get_type() : n.as<type>())->to_LLVM_type(p_vm);
 		llvm::Value *t = builder->CreateGEP(llvm::ConstantPointerNull::get(llvm::PointerType::get(p_type, 0)), builder->getInt32(1), "sizeof");
-		return builder->CreatePtrToInt(t, native_type::t_size_t->to_LLVM_type(p_vm));
+		return ret = builder->CreatePtrToInt(t, native_type::t_size_t->to_LLVM_type(p_vm));
 	}
 
 	llvm::Value *size_of::set_value(vm *p_vm, llvm::Value *v) const

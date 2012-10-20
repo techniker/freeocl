@@ -90,7 +90,7 @@ namespace FreeOCL
     llvm::Value *var::to_IR(vm *p_vm) const
     {
         allocate(p_vm);
-        return p_vm->get_builder()->CreateLoad(v, "load_var");
+		return p_vm->get_builder()->CreateLoad(v, "load_var");
     }
 
     llvm::AllocaInst *var::new_local_variable(vm *p_vm, const smartptr<type> &p_type, const std::string &name)

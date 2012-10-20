@@ -21,16 +21,22 @@
 #include <llvm/Transforms/Scalar.h>
 #include <llvm/Transforms/Vectorize.h>
 #include <llvm/Transforms/IPO.h>
+#include <llvm/Transforms/Instrumentation.h>
+#include <llvm/DefaultPasses.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/LLVMContext.h>
 #include <llvm/DerivedTypes.h>
 #include <llvm/ExecutionEngine/JIT.h>
+#include <llvm/Support/Threading.h>
 #include <iostream>
 
 namespace FreeOCL
 {
 	vm::vm()
 	{
+		if (!llvm::llvm_is_multithreaded())
+			llvm::llvm_start_multithreaded();
+
 		llvm::InitializeNativeTarget();
 
 		context = new llvm::LLVMContext;
@@ -100,16 +106,17 @@ namespace FreeOCL
 
 		if (optimization_level >= 1)
 		{
+			passmanager.add(llvm::createBasicAliasAnalysisPass());
 			passmanager.add(llvm::createStripDeadPrototypesPass());
 			passmanager.add(llvm::createSimplifyLibCallsPass());
-			passmanager.add(llvm::createArgumentPromotionPass());
-			passmanager.add(llvm::createDeadArgEliminationPass());
+			passmanager.add(llvm::createPromoteMemoryToRegisterPass());
 
 			if (optimization_level >= 2)
 			{
 				passmanager.add(llvm::createBasicAliasAnalysisPass());
+				passmanager.add(llvm::createEarlyCSEPass());
 //				passmanager.add(llvm::createGVNPass());
-				passmanager.add(llvm::createLICMPass());
+//				passmanager.add(llvm::createLICMPass());
 				passmanager.add(llvm::createDeadInstEliminationPass());
 				passmanager.add(llvm::createLCSSAPass());
 				passmanager.add(llvm::createLoopIdiomPass());
@@ -117,11 +124,14 @@ namespace FreeOCL
 				passmanager.add(llvm::createLoopSimplifyPass());
 				passmanager.add(llvm::createIndVarSimplifyPass());
 				passmanager.add(llvm::createLoopStrengthReducePass());
-				passmanager.add(llvm::createLoopUnrollPass());
 
 				passmanager.add(llvm::createFunctionAttrsPass());
-				passmanager.add(llvm::createFunctionInliningPass());
-				passmanager.add(llvm::createFunctionInliningPass());
+//				passmanager.add(llvm::createTypeBasedAliasAnalysisPass());
+//				passmanager.add(llvm::createFunctionInliningPass());
+				passmanager.add(llvm::createTypeBasedAliasAnalysisPass());
+				passmanager.add(llvm::createLoopVectorizePass());
+				passmanager.add(llvm::createBBVectorizePass());
+				passmanager.add(llvm::createLoopUnrollPass());
 				passmanager.add(llvm::createDeadStoreEliminationPass());
 				passmanager.add(llvm::createDeadCodeEliminationPass());
 
@@ -131,7 +141,6 @@ namespace FreeOCL
 				passmanager.add(llvm::createSROAPass());
 				passmanager.add(llvm::createInstructionSimplifierPass());
 				passmanager.add(llvm::createDeadArgEliminationPass());
-				passmanager.add(llvm::createBBVectorizePass());
 
 				passmanager.add(llvm::createGlobalOptimizerPass());
 				passmanager.add(llvm::createGlobalsModRefPass());
@@ -139,7 +148,6 @@ namespace FreeOCL
 			if (optimization_level >= 3)
 			{
 				passmanager.add(llvm::createPartialInliningPass());
-//				passmanager.add(llvm::createPartialSpecializationPass());
 			}
 		}
 		passmanager.run(*module);
@@ -147,16 +155,17 @@ namespace FreeOCL
 //		module->dump();
 
 		llvm::TargetOptions target_opts;
+		target_opts.NoFramePointerElim = 1;
 		target_opts.JITEmitDebugInfo = 1;
 		target_opts.JITEmitDebugInfoToDisk = 1;
 		target_opts.AllowFPOpFusion = llvm::FPOpFusion::Fast;
 		target_opts.LessPreciseFPMADOption = 1;
 		target_opts.NoInfsFPMath = 1;
 		target_opts.NoNaNsFPMath = 1;
-		target_opts.RealignStack = 0;
+		target_opts.RealignStack = 1;
 		target_opts.UnsafeFPMath = 1;
 
-		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::Aggressive).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();
+		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::None).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();
 		if (!error.empty())
 		{
 			std::cerr << "LLVM error at engine creation: " << error << std::endl;
@@ -164,7 +173,10 @@ namespace FreeOCL
 		}
 
 		if (engine)
+		{
+			engine->DisableLazyCompilation();
 			engine->runStaticConstructorsDestructors(false);
+		}
 	}
 
 	void *vm::get_function(const std::string &function_name)

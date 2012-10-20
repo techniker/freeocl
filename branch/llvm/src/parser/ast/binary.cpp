@@ -28,7 +28,8 @@ namespace FreeOCL
 	binary::binary(int op, const smartptr<expression> &left, const smartptr<expression> &right)
 		: left(left),
 		right(right),
-		op(op)
+		op(op),
+		ret(NULL)
 	{
 		const smartptr<type> &t0 = left->get_type();
 		const smartptr<type> &t1 = right->get_type();
@@ -196,6 +197,9 @@ namespace FreeOCL
 
 	llvm::Value *binary::to_IR(vm *p_vm) const
 	{
+		if (ret)
+			return ret;
+
 		Builder *builder = p_vm->get_builder();
 		llvm::Value *vl = NULL;
 		switch(op)
@@ -210,10 +214,10 @@ namespace FreeOCL
 
 		switch(op)
 		{
-		case ',':	return vr;
-		case parser::AND_OP:	return builder->CreateAnd(type::cast_to_bool(p_vm, vl), type::cast_to_bool(p_vm, vr), "land");
-		case parser::OR_OP:		return builder->CreateOr(type::cast_to_bool(p_vm, vl), type::cast_to_bool(p_vm, vr), "lor");
-		case '=':				return left->set_value(p_vm, type::cast_to(p_vm, right->get_type(), left->get_type(), vr));
+		case ',':	return ret = vr;
+		case parser::AND_OP:	return ret = builder->CreateAnd(type::cast_to_bool(p_vm, vl), type::cast_to_bool(p_vm, vr), "land");
+		case parser::OR_OP:		return ret = builder->CreateOr(type::cast_to_bool(p_vm, vl), type::cast_to_bool(p_vm, vr), "lor");
+		case '=':				return ret = left->set_value(p_vm, type::cast_to(p_vm, right->get_type(), left->get_type(), vr));
 		}
 
 		if (vl->getType()->isIntOrIntVectorTy() && vr->getType()->isIntOrIntVectorTy())
@@ -261,33 +265,57 @@ namespace FreeOCL
 
 			switch(op)
 			{
-			case '+':	return builder->CreateAdd(vl, vr, "add");
-			case '-':	return builder->CreateSub(vl, vr, "sub");
-			case '*':	return builder->CreateMul(vl, vr, "mul");
-			case '/':	return builder->CreateUDiv(vl, vr, "div");
-			case '%':	return builder->CreateSRem(vl, vr, "smod");
-			case '|':	return builder->CreateOr(vl, vr, "or");
-			case '^':	return builder->CreateXor(vl, vr, "xor");
-			case '&':	return builder->CreateAnd(vl, vr, "and");
-			case '<':	return builder->CreateZExt(builder->CreateICmpSLT(vl, vr, "slt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case '>':	return builder->CreateZExt(builder->CreateICmpSGT(vl, vr, "sgt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case parser::LEFT_OP:	return builder->CreateShl(vl, vr, "ls");
-			case parser::RIGHT_OP:	return builder->CreateAShr(vl, vr, "rs");
-			case parser::EQ_OP:		return builder->CreateZExt(builder->CreateICmpEQ(vl, vr, "eq"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case parser::NE_OP:		return builder->CreateZExt(builder->CreateICmpNE(vl, vr, "ne"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case parser::LE_OP:		return builder->CreateZExt(builder->CreateICmpSLE(vl, vr, "le"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case parser::GE_OP:		return builder->CreateZExt(builder->CreateICmpSGE(vl, vr, "ge"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case '+':	return ret = builder->CreateAdd(vl, vr, "add");
+			case '-':	return ret = builder->CreateSub(vl, vr, "sub");
+			case '*':	return ret = builder->CreateMul(vl, vr, "mul");
+			case '/':
+				if (p_type.as<native_type>()->is_signed())
+					return ret = builder->CreateSDiv(vl, vr, "sdiv", true);
+				return ret = builder->CreateUDiv(vl, vr, "udiv", true);
+			case '%':
+				if (p_type.as<native_type>()->is_signed())
+					return ret = builder->CreateSRem(vl, vr, "smod");
+				return ret = builder->CreateURem(vl, vr, "umod");
+			case '|':	return ret = builder->CreateOr(vl, vr, "or");
+			case '^':	return ret = builder->CreateXor(vl, vr, "xor");
+			case '&':	return ret = builder->CreateAnd(vl, vr, "and");
+			case '<':
+				if (p_type.as<native_type>()->is_signed())
+					return ret = builder->CreateZExt(builder->CreateICmpSLT(vl, vr, "slt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+				return ret = builder->CreateZExt(builder->CreateICmpULT(vl, vr, "ult"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case '>':
+				if (p_type.as<native_type>()->is_signed())
+					return ret = builder->CreateZExt(builder->CreateICmpSGT(vl, vr, "sgt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+				return ret = builder->CreateZExt(builder->CreateICmpUGT(vl, vr, "ugt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::LEFT_OP:	return ret = builder->CreateShl(vl, vr, "ls");
+			case parser::RIGHT_OP:	return ret = builder->CreateAShr(vl, vr, "rs");
+			case parser::EQ_OP:		return ret = builder->CreateZExt(builder->CreateICmpEQ(vl, vr, "eq"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::NE_OP:		return ret = builder->CreateZExt(builder->CreateICmpNE(vl, vr, "ne"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::LE_OP:
+				if (p_type.as<native_type>()->is_signed())
+					return ret = builder->CreateZExt(builder->CreateICmpSLE(vl, vr, "sle"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+				return ret = builder->CreateZExt(builder->CreateICmpULE(vl, vr, "ule"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::GE_OP:
+				if (p_type.as<native_type>()->is_signed())
+					return ret = builder->CreateZExt(builder->CreateICmpSGE(vl, vr, "sge"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+				return ret = builder->CreateZExt(builder->CreateICmpUGE(vl, vr, "uge"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
 
-			case parser::MUL_ASSIGN:	return left->set_value(p_vm, builder->CreateMul(vl, vr, "mul"));
-			case parser::DIV_ASSIGN:	return left->set_value(p_vm, builder->CreateUDiv(vl, vr, "div"));
-			case parser::MOD_ASSIGN:	return left->set_value(p_vm, builder->CreateSRem(vl, vr, "smod"));
-			case parser::ADD_ASSIGN:	return left->set_value(p_vm, builder->CreateAdd(vl, vr, "add"));
-			case parser::SUB_ASSIGN:	return left->set_value(p_vm, builder->CreateSub(vl, vr, "sub"));
-			case parser::LEFT_ASSIGN:	return left->set_value(p_vm, builder->CreateShl(vl, vr, "ls"));
-			case parser::RIGHT_ASSIGN:	return left->set_value(p_vm, builder->CreateAShr(vl, vr, "rs"));
-			case parser::AND_ASSIGN:	return left->set_value(p_vm, builder->CreateAnd(vl, vr, "and"));
-			case parser::XOR_ASSIGN:	return left->set_value(p_vm, builder->CreateXor(vl, vr, "xor"));
-			case parser::OR_ASSIGN:		return left->set_value(p_vm, builder->CreateOr(vl, vr, "or"));
+			case parser::MUL_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateMul(vl, vr, "mul"));
+			case parser::DIV_ASSIGN:
+				if (p_type.as<native_type>()->is_signed())
+					return ret = left->set_value(p_vm, builder->CreateSDiv(vl, vr, "sdiv"));
+				return ret = left->set_value(p_vm, builder->CreateUDiv(vl, vr, "udiv"));
+			case parser::MOD_ASSIGN:
+				if (p_type.as<native_type>()->is_signed())
+					return ret = left->set_value(p_vm, builder->CreateSRem(vl, vr, "smod"));
+				return ret = left->set_value(p_vm, builder->CreateURem(vl, vr, "umod"));
+			case parser::ADD_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateAdd(vl, vr, "add"));
+			case parser::SUB_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateSub(vl, vr, "sub"));
+			case parser::LEFT_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateShl(vl, vr, "ls"));
+			case parser::RIGHT_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateAShr(vl, vr, "rs"));
+			case parser::AND_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateAnd(vl, vr, "and"));
+			case parser::XOR_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateXor(vl, vr, "xor"));
+			case parser::OR_ASSIGN:		return ret = left->set_value(p_vm, builder->CreateOr(vl, vr, "or"));
 			}
 		}
 		else if ((vl->getType()->isFPOrFPVectorTy() && vr->getType()->isFPOrFPVectorTy())
@@ -326,21 +354,21 @@ namespace FreeOCL
 			}
 			switch(op)
 			{
-			case '+':	return builder->CreateFAdd(vl, vr, "add");
-			case '-':	return builder->CreateFSub(vl, vr, "sub");
-			case '*':	return builder->CreateFMul(vl, vr, "mul");
-			case '/':	return builder->CreateFDiv(vl, vr, "div");
-			case '<':	return builder->CreateZExt(builder->CreateFCmpOLT(vl, vr, "lt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case '>':	return builder->CreateZExt(builder->CreateFCmpOGT(vl, vr, "gt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case parser::EQ_OP:		return builder->CreateZExt(builder->CreateFCmpOEQ(vl, vr, "eq"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case parser::NE_OP:		return builder->CreateZExt(builder->CreateFCmpONE(vl, vr, "ne"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case parser::LE_OP:		return builder->CreateZExt(builder->CreateFCmpOLE(vl, vr, "le"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
-			case parser::GE_OP:		return builder->CreateZExt(builder->CreateFCmpOGE(vl, vr, "ge"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case '+':	return ret = builder->CreateFAdd(vl, vr, "add");
+			case '-':	return ret = builder->CreateFSub(vl, vr, "sub");
+			case '*':	return ret = builder->CreateFMul(vl, vr, "mul");
+			case '/':	return ret = builder->CreateFDiv(vl, vr, "div");
+			case '<':	return ret = builder->CreateZExt(builder->CreateFCmpOLT(vl, vr, "lt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case '>':	return ret = builder->CreateZExt(builder->CreateFCmpOGT(vl, vr, "gt"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::EQ_OP:		return ret = builder->CreateZExt(builder->CreateFCmpOEQ(vl, vr, "eq"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::NE_OP:		return ret = builder->CreateZExt(builder->CreateFCmpONE(vl, vr, "ne"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::LE_OP:		return ret = builder->CreateZExt(builder->CreateFCmpOLE(vl, vr, "le"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
+			case parser::GE_OP:		return ret = builder->CreateZExt(builder->CreateFCmpOGE(vl, vr, "ge"), vl->getType()->isVectorTy() ? p_type->to_LLVM_type(p_vm) : builder->getInt1Ty());
 
-			case parser::MUL_ASSIGN:	return left->set_value(p_vm, builder->CreateFMul(vl, vr, "mul"));
-			case parser::DIV_ASSIGN:	return left->set_value(p_vm, builder->CreateFDiv(vl, vr, "div"));
-			case parser::ADD_ASSIGN:	return left->set_value(p_vm, builder->CreateFAdd(vl, vr, "add"));
-			case parser::SUB_ASSIGN:	return left->set_value(p_vm, builder->CreateFSub(vl, vr, "sub"));
+			case parser::MUL_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateFMul(vl, vr, "mul"));
+			case parser::DIV_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateFDiv(vl, vr, "div"));
+			case parser::ADD_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateFAdd(vl, vr, "add"));
+			case parser::SUB_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateFSub(vl, vr, "sub"));
 			}
 		}
 		else if (left->get_type().as<array_type>() && vr->getType()->isIntegerTy())
@@ -351,16 +379,16 @@ namespace FreeOCL
 			{
 			case '+':
 				idxs.push_back(vr);
-				return builder->CreateGEP(vl, idxs, "array_add");
+				return ret = builder->CreateGEP(vl, idxs, "array_add");
 			case '-':
 				idxs.push_back(builder->CreateNeg(vr));
-				return builder->CreateGEP(vl, idxs, "array_sub");
+				return ret = builder->CreateGEP(vl, idxs, "array_sub");
 			case parser::ADD_ASSIGN:
 				idxs.push_back(vr);
-				return left->set_value(p_vm, builder->CreateGEP(vl, idxs, "array_add"));
+				return ret = left->set_value(p_vm, builder->CreateGEP(vl, idxs, "array_add"));
 			case parser::SUB_ASSIGN:
 				idxs.push_back(builder->CreateNeg(vr));
-				return left->set_value(p_vm, builder->CreateGEP(vl, idxs, "ptrsub"));
+				return ret = left->set_value(p_vm, builder->CreateGEP(vl, idxs, "ptrsub"));
 			}
 		}
 		else if (vl->getType()->isIntegerTy() && right->get_type().as<array_type>())
@@ -371,37 +399,37 @@ namespace FreeOCL
 				std::vector<llvm::Value*> idxs;
 				idxs.push_back(builder->getInt32(0));
 				idxs.push_back(vl);
-				return builder->CreateGEP(vr, idxs, "array_add");
+				return ret = builder->CreateGEP(vr, idxs, "array_add");
 			}
 		}
 		else if (vl->getType()->isPointerTy() && vr->getType()->isIntegerTy())
 		{
 			switch(op)
 			{
-			case '+':	return builder->CreateGEP(vl, vr, "ptradd");
-			case '-':	return builder->CreateGEP(vl, builder->CreateNeg(vr), "ptrsub");
-			case parser::ADD_ASSIGN:	return left->set_value(p_vm, builder->CreateGEP(vl, vr, "ptradd"));
-			case parser::SUB_ASSIGN:	return left->set_value(p_vm, builder->CreateGEP(vl, builder->CreateNeg(vr), "ptrsub"));
+			case '+':	return ret = builder->CreateGEP(vl, vr, "ptradd");
+			case '-':	return ret = builder->CreateGEP(vl, builder->CreateNeg(vr), "ptrsub");
+			case parser::ADD_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateGEP(vl, vr, "ptradd"));
+			case parser::SUB_ASSIGN:	return ret = left->set_value(p_vm, builder->CreateGEP(vl, builder->CreateNeg(vr), "ptrsub"));
 			}
 		}
 		else if (vl->getType()->isIntegerTy() && vr->getType()->isPointerTy())
 		{
 			switch(op)
 			{
-			case '+':	return builder->CreateGEP(vr, vl, "add");
+			case '+':	return ret = builder->CreateGEP(vr, vl, "add");
 			}
 		}
 		else if (vl->getType()->isPointerTy() && vr->getType()->isPointerTy())
 		{
 			switch(op)
 			{
-			case '-':	return builder->CreatePtrDiff(vl, vr, "ptrdiff");
-			case '<':	return builder->CreateICmpULT(vl, vr, "slt");
-			case '>':	return builder->CreateICmpUGT(vl, vr, "sgt");
-			case parser::EQ_OP:		return builder->CreateICmpEQ(vl, vr, "eq");
-			case parser::NE_OP:		return builder->CreateICmpNE(vl, vr, "ne");
-			case parser::LE_OP:		return builder->CreateICmpULE(vl, vr, "le");
-			case parser::GE_OP:		return builder->CreateICmpUGE(vl, vr, "ge");
+			case '-':	return ret = builder->CreatePtrDiff(vl, vr, "ptrdiff");
+			case '<':	return ret = builder->CreateICmpULT(vl, vr, "ult");
+			case '>':	return ret = builder->CreateICmpUGT(vl, vr, "ugt");
+			case parser::EQ_OP:		return ret = builder->CreateICmpEQ(vl, vr, "eq");
+			case parser::NE_OP:		return ret = builder->CreateICmpNE(vl, vr, "ne");
+			case parser::LE_OP:		return ret = builder->CreateICmpULE(vl, vr, "ule");
+			case parser::GE_OP:		return ret = builder->CreateICmpUGE(vl, vr, "uge");
 			}
 		}
 

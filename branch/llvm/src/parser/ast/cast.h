@@ -43,6 +43,7 @@ namespace FreeOCL
 	private:
 		const smartptr<expression> exp;
 		const smartptr<type> p_type;
+		mutable llvm::Value *ret;
 	};
 }
 

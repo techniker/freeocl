@@ -38,6 +38,7 @@
 #include "struct_type.h"
 #include "member.h"
 #include <vm/vm.h>
+#include "printf.h"
 
 namespace FreeOCL
 {
