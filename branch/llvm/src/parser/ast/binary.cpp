@@ -233,6 +233,18 @@ namespace FreeOCL
 				vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
 				vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
 				break;
+			case parser::MUL_ASSIGN:
+			case parser::DIV_ASSIGN:
+			case parser::MOD_ASSIGN:
+			case parser::ADD_ASSIGN:
+			case parser::SUB_ASSIGN:
+			case parser::LEFT_ASSIGN:
+			case parser::RIGHT_ASSIGN:
+			case parser::AND_ASSIGN:
+			case parser::XOR_ASSIGN:
+			case parser::OR_ASSIGN:
+				vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
+				break;
 			default:
 				if (left->get_type().as<native_type>() && left->get_type().as<native_type>()->is_vector())
 					vr = type::cast_to(p_vm, right->get_type(), left->get_type(), vr);
@@ -291,6 +303,12 @@ namespace FreeOCL
 			case '*':
 			case '/':
 				vl = type::cast_to(p_vm, left->get_type(), p_type, vl);
+				vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
+				break;
+			case parser::MUL_ASSIGN:
+			case parser::DIV_ASSIGN:
+			case parser::ADD_ASSIGN:
+			case parser::SUB_ASSIGN:
 				vr = type::cast_to(p_vm, right->get_type(), p_type, vr);
 				break;
 			default:

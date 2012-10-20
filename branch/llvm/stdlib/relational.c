@@ -19,21 +19,20 @@
 #include <math.h>
 
 // Built-in relational functions
-// for scalar types
-//template<typename S>
-//__int isequal(S x, typename __scalar<S>::type y)	{	return x == y;	}
-//template<typename S>
-//__int isnotequal(S x, typename __scalar<S>::type y)	{	return x != y;	}
-//template<typename S>
-//__int isgreater(S x, typename __scalar<S>::type y)	{	return x > y;	}
-//template<typename S>
-//__int isgreaterequal(S x, typename __scalar<S>::type y)	{	return x >= y;	}
-//template<typename S>
-//__int isless(S x, typename __scalar<S>::type y)	{	return x < y;	}
-//template<typename S>
-//__int islessequal(S x, typename __scalar<S>::type y)	{	return x <= y;	}
-//template<typename S>
-//__int islessgreater(S x, typename __scalar<S>::type y)	{	return x < y || x > y;	}
+__int _Z7isequalff(__float x, __float y)	{	return x == y;	}
+__int _Z7isequaldd(__double x, __double y)	{	return x == y;	}
+__int _Z10isnotequalff(__float x, __float y)	{	return x != y;	}
+__int _Z10isnotequaldd(__double x, __double y)	{	return x != y;	}
+__int _Z9isgreaterff(__float x, __float y)	{	return x > y;	}
+__int _Z9isgreaterdd(__double x, __double y)	{	return x > y;	}
+__int _Z14isgreaterequalff(__float x, __float y)	{	return x >= y;	}
+__int _Z14isgreaterequaldd(__double x, __double y)	{	return x >= y;	}
+__int _Z6islessff(__float x, __float y)	{	return x < y;	}
+__int _Z6islessdd(__double x, __double y)	{	return x < y;	}
+__int _Z11islessequalff(__float x, __float y)	{	return x <= y;	}
+__int _Z11islessequaldd(__double x, __double y)	{	return x <= y;	}
+__int _Z13islessgreaterff(__float x, __float y)	{	return x < y || x > y;	}
+__int _Z13islessgreaterdd(__double x, __double y)	{	return x < y || x > y;	}
 
 __int _Z8isfinitef(__float x)
 {
@@ -141,10 +140,6 @@ __int _Z8isnormald(__double x)
 //	return r;
 //}
 
-//template<typename S, typename I>
-//typename __scalar<S>::type select(S a, S b, I c)
-//{	return c ? b : a;	}
-
 // for vector types
 
 // any
@@ -201,79 +196,115 @@ __int _Z3anyu3v16j(__uint16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;
 __int _Z3anyu3v16l(__long16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000000000000000) ? 1 : 0;	}
 __int _Z3anyu3v16m(__ulong16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567;	x.s01 |= x.s23;	x.s0 |= x.s1;	return (x.x & 0x8000000000000000) ? 1 : 0;	}
 
-//template<typename I>
-//__int all(I x)
-//{
-//	const __size_t mask = 1U << (sizeof(typename __vector<I>::base_type) * 8 - 1);
-//	for(__size_t i = 0 ; i < __vector<I>::components ; ++i)
-//		if (!(x.v[i] & mask))
-//			return 0;
-//	return 1;
-//}
+// all
+__int _Z3allc(__char x)	{	return (x & 0x80) ? 1 : 0;	}
+__int _Z3alls(__short x)	{	return (x & 0x8000) ? 1 : 0;	}
+__int _Z3alli(__int x)	{	return (x & 0x80000000) ? 1 : 0;	}
+__int _Z3alll(__long x)	{	return (x & 0x8000000000000000) ? 1 : 0;	}
+__int _Z3allu2v2c(__char2 x)	{	return (x.x & x.y & 0x80) ? 1 : 0;	}
+__int _Z3allu2v2s(__short2 x)	{	return (x.x & x.y & 0x8000) ? 1 : 0;	}
+__int _Z3allu2v2i(__int2 x)	{	return (x.x & x.y & 0x80000000) ? 1 : 0;	}
+__int _Z3allu2v2l(__long2 x)	{	return (x.x & x.y & 0x8000000000000000) ? 1 : 0;	}
+__int _Z3allu2v3c(__char4 x)	{	return (x.x & x.y & x.z & 0x80) ? 1 : 0;	}
+__int _Z3allu2v3s(__short4 x)	{	return (x.x & x.y & x.z & 0x8000) ? 1 : 0;	}
+__int _Z3allu2v3i(__int4 x)	{	return (x.x & x.y &  x.z & 0x80000000) ? 1 : 0;	}
+__int _Z3allu2v3l(__long4 x)	{	return (x.x & x.y &  x.z & 0x8000000000000000) ? 1 : 0;	}
+__int _Z3allu2v4c(__char4 x)	{	return _Z3allu2v2c(x.s01 & x.s23);	}
+__int _Z3allu2v4s(__short4 x)	{	return _Z3allu2v2s(x.s01 & x.s23);	}
+__int _Z3allu2v4i(__int4 x)	{	return _Z3allu2v2i(x.s01 & x.s23);	}
+__int _Z3allu2v4l(__long4 x)	{	return _Z3allu2v2l(x.s01 & x.s23);	}
+__int _Z3allu2v8c(__char8 x)	{	return _Z3allu2v4c(x.s0123 & x.s4567);	}
+__int _Z3allu2v8s(__short8 x)	{	return _Z3allu2v4s(x.s0123 & x.s4567);	}
+__int _Z3allu2v8i(__int8 x)	{	return _Z3allu2v4i(x.s0123 & x.s4567);	}
+__int _Z3allu2v8l(__long8 x)	{	return _Z3allu2v4l(x.s0123 & x.s4567);	}
+__int _Z3allu3v16c(__char16 x)	{	return _Z3allu2v8c(x.s01234567 & x.s89ABCDEF);	}
+__int _Z3allu3v16s(__short16 x)	{	return _Z3allu2v8s(x.s01234567 & x.s89ABCDEF);	}
+__int _Z3allu3v16i(__int16 x)	{	return _Z3allu2v8i(x.s01234567 & x.s89ABCDEF);	}
+__int _Z3allu3v16l(__long16 x)	{	return _Z3allu2v8l(x.s01234567 & x.s89ABCDEF);	}
 
-//template<typename S>
-//static inline typename __vector_type<__int, __vector<S>::components>::type
-//		isequal(S x, typename __vector<S>::type y)
-//{
-//	typename __vector_type<__int, __vector<S>::components>::type ret;
-//	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
-//		ret.v[i] = x.v[i] == y.v[i] ? -1 : 0;
-//	return ret;
-//}
-//template<typename S>
-//static inline typename __vector_type<__int, __vector<S>::components>::type
-//		isnotequal(S x, typename __vector<S>::type y)
-//{
-//	typename __vector_type<__int, __vector<S>::components>::type ret;
-//	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
-//		ret.v[i] = x.v[i] != y.v[i] ? -1 : 0;
-//	return ret;
-//}
-//template<typename S>
-//static inline typename __vector_type<__int, __vector<S>::components>::type
-//		isgreater(S x, typename __vector<S>::type y)
-//{
-//	typename __vector_type<__int, __vector<S>::components>::type ret;
-//	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
-//		ret.v[i] = x.v[i] > y.v[i] ? -1 : 0;
-//	return ret;
-//}
-//template<typename S>
-//static inline typename __vector_type<__int, __vector<S>::components>::type
-//		isgreaterequal(S x, typename __vector<S>::type y)
-//{
-//	typename __vector_type<__int, __vector<S>::components>::type ret;
-//	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
-//		ret.v[i] = x.v[i] >= y.v[i] ? -1 : 0;
-//	return ret;
-//}
-//template<typename S>
-//static inline typename __vector_type<__int, __vector<S>::components>::type
-//		isless(S x, typename __vector<S>::type y)
-//{
-//	typename __vector_type<__int, __vector<S>::components>::type ret;
-//	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
-//		ret.v[i] = x.v[i] < y.v[i] ? -1 : 0;
-//	return ret;
-//}
-//template<typename S>
-//static inline typename __vector_type<__int, __vector<S>::components>::type
-//		islessequal(S x, typename __vector<S>::type y)
-//{
-//	typename __vector_type<__int, __vector<S>::components>::type ret;
-//	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
-//		ret.v[i] = x.v[i] <= y.v[i] ? -1 : 0;
-//	return ret;
-//}
-//template<typename S>
-//static inline typename __vector_type<__int, __vector<S>::components>::type
-//		islessgreater(S x, typename __vector<S>::type y)
-//{
-//	typename __vector_type<__int, __vector<S>::components>::type ret;
-//	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
-//		ret.v[i] = (x.v[i] < y.v[i] || x.v[i] > y.v[i]) ? -1 : 0;
-//	return ret;
-//}
+// isequal
+__int2 _Z7isequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x == y) * -1;	}
+__int4 _Z7isequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x == y) * -1;	}
+__int4 _Z7isequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x == y) * -1;	}
+__int8 _Z7isequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x == y) * -1;	}
+__int16 _Z7isequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x == y) * -1;	}
+__long2 _Z7isequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x == y) * -1L;	}
+__long4 _Z7isequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x == y) * -1L;	}
+__long4 _Z7isequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x == y) * -1L;	}
+__long8 _Z7isequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x == y) * -1L;	}
+__long16 _Z7isequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x == y) * -1L;	}
+
+// isnotequal
+__int2 _Z10isnotequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x != y) * -1;	}
+__int4 _Z10isnotequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x != y) * -1;	}
+__int4 _Z10isnotequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x != y) * -1;	}
+__int8 _Z10isnotequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x != y) * -1;	}
+__int16 _Z10isnotequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x != y) * -1;	}
+__long2 _Z10isnotequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x != y) * -1L;	}
+__long4 _Z10isnotequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x != y) * -1L;	}
+__long4 _Z10isnotequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x != y) * -1L;	}
+__long8 _Z10isnotequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x != y) * -1L;	}
+__long16 _Z10isnotequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x != y) * -1L;	}
+
+// isgreater
+__int2 _Z9isgreateru2v2fu2v2f(__float2 x, __float2 y)	{	return (x > y) * -1;	}
+__int4 _Z9isgreateru2v3fu2v3f(__float4 x, __float4 y)	{	return (x > y) * -1;	}
+__int4 _Z9isgreateru2v4fu2v4f(__float4 x, __float4 y)	{	return (x > y) * -1;	}
+__int8 _Z9isgreateru2v8fu2v8f(__float8 x, __float8 y)	{	return (x > y) * -1;	}
+__int16 _Z9isgreateru3v16fu3v16f(__float16 x, __float16 y)	{	return (x > y) * -1;	}
+__long2 _Z9isgreateru2v2du2v2d(__double2 x, __double2 y)	{	return (x > y) * -1L;	}
+__long4 _Z9isgreateru2v3du2v3d(__double4 x, __double4 y)	{	return (x > y) * -1L;	}
+__long4 _Z9isgreateru2v4du2v4d(__double4 x, __double4 y)	{	return (x > y) * -1L;	}
+__long8 _Z9isgreateru2v8du2v8d(__double8 x, __double8 y)	{	return (x > y) * -1L;	}
+__long16 _Z9isgreateru3v16du3v16d(__double16 x, __double16 y)	{	return (x > y) * -1L;	}
+
+// isgreaterequal
+__int2 _Z14isgreaterequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x >= y) * -1;	}
+__int4 _Z14isgreaterequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x >= y) * -1;	}
+__int4 _Z14isgreaterequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x >= y) * -1;	}
+__int8 _Z14isgreaterequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x >= y) * -1;	}
+__int16 _Z14isgreaterequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x >= y) * -1;	}
+__long2 _Z14isgreaterequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x >= y) * -1L;	}
+__long4 _Z14isgreaterequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x >= y) * -1L;	}
+__long4 _Z14isgreaterequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x >= y) * -1L;	}
+__long8 _Z14isgreaterequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x >= y) * -1L;	}
+__long16 _Z14isgreaterequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x >= y) * -1L;	}
+
+// isless
+__int2 _Z6islessu2v2fu2v2f(__float2 x, __float2 y)	{	return (x < y) * -1;	}
+__int4 _Z6islessu2v3fu2v3f(__float4 x, __float4 y)	{	return (x < y) * -1;	}
+__int4 _Z6islessu2v4fu2v4f(__float4 x, __float4 y)	{	return (x < y) * -1;	}
+__int8 _Z6islessu2v8fu2v8f(__float8 x, __float8 y)	{	return (x < y) * -1;	}
+__int16 _Z6islessu3v16fu3v16f(__float16 x, __float16 y)	{	return (x < y) * -1;	}
+__long2 _Z6islessu2v2du2v2d(__double2 x, __double2 y)	{	return (x < y) * -1L;	}
+__long4 _Z6islessu2v3du2v3d(__double4 x, __double4 y)	{	return (x < y) * -1L;	}
+__long4 _Z6islessu2v4du2v4d(__double4 x, __double4 y)	{	return (x < y) * -1L;	}
+__long8 _Z6islessu2v8du2v8d(__double8 x, __double8 y)	{	return (x < y) * -1L;	}
+__long16 _Z6islessu3v16du3v16d(__double16 x, __double16 y)	{	return (x < y) * -1L;	}
+
+// islessequal
+__int2 _Z11islessequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x <= y) * -1;	}
+__int4 _Z11islessequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x <= y) * -1;	}
+__int4 _Z11islessequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x <= y) * -1;	}
+__int8 _Z11islessequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x <= y) * -1;	}
+__int16 _Z11islessequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x <= y) * -1;	}
+__long2 _Z11islessequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x <= y) * -1L;	}
+__long4 _Z11islessequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x <= y) * -1L;	}
+__long4 _Z11islessequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x <= y) * -1L;	}
+__long8 _Z11islessequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x <= y) * -1L;	}
+__long16 _Z11islessequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x <= y) * -1L;	}
+
+// islessgreater
+__int2 _Z13islessgreateru2v2fu2v2f(__float2 x, __float2 y)	{	return ((x < y) | (x > y)) * -1;	}
+__int4 _Z13islessgreateru2v3fu2v3f(__float4 x, __float4 y)	{	return ((x < y) | (x > y)) * -1;	}
+__int4 _Z13islessgreateru2v4fu2v4f(__float4 x, __float4 y)	{	return ((x < y) | (x > y)) * -1;	}
+__int8 _Z13islessgreateru2v8fu2v8f(__float8 x, __float8 y)	{	return ((x < y) | (x > y)) * -1;	}
+__int16 _Z13islessgreateru3v16fu3v16f(__float16 x, __float16 y)	{	return ((x < y) | (x > y)) * -1;	}
+__long2 _Z13islessgreateru2v2du2v2d(__double2 x, __double2 y)	{	return ((x < y) | (x > y)) * -1L;	}
+__long4 _Z13islessgreateru2v3du2v3d(__double4 x, __double4 y)	{	return ((x < y) | (x > y)) * -1L;	}
+__long4 _Z13islessgreateru2v4du2v4d(__double4 x, __double4 y)	{	return ((x < y) | (x > y)) * -1L;	}
+__long8 _Z13islessgreateru2v8du2v8d(__double8 x, __double8 y)	{	return ((x < y) | (x > y)) * -1L;	}
+__long16 _Z13islessgreateru3v16du3v16d(__double16 x, __double16 y)	{	return ((x < y) | (x > y)) * -1L;	}
 
 //template<typename S>
 //static inline typename __vector_type<__int, __vector<S>::components>::type
@@ -340,15 +371,5 @@ __int _Z3anyu3v16m(__ulong16 x)	{	x.s01234567 |= x.s89ABCDEF;	x.s0123 |= x.s4567
 //	typename __vector_type<__int, __vector<S>::components>::type ret;
 //	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
 //		ret.v[i] = __signbit(x.v[i]) ? -1 : 0;
-//	return ret;
-//}
-
-//template<typename V, typename I>
-//static inline typename __vector<V>::type select(V a, V b, I c)
-//{
-//	V ret;
-//	const __size_t mask = 1U << (sizeof(typename __vector<I>::base_type) * 8 - 1);
-//	for(__size_t i = 0 ; i < __vector<V>::components ; ++i)
-//		ret.v[i] = (c.v[i] & mask) ? b.v[i] : a.v[i];
 //	return ret;
 //}

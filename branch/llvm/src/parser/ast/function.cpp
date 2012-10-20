@@ -163,7 +163,7 @@ namespace FreeOCL
 				p_vm->get_builder()->CreateRetVoid();
 			else
 				p_vm->get_builder()->CreateRet(llvm::UndefValue::get(return_type->to_LLVM_type(p_vm)));
-//			fn->dump();
+			fn->dump();
 			llvm::verifyFunction(*fn);
 
 			//! TODO: implement optimization passes

@@ -19,6 +19,9 @@
 #include "native_type.h"
 #include <vm/vm.h>
 
+#include <iostream>
+#include <llvm/Module.h>
+
 namespace FreeOCL
 {
 	ternary::ternary(const smartptr<expression> &exp1, const smartptr<expression> &exp2, const smartptr<expression> &exp3)
@@ -63,7 +66,8 @@ namespace FreeOCL
 	llvm::Value *ternary::to_IR(vm *p_vm) const
 	{
 		Builder *builder = p_vm->get_builder();
-		if (exp1.as<native_type>() && exp1.as<native_type>()->is_scalar())
+		const native_type *nt = exp1->get_type().as<native_type>();
+		if (nt && nt->is_scalar())
 		{
 			llvm::Function *fn = builder->GetInsertBlock()->getParent();
 
@@ -77,10 +81,12 @@ namespace FreeOCL
 
 			builder->SetInsertPoint(blockPass);
 			llvm::Value *vt = type::cast_to(p_vm, exp2->get_type(), p_type, exp2->to_IR(p_vm));
+			blockPass = builder->GetInsertBlock();
 			builder->CreateBr(blockMerge);
 
 			builder->SetInsertPoint(blockFail);
 			llvm::Value *vf = type::cast_to(p_vm, exp3->get_type(), p_type, exp3->to_IR(p_vm));
+			blockFail = builder->GetInsertBlock();
 			builder->CreateBr(blockMerge);
 
 			builder->SetInsertPoint(blockMerge);

@@ -356,10 +356,10 @@ namespace FreeOCL
 			if (optimization_level >= 2)
 			{
 				p_vm->get_function_pass_manager()->add(llvm::createMemCpyOptPass());
+				p_vm->get_function_pass_manager()->add(llvm::createLazyValueInfoPass());
 				p_vm->get_function_pass_manager()->add(llvm::createScalarReplAggregatesPass());
 				p_vm->get_function_pass_manager()->add(llvm::createSimplifyLibCallsPass());
 				p_vm->get_function_pass_manager()->add(llvm::createBlockPlacementPass());
-				p_vm->get_function_pass_manager()->add(llvm::createLazyValueInfoPass());
 			}
 			if (optimization_level >= 3)
 			{

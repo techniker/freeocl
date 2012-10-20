@@ -340,7 +340,7 @@ define double @_Z3fmaddd(double %a, double %b, double %c) nounwind {
     ret double %1
 }
 
-define float @_Z3fmattt(float %a, float %b, float %c) nounwind {
+define float @_Z3fmafff(float %a, float %b, float %c) nounwind {
     %1 = call float    @llvm.fma.f32(float %a, float %b, float %c)
     ret float %1
 }
