@@ -8,6 +8,7 @@ set(STDLIB_SOURCES
     geometric.c
     math.c
     converters.c
+    vloadstore.c
     )
 
 set(STDLIB_BYTECODE_SOURCES
