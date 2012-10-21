@@ -315,15 +315,84 @@ __long16 _Z13islessgreateru3v16du3v16d(__double16 x, __double16 y)	{	return ((x 
 //		ret.v[i] = __isfinite(x.v[i]) ? -1 : 0;
 //	return ret;
 //}
-//template<typename S>
-//static inline typename __vector_type<__int, __vector<S>::components>::type
-//		isinf(S x)
-//{
-//	typename __vector_type<__int, __vector<S>::components>::type ret;
-//	for(__size_t i = 0 ; i < __vector<S>::components ; ++i)
-//		ret.v[i] = __isinf(x.v[i]) ? -1 : 0;
-//	return ret;
-//}
+
+#define IMPLEMENT_ISINF_F_N(n)\
+__int##n _Z5isinfu2v##n##f(__float##n x)\
+{\
+	union\
+	{\
+		__float##n f;\
+		__uint##n i;\
+	} v;\
+	v.f = x;\
+	return (v.i & 0x7FFFFFFFU) == 0x7F800000U;\
+}
+#define IMPLEMENT_ISINF_F_3()\
+__int4 _Z5isinfu2v3f(__float4 x)\
+{\
+	union\
+	{\
+		__float4 f;\
+		__uint4 i;\
+	} v;\
+	v.f = x;\
+	return (v.i & 0x7FFFFFFFU) == 0x7F800000U;\
+}
+#define IMPLEMENT_ISINF_F_16()\
+__int16 _Z5isinfu3v16f(__float16 x)\
+{\
+	union\
+	{\
+		__float16 f;\
+		__uint16 i;\
+	} v;\
+	v.f = x;\
+	return (v.i & 0x7FFFFFFFU) == 0x7F800000U;\
+}
+#define IMPLEMENT_ISINF_D_N(n)\
+__long##n _Z5isinfu2v##n##d(__double##n x)\
+{\
+	union\
+	{\
+		__double##n f;\
+		__ulong##n i;\
+	} v;\
+	v.f = x;\
+	return (v.i & 0x7FFFFFFFFFFFFFFFU) == 0x7FF0000000000000U;\
+}
+#define IMPLEMENT_ISINF_D_3()\
+__long4 _Z5isinfu2v3d(__double4 x)\
+{\
+	union\
+	{\
+		__double4 f;\
+		__ulong4 i;\
+	} v;\
+	v.f = x;\
+	return (v.i & 0x7FFFFFFFFFFFFFFFU) == 0x7FF0000000000000U;\
+}
+#define IMPLEMENT_ISINF_D_16()\
+__long16 _Z5isinfu3v16d(__double16 x)\
+{\
+	union\
+	{\
+		__double16 f;\
+		__ulong16 i;\
+	} v;\
+	v.f = x;\
+	return (v.i & 0x7FFFFFFFFFFFFFFFU) == 0x7FF0000000000000U;\
+}
+
+IMPLEMENT_ISINF_F_N(2)
+IMPLEMENT_ISINF_F_3()
+IMPLEMENT_ISINF_F_N(4)
+IMPLEMENT_ISINF_F_N(8)
+IMPLEMENT_ISINF_F_16()
+IMPLEMENT_ISINF_D_N(2)
+IMPLEMENT_ISINF_D_3()
+IMPLEMENT_ISINF_D_N(4)
+IMPLEMENT_ISINF_D_N(8)
+IMPLEMENT_ISINF_D_16()
 
 #define IMPLEMENT_ISNAN_F_N(n)\
 __int##n _Z5isnanu2v##n##f(__float##n x)\

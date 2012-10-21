@@ -86,9 +86,13 @@ namespace FreeOCL
 										  "asm_vector_math.bc",
 										  "vloadstore.bc",
 										  "atomic.bc",
-										  "asm_atomic.bc"};
+										  "asm_atomic.bc",
+										  "asyncmemop.bc",
+										  "asm_asyncmemop.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
+
+		module->dump();
 
 		linker.LinkInModule(module);
 		for(size_t i = 0 ; i < sizeof(modules_to_link) / sizeof(modules_to_link[0]) ; ++i)

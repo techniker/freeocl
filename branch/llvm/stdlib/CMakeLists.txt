@@ -10,6 +10,7 @@ set(STDLIB_SOURCES
     converters.c
     vloadstore.c
     atomic.c
+    asyncmemop.c
     )
 
 set(STDLIB_BYTECODE_SOURCES
@@ -20,6 +21,7 @@ set(STDLIB_BYTECODE_SOURCES
     common.ll
     vector_math.ll
     atomic.ll
+    asyncmemop.ll
     )
 add_custom_target(stdlib ALL
                     SOURCES ${STDLIB_SOURCES} ${STDLIB_BYTECODE_SOURCES} types.h)
