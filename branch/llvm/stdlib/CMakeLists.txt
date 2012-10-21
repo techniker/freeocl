@@ -21,8 +21,18 @@ set(STDLIB_BYTECODE_SOURCES
     common.ll
     vector_math.ll
     atomic.ll
-    asyncmemop.ll
     )
+
+if(CMAKE_C_SIZEOF_DATA_PTR MATCHES "8")
+    set(STDLIB_BYTECODE_SOURCES ${STDLIB_BYTECODE_SOURCES}
+        asyncmemop64.ll
+        )
+else(CMAKE_C_SIZEOF_DATA_PTR MATCHES "8")
+    set(STDLIB_BYTECODE_SOURCES ${STDLIB_BYTECODE_SOURCES}
+        asyncmemop32.ll
+        )
+endif(CMAKE_C_SIZEOF_DATA_PTR MATCHES "8")
+
 add_custom_target(stdlib ALL
                     SOURCES ${STDLIB_SOURCES} ${STDLIB_BYTECODE_SOURCES} types.h)
 

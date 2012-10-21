@@ -134,7 +134,7 @@ namespace FreeOCL
 				vargs.push_back(v);
 			}
 		llvm::Value *callee = fn->get_callee(p_vm, arg_types);
-		return ret = p_vm->get_builder()->CreateCall(callee, vargs);
+		return ret = p_vm->get_builder()->CreateCall(callee, vargs);;
 	}
 
 	llvm::Value *call::set_value(vm *p_vm, llvm::Value *v) const

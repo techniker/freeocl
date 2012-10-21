@@ -73,7 +73,7 @@ namespace FreeOCL
             {
 				llvm::GlobalVariable *var = new llvm::GlobalVariable(*(p_vm->get_module()),
 																	 p_type->to_LLVM_type(p_vm),
-																	 false,
+																	 p_type->is_const() || p_type->get_address_space() == type::CONSTANT,
 																	 llvm::GlobalVariable::ExternalLinkage,
 																	 NULL,
 																	 get_name());
@@ -81,7 +81,6 @@ namespace FreeOCL
 					var->setThreadLocalMode(llvm::GlobalVariable::GeneralDynamicTLSModel);
 //                if (!b_extern)
 				var->setInitializer(llvm::Constant::getNullValue(p_type->to_LLVM_type(p_vm)));
-//					var->setInitializer(llvm::ConstantAggregateZero::get(p_type->to_LLVM_type(p_vm)));
                 v = var;
             }
         }

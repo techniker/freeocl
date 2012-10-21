@@ -58,6 +58,7 @@
 #include "ast/return.h"
 #include "ast/switch.h"
 #include "ast/local_initializer.h"
+#include "ast/initializer.h"
 
 namespace FreeOCL
 {
@@ -462,13 +463,20 @@ namespace FreeOCL
 					name = p_declarator->back().as<chunk>()->front().as<token>()->get_string();
 
 					smartptr<chunk> suffix_list = p_declarator->back().as<chunk>();
+					std::vector<unsigned int> array_dims;
+					array_dims.reserve(suffix_list->size());
 					for(size_t j = 1 ; j < suffix_list->size() ; ++j)
 					{
 						smartptr<chunk> p_chunk = (*suffix_list)[j].as<chunk>();
 						if (!p_chunk)
 							continue;
 						if (p_chunk->front().as<token>()->get_id() == '[')
-							l_type = new array_type(l_type, l_type->is_const(), l_type->get_address_space(), p_chunk->at(1).as<expression>()->eval_as_uint());
+							array_dims.push_back(p_chunk->at(1).as<expression>()->eval_as_uint());
+					}
+					while(!array_dims.empty())
+					{
+						l_type = new array_type(l_type, l_type->is_const(), l_type->get_address_space(), array_dims.back());
+						array_dims.pop_back();
 					}
 				}
 				else
@@ -477,6 +485,8 @@ namespace FreeOCL
 					b_use_local_hack = (l_type->get_address_space() == type::LOCAL);
 					name = p_declarator->front().as<token>()->get_string();
 
+					std::vector<unsigned int> array_dims;
+					array_dims.reserve(p_declarator->size());
 					for(size_t j = 1 ; j < p_declarator->size() ; ++j)
 					{
 						smartptr<chunk> p_chunk = (*p_declarator)[j].as<chunk>();
@@ -489,7 +499,7 @@ namespace FreeOCL
 							{
 								try
 								{
-									l_type = new array_type(l_type, l_type->is_const(), l_type->get_address_space(), exp->eval_as_uint());
+									array_dims.push_back(exp->eval_as_uint());
 								}
 								catch(const char *msg)
 								{
@@ -498,22 +508,27 @@ namespace FreeOCL
 							}
 						}
 					}
+					while(!array_dims.empty())
+					{
+						l_type = new array_type(l_type, l_type->is_const(), l_type->get_address_space(), array_dims.back());
+						array_dims.pop_back();
+					}
 				}
+
+				if (!b_in_function_body && !decl)
+				{
+					if (l_type->get_address_space() != type::CONSTANT)
+						ERROR("Only __constant address space is allowed for global variables !");
+				}
+
 				smartptr<var> v;
 				if (decl)
 					symbols->insert(name, new type_def(name, l_type));
 				else
 					symbols->insert(name, v = new var(name, l_type, b_in_function_body));
 
-				if (d_val__.as<chunk>()->size() == 3)		// Check initializer
-				{
-					// If it's not an expression, then it's a vector/struct initializer which will be handleded by the C++ compiler
-					smartptr<expression> init = d_val__.as<chunk>()->back().as<expression>();
-					if (init && v)
-					{
-						d_val__ = new binary('=', v, init);
-					}
-				}
+				if (d_val__.as<chunk>()->size() == 3 && v)		// Check initializer
+					d_val__ = new initializer(v, d_val__.as<chunk>()->back());
 				// Special hack for local values (implements static allocation through global variable initializers)
 				if (b_use_local_hack)
 				{
@@ -2173,16 +2188,15 @@ namespace FreeOCL
 		{
 			MATCH2(token<'{'>, initializer_list)
 			{
-				const smartptr<node> N0 = N[0];
 				const smartptr<node> N1 = N[1];
 				MATCH1(token<'}'>)
 				{
-					d_val__ = new chunk(N0, N1, N[0]);
+					d_val__ = N1;
 					return 1;
 				}
 				MATCH2(token<','>, token<'}'>)
 				{
-					d_val__ = new chunk(N0, N1, N[0], N[1]);
+					d_val__ = N1;
 					return 1;
 				}
 			}
@@ -2200,7 +2214,6 @@ namespace FreeOCL
 			size_t l = processed.size();
 			while (__token<','>())
 			{
-				const smartptr<node> N1 = d_val__;
 				if (!__initializer())
 				{
 					roll_back_to(l);

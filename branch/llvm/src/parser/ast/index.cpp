@@ -47,7 +47,11 @@ namespace FreeOCL
 		const pointer_type *p_type = vtype.as<pointer_type>();
 		if (!p_type)		// This should never happen
 			return (type*)NULL;
-		return p_type->get_base_type();
+		const smartptr<type> &r_type = p_type->get_base_type();
+		const array_type *a_type = r_type.as<array_type>();
+		if (a_type)
+			return a_type->clone_as_ptr();
+		return r_type;
 	}
 
 	void index::write(std::ostream& out) const
@@ -94,6 +98,18 @@ namespace FreeOCL
 	{
 		if (ret_v)
 			return ret_v;
+		const smartptr<type> &vtype = ptr->get_type();
+		const pointer_type *p_type = vtype.as<pointer_type>();
+		if (!p_type)		// This should never happen
+			return (llvm::Value*)NULL;
+		const smartptr<type> &r_type = p_type->get_base_type();
+		const array_type *a_type = r_type.as<array_type>();
+		if (a_type)
+		{
+			ret_v = get_ptr(p_vm);
+			ret_v = p_vm->get_builder()->CreateBitCast(ret_v, a_type->clone_as_ptr()->to_LLVM_type(p_vm));
+			return ret_v;
+		}
 		return ret_v = p_vm->get_builder()->CreateLoad(get_ptr(p_vm));
 	}
 

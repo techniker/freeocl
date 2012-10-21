@@ -29,6 +29,7 @@
 #include <llvm/ExecutionEngine/JIT.h>
 #include <llvm/Support/Threading.h>
 #include <iostream>
+#include <cstdio>
 
 namespace FreeOCL
 {
@@ -88,7 +89,7 @@ namespace FreeOCL
 										  "atomic.bc",
 										  "asm_atomic.bc",
 										  "asyncmemop.bc",
-										  "asm_asyncmemop.bc"};
+										  "asm_asyncmemop%d.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 
@@ -97,10 +98,12 @@ namespace FreeOCL
 		linker.LinkInModule(module);
 		for(size_t i = 0 ; i < sizeof(modules_to_link) / sizeof(modules_to_link[0]) ; ++i)
 		{
-			llvm::Module *module = load_module(path_to_stdlib + modules_to_link[i]);
+			char module_name[256];
+			sprintf(module_name, modules_to_link[i], sizeof(void*) * 8);
+			llvm::Module *module = load_module(path_to_stdlib + module_name);
 			if (!module)
 			{
-				std::cerr << "FreeOCL: error loading module '" << (path_to_stdlib + modules_to_link[i]) << "'" << std::endl;
+				std::cerr << "FreeOCL: error loading module '" << (path_to_stdlib + module_name) << "'" << std::endl;
 				exit(1);
 			}
 			linker.LinkInModule(module);
