@@ -91,7 +91,8 @@ namespace FreeOCL
 										  "asyncmemop.bc",
 										  "asm_asyncmemop%d.bc",
 										  "asm_geometric.bc",
-										  "asm_relational.bc"};
+										  "asm_relational.bc",
+										  "asm_vloadstore.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 

@@ -23,6 +23,7 @@ set(STDLIB_BYTECODE_SOURCES
     atomic.ll
     geometric.ll
     relational.ll
+    vloadstore.ll
     )
 
 if(CMAKE_C_SIZEOF_DATA_PTR MATCHES "8")
