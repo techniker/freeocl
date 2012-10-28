@@ -818,12 +818,6 @@ __double _Z18convert_double_satd(const __double x)
 	return x;
 }
 
-__float2 _test(const __float2 x)
-{
-	__float2 r = { 0, 1e20 };
-	return x;
-}
-
 /*template<class T> struct __type_range;
 template<> struct __type_range<__char>		{	enum { __min = -128, __max = 127 };	};
 template<> struct __type_range<__uchar>		{	enum { __min = 0, __max = 255 };	};

@@ -222,89 +222,89 @@ __int _Z3allu3v16s(__short16 x)	{	return _Z3allu2v8s(x.s01234567 & x.s89ABCDEF);
 __int _Z3allu3v16i(__int16 x)	{	return _Z3allu2v8i(x.s01234567 & x.s89ABCDEF);	}
 __int _Z3allu3v16l(__long16 x)	{	return _Z3allu2v8l(x.s01234567 & x.s89ABCDEF);	}
 
-// isequal
-__int2 _Z7isequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x == y) * -1;	}
-__int4 _Z7isequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x == y) * -1;	}
-__int4 _Z7isequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x == y) * -1;	}
-__int8 _Z7isequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x == y) * -1;	}
-__int16 _Z7isequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x == y) * -1;	}
-__long2 _Z7isequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x == y) * -1L;	}
-__long4 _Z7isequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x == y) * -1L;	}
-__long4 _Z7isequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x == y) * -1L;	}
-__long8 _Z7isequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x == y) * -1L;	}
-__long16 _Z7isequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x == y) * -1L;	}
+//// isequal
+//__int2 _Z7isequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x == y) * -1;	}
+//__int4 _Z7isequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x == y) * -1;	}
+//__int4 _Z7isequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x == y) * -1;	}
+//__int8 _Z7isequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x == y) * -1;	}
+//__int16 _Z7isequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x == y) * -1;	}
+//__long2 _Z7isequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x == y) * -1L;	}
+//__long4 _Z7isequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x == y) * -1L;	}
+//__long4 _Z7isequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x == y) * -1L;	}
+//__long8 _Z7isequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x == y) * -1L;	}
+//__long16 _Z7isequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x == y) * -1L;	}
 
-// isnotequal
-__int2 _Z10isnotequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x != y) * -1;	}
-__int4 _Z10isnotequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x != y) * -1;	}
-__int4 _Z10isnotequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x != y) * -1;	}
-__int8 _Z10isnotequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x != y) * -1;	}
-__int16 _Z10isnotequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x != y) * -1;	}
-__long2 _Z10isnotequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x != y) * -1L;	}
-__long4 _Z10isnotequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x != y) * -1L;	}
-__long4 _Z10isnotequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x != y) * -1L;	}
-__long8 _Z10isnotequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x != y) * -1L;	}
-__long16 _Z10isnotequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x != y) * -1L;	}
+//// isnotequal
+//__int2 _Z10isnotequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x != y) * -1;	}
+//__int4 _Z10isnotequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x != y) * -1;	}
+//__int4 _Z10isnotequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x != y) * -1;	}
+//__int8 _Z10isnotequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x != y) * -1;	}
+//__int16 _Z10isnotequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x != y) * -1;	}
+//__long2 _Z10isnotequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x != y) * -1L;	}
+//__long4 _Z10isnotequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x != y) * -1L;	}
+//__long4 _Z10isnotequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x != y) * -1L;	}
+//__long8 _Z10isnotequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x != y) * -1L;	}
+//__long16 _Z10isnotequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x != y) * -1L;	}
 
-// isgreater
-__int2 _Z9isgreateru2v2fu2v2f(__float2 x, __float2 y)	{	return (x > y) * -1;	}
-__int4 _Z9isgreateru2v3fu2v3f(__float4 x, __float4 y)	{	return (x > y) * -1;	}
-__int4 _Z9isgreateru2v4fu2v4f(__float4 x, __float4 y)	{	return (x > y) * -1;	}
-__int8 _Z9isgreateru2v8fu2v8f(__float8 x, __float8 y)	{	return (x > y) * -1;	}
-__int16 _Z9isgreateru3v16fu3v16f(__float16 x, __float16 y)	{	return (x > y) * -1;	}
-__long2 _Z9isgreateru2v2du2v2d(__double2 x, __double2 y)	{	return (x > y) * -1L;	}
-__long4 _Z9isgreateru2v3du2v3d(__double4 x, __double4 y)	{	return (x > y) * -1L;	}
-__long4 _Z9isgreateru2v4du2v4d(__double4 x, __double4 y)	{	return (x > y) * -1L;	}
-__long8 _Z9isgreateru2v8du2v8d(__double8 x, __double8 y)	{	return (x > y) * -1L;	}
-__long16 _Z9isgreateru3v16du3v16d(__double16 x, __double16 y)	{	return (x > y) * -1L;	}
+//// isgreater
+//__int2 _Z9isgreateru2v2fu2v2f(__float2 x, __float2 y)	{	return (x > y) * -1;	}
+//__int4 _Z9isgreateru2v3fu2v3f(__float4 x, __float4 y)	{	return (x > y) * -1;	}
+//__int4 _Z9isgreateru2v4fu2v4f(__float4 x, __float4 y)	{	return (x > y) * -1;	}
+//__int8 _Z9isgreateru2v8fu2v8f(__float8 x, __float8 y)	{	return (x > y) * -1;	}
+//__int16 _Z9isgreateru3v16fu3v16f(__float16 x, __float16 y)	{	return (x > y) * -1;	}
+//__long2 _Z9isgreateru2v2du2v2d(__double2 x, __double2 y)	{	return (x > y) * -1L;	}
+//__long4 _Z9isgreateru2v3du2v3d(__double4 x, __double4 y)	{	return (x > y) * -1L;	}
+//__long4 _Z9isgreateru2v4du2v4d(__double4 x, __double4 y)	{	return (x > y) * -1L;	}
+//__long8 _Z9isgreateru2v8du2v8d(__double8 x, __double8 y)	{	return (x > y) * -1L;	}
+//__long16 _Z9isgreateru3v16du3v16d(__double16 x, __double16 y)	{	return (x > y) * -1L;	}
 
-// isgreaterequal
-__int2 _Z14isgreaterequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x >= y) * -1;	}
-__int4 _Z14isgreaterequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x >= y) * -1;	}
-__int4 _Z14isgreaterequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x >= y) * -1;	}
-__int8 _Z14isgreaterequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x >= y) * -1;	}
-__int16 _Z14isgreaterequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x >= y) * -1;	}
-__long2 _Z14isgreaterequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x >= y) * -1L;	}
-__long4 _Z14isgreaterequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x >= y) * -1L;	}
-__long4 _Z14isgreaterequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x >= y) * -1L;	}
-__long8 _Z14isgreaterequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x >= y) * -1L;	}
-__long16 _Z14isgreaterequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x >= y) * -1L;	}
+//// isgreaterequal
+//__int2 _Z14isgreaterequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x >= y) * -1;	}
+//__int4 _Z14isgreaterequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x >= y) * -1;	}
+//__int4 _Z14isgreaterequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x >= y) * -1;	}
+//__int8 _Z14isgreaterequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x >= y) * -1;	}
+//__int16 _Z14isgreaterequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x >= y) * -1;	}
+//__long2 _Z14isgreaterequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x >= y) * -1L;	}
+//__long4 _Z14isgreaterequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x >= y) * -1L;	}
+//__long4 _Z14isgreaterequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x >= y) * -1L;	}
+//__long8 _Z14isgreaterequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x >= y) * -1L;	}
+//__long16 _Z14isgreaterequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x >= y) * -1L;	}
 
-// isless
-__int2 _Z6islessu2v2fu2v2f(__float2 x, __float2 y)	{	return (x < y) * -1;	}
-__int4 _Z6islessu2v3fu2v3f(__float4 x, __float4 y)	{	return (x < y) * -1;	}
-__int4 _Z6islessu2v4fu2v4f(__float4 x, __float4 y)	{	return (x < y) * -1;	}
-__int8 _Z6islessu2v8fu2v8f(__float8 x, __float8 y)	{	return (x < y) * -1;	}
-__int16 _Z6islessu3v16fu3v16f(__float16 x, __float16 y)	{	return (x < y) * -1;	}
-__long2 _Z6islessu2v2du2v2d(__double2 x, __double2 y)	{	return (x < y) * -1L;	}
-__long4 _Z6islessu2v3du2v3d(__double4 x, __double4 y)	{	return (x < y) * -1L;	}
-__long4 _Z6islessu2v4du2v4d(__double4 x, __double4 y)	{	return (x < y) * -1L;	}
-__long8 _Z6islessu2v8du2v8d(__double8 x, __double8 y)	{	return (x < y) * -1L;	}
-__long16 _Z6islessu3v16du3v16d(__double16 x, __double16 y)	{	return (x < y) * -1L;	}
+//// isless
+//__int2 _Z6islessu2v2fu2v2f(__float2 x, __float2 y)	{	return (x < y) * -1;	}
+//__int4 _Z6islessu2v3fu2v3f(__float4 x, __float4 y)	{	return (x < y) * -1;	}
+//__int4 _Z6islessu2v4fu2v4f(__float4 x, __float4 y)	{	return (x < y) * -1;	}
+//__int8 _Z6islessu2v8fu2v8f(__float8 x, __float8 y)	{	return (x < y) * -1;	}
+//__int16 _Z6islessu3v16fu3v16f(__float16 x, __float16 y)	{	return (x < y) * -1;	}
+//__long2 _Z6islessu2v2du2v2d(__double2 x, __double2 y)	{	return (x < y) * -1L;	}
+//__long4 _Z6islessu2v3du2v3d(__double4 x, __double4 y)	{	return (x < y) * -1L;	}
+//__long4 _Z6islessu2v4du2v4d(__double4 x, __double4 y)	{	return (x < y) * -1L;	}
+//__long8 _Z6islessu2v8du2v8d(__double8 x, __double8 y)	{	return (x < y) * -1L;	}
+//__long16 _Z6islessu3v16du3v16d(__double16 x, __double16 y)	{	return (x < y) * -1L;	}
 
-// islessequal
-__int2 _Z11islessequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x <= y) * -1;	}
-__int4 _Z11islessequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x <= y) * -1;	}
-__int4 _Z11islessequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x <= y) * -1;	}
-__int8 _Z11islessequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x <= y) * -1;	}
-__int16 _Z11islessequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x <= y) * -1;	}
-__long2 _Z11islessequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x <= y) * -1L;	}
-__long4 _Z11islessequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x <= y) * -1L;	}
-__long4 _Z11islessequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x <= y) * -1L;	}
-__long8 _Z11islessequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x <= y) * -1L;	}
-__long16 _Z11islessequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x <= y) * -1L;	}
+//// islessequal
+//__int2 _Z11islessequalu2v2fu2v2f(__float2 x, __float2 y)	{	return (x <= y) * -1;	}
+//__int4 _Z11islessequalu2v3fu2v3f(__float4 x, __float4 y)	{	return (x <= y) * -1;	}
+//__int4 _Z11islessequalu2v4fu2v4f(__float4 x, __float4 y)	{	return (x <= y) * -1;	}
+//__int8 _Z11islessequalu2v8fu2v8f(__float8 x, __float8 y)	{	return (x <= y) * -1;	}
+//__int16 _Z11islessequalu3v16fu3v16f(__float16 x, __float16 y)	{	return (x <= y) * -1;	}
+//__long2 _Z11islessequalu2v2du2v2d(__double2 x, __double2 y)	{	return (x <= y) * -1L;	}
+//__long4 _Z11islessequalu2v3du2v3d(__double4 x, __double4 y)	{	return (x <= y) * -1L;	}
+//__long4 _Z11islessequalu2v4du2v4d(__double4 x, __double4 y)	{	return (x <= y) * -1L;	}
+//__long8 _Z11islessequalu2v8du2v8d(__double8 x, __double8 y)	{	return (x <= y) * -1L;	}
+//__long16 _Z11islessequalu3v16du3v16d(__double16 x, __double16 y)	{	return (x <= y) * -1L;	}
 
-// islessgreater
-__int2 _Z13islessgreateru2v2fu2v2f(__float2 x, __float2 y)	{	return ((x < y) | (x > y)) * -1;	}
-__int4 _Z13islessgreateru2v3fu2v3f(__float4 x, __float4 y)	{	return ((x < y) | (x > y)) * -1;	}
-__int4 _Z13islessgreateru2v4fu2v4f(__float4 x, __float4 y)	{	return ((x < y) | (x > y)) * -1;	}
-__int8 _Z13islessgreateru2v8fu2v8f(__float8 x, __float8 y)	{	return ((x < y) | (x > y)) * -1;	}
-__int16 _Z13islessgreateru3v16fu3v16f(__float16 x, __float16 y)	{	return ((x < y) | (x > y)) * -1;	}
-__long2 _Z13islessgreateru2v2du2v2d(__double2 x, __double2 y)	{	return ((x < y) | (x > y)) * -1L;	}
-__long4 _Z13islessgreateru2v3du2v3d(__double4 x, __double4 y)	{	return ((x < y) | (x > y)) * -1L;	}
-__long4 _Z13islessgreateru2v4du2v4d(__double4 x, __double4 y)	{	return ((x < y) | (x > y)) * -1L;	}
-__long8 _Z13islessgreateru2v8du2v8d(__double8 x, __double8 y)	{	return ((x < y) | (x > y)) * -1L;	}
-__long16 _Z13islessgreateru3v16du3v16d(__double16 x, __double16 y)	{	return ((x < y) | (x > y)) * -1L;	}
+//// islessgreater
+//__int2 _Z13islessgreateru2v2fu2v2f(__float2 x, __float2 y)	{	return ((x < y) | (x > y)) * -1;	}
+//__int4 _Z13islessgreateru2v3fu2v3f(__float4 x, __float4 y)	{	return ((x < y) | (x > y)) * -1;	}
+//__int4 _Z13islessgreateru2v4fu2v4f(__float4 x, __float4 y)	{	return ((x < y) | (x > y)) * -1;	}
+//__int8 _Z13islessgreateru2v8fu2v8f(__float8 x, __float8 y)	{	return ((x < y) | (x > y)) * -1;	}
+//__int16 _Z13islessgreateru3v16fu3v16f(__float16 x, __float16 y)	{	return ((x < y) | (x > y)) * -1;	}
+//__long2 _Z13islessgreateru2v2du2v2d(__double2 x, __double2 y)	{	return ((x < y) | (x > y)) * -1L;	}
+//__long4 _Z13islessgreateru2v3du2v3d(__double4 x, __double4 y)	{	return ((x < y) | (x > y)) * -1L;	}
+//__long4 _Z13islessgreateru2v4du2v4d(__double4 x, __double4 y)	{	return ((x < y) | (x > y)) * -1L;	}
+//__long8 _Z13islessgreateru2v8du2v8d(__double8 x, __double8 y)	{	return ((x < y) | (x > y)) * -1L;	}
+//__long16 _Z13islessgreateru3v16du3v16d(__double16 x, __double16 y)	{	return ((x < y) | (x > y)) * -1L;	}
 
 //template<typename S>
 //static inline typename __vector_type<__int, __vector<S>::components>::type

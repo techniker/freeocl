@@ -58,27 +58,27 @@ __double _Z4signd(__double x)
 }
 
 // Vector versions
-__float2 _Z7degreesu2v2f(__float2 radians)	{	return radians * 57.295779513082f;	}
+//__float2 _Z7degreesu2v2f(__float2 radians)	{	return radians * 57.295779513082f;	}
 __float4 _Z7degreesu2v3f(__float4 radians)	{	return radians * 57.295779513082f;	}
 __float4 _Z7degreesu2v4f(__float4 radians)	{	return radians * 57.295779513082f;	}
 __float8 _Z7degreesu2v8f(__float8 radians)	{	return radians * 57.295779513082f;	}
-__float16 _Z7degreesu3v16f(__float16 radians)	{	return radians * 57.295779513082f;	}
+//__float16 _Z7degreesu3v16f(__float16 radians)	{	return radians * 57.295779513082f;	}
 __double2 _Z7degreesu2v2d(__double2 radians)	{	return radians * 57.295779513082;	}
 __double4 _Z7degreesu2v3d(__double4 radians)	{	return radians * 57.295779513082;	}
 __double4 _Z7degreesu2v4d(__double4 radians)	{	return radians * 57.295779513082;	}
-__double8 _Z7degreesu2v8d(__double8 radians)	{	return radians * 57.295779513082;	}
-__double16 _Z7degreesu3v16d(__double16 radians)	{	return radians * 57.295779513082;	}
+//__double8 _Z7degreesu2v8d(__double8 radians)	{	return radians * 57.295779513082;	}
+//__double16 _Z7degreesu3v16d(__double16 radians)	{	return radians * 57.295779513082;	}
 
-__float2 _Z7radiansu2v2f(__float2 degrees)	{	return degrees * 0.017453292519943f;	}
+//__float2 _Z7radiansu2v2f(__float2 degrees)	{	return degrees * 0.017453292519943f;	}
 __float4 _Z7radiansu2v3f(__float4 degrees)	{	return degrees * 0.017453292519943f;	}
 __float4 _Z7radiansu2v4f(__float4 degrees)	{	return degrees * 0.017453292519943f;	}
 __float8 _Z7radiansu2v8f(__float8 degrees)	{	return degrees * 0.017453292519943f;	}
-__float16 _Z7radiansu3v16f(__float16 degrees)	{	return degrees * 0.017453292519943f;	}
+//__float16 _Z7radiansu3v16f(__float16 degrees)	{	return degrees * 0.017453292519943f;	}
 __double2 _Z7radiansu2v2d(__double2 degrees)	{	return degrees * 0.017453292519943;	}
 __double4 _Z7radiansu2v3d(__double4 degrees)	{	return degrees * 0.017453292519943;	}
 __double4 _Z7radiansu2v4d(__double4 degrees)	{	return degrees * 0.017453292519943;	}
-__double8 _Z7radiansu2v8d(__double8 degrees)	{	return degrees * 0.017453292519943;	}
-__double16 _Z7radiansu3v16d(__double16 degrees)	{	return degrees * 0.017453292519943;	}
+//__double8 _Z7radiansu2v8d(__double8 degrees)	{	return degrees * 0.017453292519943;	}
+//__double16 _Z7radiansu3v16d(__double16 degrees)	{	return degrees * 0.017453292519943;	}
 
 //VECTOR_IMPLEMENTATION_FROM_SCALAR_IMPLEMENTATION3(mix)
 //VECTOR_IMPLEMENTATION_FROM_SCALAR_IMPLEMENTATION3_S(mix)

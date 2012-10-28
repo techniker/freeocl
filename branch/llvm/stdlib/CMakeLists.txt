@@ -21,6 +21,8 @@ set(STDLIB_BYTECODE_SOURCES
     common.ll
     vector_math.ll
     atomic.ll
+    geometric.ll
+    relational.ll
     )
 
 if(CMAKE_C_SIZEOF_DATA_PTR MATCHES "8")

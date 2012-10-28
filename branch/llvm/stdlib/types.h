@@ -26,7 +26,7 @@ typedef double __double;
 typedef T T##16 __attribute__((ext_vector_type(16)));\
 typedef T T##8 __attribute__((ext_vector_type(8)));\
 typedef T T##4 __attribute__((ext_vector_type(4)));\
-typedef T T##3 __attribute__((ext_vector_type(3)));\
+typedef T T##3 __attribute__((ext_vector_type(4)));\
 typedef T T##2 __attribute__((ext_vector_type(2)))
 
 DEFINE(__float);

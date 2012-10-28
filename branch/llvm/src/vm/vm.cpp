@@ -15,7 +15,7 @@
 #include <llvm/PassManager.h>
 #include <llvm/Analysis/Verifier.h>
 #include <llvm/Analysis/Passes.h>
-#include <llvm/Target/TargetData.h>
+//#include <llvm/Target/TargetData.h>
 #include <llvm/Target/TargetOptions.h>
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Transforms/Scalar.h>
@@ -89,7 +89,9 @@ namespace FreeOCL
 										  "atomic.bc",
 										  "asm_atomic.bc",
 										  "asyncmemop.bc",
-										  "asm_asyncmemop%d.bc"};
+										  "asm_asyncmemop%d.bc",
+										  "asm_geometric.bc",
+										  "asm_relational.bc"};
 
 		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
 

@@ -38,7 +38,7 @@
 #include <llvm/PassManager.h>
 #include <llvm/Analysis/Verifier.h>
 #include <llvm/Analysis/Passes.h>
-#include <llvm/Target/TargetData.h>
+//#include <llvm/Target/TargetData.h>
 #include <llvm/Target/TargetOptions.h>
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Transforms/Scalar.h>
@@ -341,7 +341,7 @@ namespace FreeOCL
 
 		vm *p_vm = new vm;
 
-		const int optimization_level = 0;
+		const int optimization_level = 1;
 
 		p_vm->set_function_pass_manager(new llvm::FunctionPassManager(p_vm->get_module()));
 

@@ -61,8 +61,10 @@ namespace FreeOCL
 		else
 			s_type = p_type.as<struct_type>();
 		smartptr<type> r_type = s_type->get_type_of_member(member_name);
-		if (r_type)
-			return r_type->clone(base->get_type()->is_const() || r_type->is_const(), p_type->get_address_space());
+		r_type = r_type->clone(base->get_type()->is_const() || r_type->is_const(), p_type->get_address_space());
+		const array_type *a_type = r_type.as<array_type>();
+		if (a_type)
+			return a_type->clone_as_ptr();
 		return r_type;
 	}
 
@@ -103,19 +105,12 @@ namespace FreeOCL
 			s_type = p_type.as<struct_type>();
 
 		Builder *builder = p_vm->get_builder();
-		smartptr<pointer_type> ptr_type = base->get_type();
-		t = ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
-		if (!t)
-		{
-			std::vector<unsigned> idx;
-			idx.push_back(s_type->get_member_id(member_name));
-			t = builder->CreateExtractValue(base->to_IR(p_vm), idx);
-			return t;
-		}
-		std::vector<llvm::Value*> idx;
-		idx.push_back(builder->getInt32(0));
-		idx.push_back(builder->getInt32(s_type->get_member_id(member_name)));
-		t = builder->CreateGEP(t, idx, "member");
+		t = get_ptr(p_vm);
+		const smartptr<type> &m_type = s_type->get_type_of_member(member_name);
+		const array_type *a_type = m_type.as<array_type>();
+		if (a_type)
+			return t = builder->CreateBitCast(t, a_type->clone_as_ptr()->to_LLVM_type(p_vm));
+
 		return t = builder->CreateLoad(t, false);
 	}
 
@@ -141,8 +136,7 @@ namespace FreeOCL
 			s_type = p_type.as<struct_type>();
 
 		Builder *builder = p_vm->get_builder();
-		smartptr<pointer_type> ptr_type = base->get_type();
-		llvm::Value *q = ptr_type ? base->to_IR(p_vm) : base->get_ptr(p_vm);
+		llvm::Value *q = ptr ? base->to_IR(p_vm) : base->get_ptr(p_vm);
 		std::vector<llvm::Value*> idx;
 		idx.push_back(builder->getInt32(0));
 		idx.push_back(builder->getInt32(s_type->get_member_id(member_name)));

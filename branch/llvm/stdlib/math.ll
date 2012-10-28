@@ -199,15 +199,62 @@ define <16 x float> @_Z3cosu3v16f(<16 x float> %x) nounwind {
 
 declare float     @llvm.pow.f32(float  %Val, float %Power)
 declare double    @llvm.pow.f64(double %Val, double %Power)
+declare <2 x float>     @llvm.pow.v2f32(<2 x float>  %Val, <2 x float> %Power)
+declare <2 x double>    @llvm.pow.v2f64(<2 x double> %Val, <2 x double> %Power)
+declare <4 x float>     @llvm.pow.v4f32(<4 x float>  %Val, <4 x float> %Power)
+declare <4 x double>    @llvm.pow.v4f64(<4 x double> %Val, <4 x double> %Power)
+declare <8 x float>     @llvm.pow.v8f32(<8 x float>  %Val, <8 x float> %Power)
+declare <8 x double>    @llvm.pow.v8f64(<8 x double> %Val, <8 x double> %Power)
+declare <16 x float>     @llvm.pow.v16f32(<16 x float>  %Val, <16 x float> %Power)
+declare <16 x double>    @llvm.pow.v16f64(<16 x double> %Val, <16 x double> %Power)
 
 define double @_Z3powdd(double %x, double %y) nounwind {
     %1 = call double    @llvm.pow.f64(double %x, double %y)
     ret double %1
 }
-
 define float @_Z3powff(float %x, float %y) nounwind {
     %1 = call float    @llvm.pow.f32(float %x, float %y)
     ret float %1
+}
+define <2 x double> @_Z3powu2v2du2v2d(<2 x double> %x, <2 x double> %y) nounwind {
+    %1 = call <2 x double>    @llvm.pow.v2f64(<2 x double> %x, <2 x double> %y)
+    ret <2 x double> %1
+}
+define <2 x float> @_Z3powu2v2fu2v2f(<2 x float> %x, <2 x float> %y) nounwind {
+    %1 = call <2 x float>    @llvm.pow.v2f32(<2 x float> %x, <2 x float> %y)
+    ret <2 x float> %1
+}
+define <4 x double> @_Z3powu2v3du2v3d(<4 x double> %x, <4 x double> %y) nounwind {
+    %1 = call <4 x double>    @llvm.pow.v4f64(<4 x double> %x, <4 x double> %y)
+    ret <4 x double> %1
+}
+define <4 x float> @_Z3powu2v3fu2v3f(<4 x float> %x, <4 x float> %y) nounwind {
+    %1 = call <4 x float>    @llvm.pow.v4f32(<4 x float> %x, <4 x float> %y)
+    ret <4 x float> %1
+}
+define <4 x double> @_Z3powu2v4du2v4d(<4 x double> %x, <4 x double> %y) nounwind {
+    %1 = call <4 x double>    @llvm.pow.v4f64(<4 x double> %x, <4 x double> %y)
+    ret <4 x double> %1
+}
+define <4 x float> @_Z3powu2v4fu2v4f(<4 x float> %x, <4 x float> %y) nounwind {
+    %1 = call <4 x float>    @llvm.pow.v4f32(<4 x float> %x, <4 x float> %y)
+    ret <4 x float> %1
+}
+define <8 x double> @_Z3powu2v8du2v8d(<8 x double> %x, <8 x double> %y) nounwind {
+    %1 = call <8 x double>    @llvm.pow.v8f64(<8 x double> %x, <8 x double> %y)
+    ret <8 x double> %1
+}
+define <8 x float> @_Z3powu2v8fu2v8f(<8 x float> %x, <8 x float> %y) nounwind {
+    %1 = call <8 x float>    @llvm.pow.v8f32(<8 x float> %x, <8 x float> %y)
+    ret <8 x float> %1
+}
+define <16 x double> @_Z3powu3v16du3v16d(<16 x double> %x, <16 x double> %y) nounwind {
+    %1 = call <16 x double>    @llvm.pow.v16f64(<16 x double> %x, <16 x double> %y)
+    ret <16 x double> %1
+}
+define <16 x float> @_Z3powu3v16fu3v16f(<16 x float> %x, <16 x float> %y) nounwind {
+    %1 = call <16 x float>    @llvm.pow.v16f32(<16 x float> %x, <16 x float> %y)
+    ret <16 x float> %1
 }
 
 declare float     @llvm.exp.f32(float  %Val)

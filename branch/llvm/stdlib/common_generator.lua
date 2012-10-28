@@ -121,5 +121,50 @@ for k, v in pairs(dims) do
 		out:write("\t%y = select " .. bin .. " %cmp1, " .. t .. " " .. minus_one .. ", " .. t .. " %x\n")
 		out:write("\t%ret = select " .. bin .. " %cmp0, " .. t .. " " .. one .. ", " .. t .. " %y\n")
 		out:write("\tret " .. t .. " %ret\n}\n")
+		
+		out:write("define " .. t .. " @_Z4step" .. suffix2)
+		out:write("  %cmp = fcmp olt " .. t .. " %a, %b\n")
+		out:write("  %ret = select " .. bin .. " %cmp, " .. t .. " zeroinitializer, " .. t .. " " .. one .. "\n")
+		out:write("\tret " .. t .. " %ret\n}\n")
 	end
 end
+
+out:write("define <2 x float> @_Z7degreesu2v2f(<2 x float> %radians) nounwind uwtable readnone {\n")
+out:write("  %ret = fmul <2 x float> %radians, <float 0x404CA5DC20000000, float 0x404CA5DC20000000>\n")
+out:write("  ret <2 x float> %ret\n")
+out:write("}\n")
+
+out:write("define <16 x float> @_Z7degreesu3v16f(<16 x float> %radians) nounwind uwtable readnone {\n")
+out:write("  %ret = fmul <16 x float> %radians, <float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000>\n")
+out:write("  ret <16 x float> %ret\n")
+out:write("}\n")
+
+out:write("define <8 x double> @_Z7degreesu2v8d(<8 x double> %radians) nounwind uwtable readnone {\n")
+out:write("  %ret = fmul <8 x double> %radians, <double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB>\n")
+out:write("  ret <8 x double> %ret\n")
+out:write("}\n")
+
+out:write("define <16 x double> @_Z7degreesu3v16d(<16 x double> %radians) nounwind uwtable readnone {\n")
+out:write("  %ret = fmul <16 x double> %radians, <double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB>\n")
+out:write("  ret <16 x double> %ret\n")
+out:write("}\n")
+
+out:write("define <2 x float> @_Z7radiansu2v2f(<2 x float> %degrees) nounwind uwtable readnone {\n")
+out:write("  %ret = fmul <2 x float> %degrees, <float 0x3F91DF46A0000000, float 0x3F91DF46A0000000>\n")
+out:write("  ret <2x float> %ret\n")
+out:write("}\n")
+
+out:write("define <16 x float> @_Z7radiansu3v16f(<16 x float> %degrees) nounwind uwtable readnone {\n")
+out:write("  %ret = fmul <16 x float> %degrees, <float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000>\n")
+out:write("  ret <16 x float> %ret\n")
+out:write("}\n")
+
+out:write("define <8 x double> @_Z7radiansu2v8d(<8 x double> %degrees) nounwind uwtable readnone {\n")
+out:write("  %ret = fmul <8 x double> %degrees, <double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4>\n")
+out:write("  ret <8 x double> %ret\n")
+out:write("}\n")
+
+out:write("define <16 x double> @_Z7radiansu3v16d(<16 x double> %degrees) nounwind uwtable readnone {\n")
+out:write("  %ret = fmul <16 x double> %degrees, <double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4>\n")
+out:write("  ret <16 x double> %ret\n")
+out:write("}\n")

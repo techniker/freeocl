@@ -245,7 +245,7 @@ __float _Z5truncf(__float x)	{	return truncf(x);	}
 
 // half_ versions
 __float _Z8half_cosf(__float x)	{	return _Z3cosf(x);	}
-__float _Z11half_dividef(__float x, __float y)	{	return x / y;	}
+__float _Z11half_divideff(__float x, __float y)	{	return x / y;	}
 __float _Z8half_expf(__float x)	{	return _Z3expf(x);	}
 __float _Z9half_exp2f(__float x)	{	return _Z4exp2f(x);	}
 __float _Z10half_exp10f(__float x)	{	return _Z5exp10f(x);	}

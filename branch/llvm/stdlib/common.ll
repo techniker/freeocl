@@ -53,6 +53,11 @@ define <2 x float> @_Z4signu2v2f(<2 x float> %a) nounwind {
 	%ret = select <2 x i1> %cmp0, <2 x float> < float 1.0, float 1.0 >, <2 x float> %y
 	ret <2 x float> %ret
 }
+define <2 x float> @_Z4stepu2v2fu2v2f(<2 x float> %a, <2 x float> %b) nounwind {
+  %cmp = fcmp olt <2 x float> %a, %b
+  %ret = select <2 x i1> %cmp, <2 x float> zeroinitializer, <2 x float> < float 1.0, float 1.0 >
+	ret <2 x float> %ret
+}
 define <2 x double> @_Z3maxu2v2du2v2d(<2 x double> %a, <2 x double> %b) nounwind {
 	%cmp = fcmp ogt <2 x double> %a, %b
 	%ret = select <2 x i1> %cmp, <2 x double> %a, <2 x double> %b
@@ -104,6 +109,11 @@ define <2 x double> @_Z4signu2v2d(<2 x double> %a) nounwind {
 	%x = select <2 x i1> %cmp2, <2 x double> zeroinitializer, <2 x double> %a
 	%y = select <2 x i1> %cmp1, <2 x double> < double -1.0, double -1.0 >, <2 x double> %x
 	%ret = select <2 x i1> %cmp0, <2 x double> < double 1.0, double 1.0 >, <2 x double> %y
+	ret <2 x double> %ret
+}
+define <2 x double> @_Z4stepu2v2du2v2d(<2 x double> %a, <2 x double> %b) nounwind {
+  %cmp = fcmp olt <2 x double> %a, %b
+  %ret = select <2 x i1> %cmp, <2 x double> zeroinitializer, <2 x double> < double 1.0, double 1.0 >
 	ret <2 x double> %ret
 }
 define <4 x float> @_Z3maxu2v3fu2v3f(<4 x float> %a, <4 x float> %b) nounwind {
@@ -159,6 +169,11 @@ define <4 x float> @_Z4signu2v3f(<4 x float> %a) nounwind {
 	%ret = select <4 x i1> %cmp0, <4 x float> < float 1.0, float 1.0, float 1.0, float 1.0 >, <4 x float> %y
 	ret <4 x float> %ret
 }
+define <4 x float> @_Z4stepu2v3fu2v3f(<4 x float> %a, <4 x float> %b) nounwind {
+  %cmp = fcmp olt <4 x float> %a, %b
+  %ret = select <4 x i1> %cmp, <4 x float> zeroinitializer, <4 x float> < float 1.0, float 1.0, float 1.0, float 1.0 >
+	ret <4 x float> %ret
+}
 define <4 x double> @_Z3maxu2v3du2v3d(<4 x double> %a, <4 x double> %b) nounwind {
 	%cmp = fcmp ogt <4 x double> %a, %b
 	%ret = select <4 x i1> %cmp, <4 x double> %a, <4 x double> %b
@@ -210,6 +225,11 @@ define <4 x double> @_Z4signu2v3d(<4 x double> %a) nounwind {
 	%x = select <4 x i1> %cmp2, <4 x double> zeroinitializer, <4 x double> %a
 	%y = select <4 x i1> %cmp1, <4 x double> < double -1.0, double -1.0, double -1.0, double -1.0 >, <4 x double> %x
 	%ret = select <4 x i1> %cmp0, <4 x double> < double 1.0, double 1.0, double 1.0, double 1.0 >, <4 x double> %y
+	ret <4 x double> %ret
+}
+define <4 x double> @_Z4stepu2v3du2v3d(<4 x double> %a, <4 x double> %b) nounwind {
+  %cmp = fcmp olt <4 x double> %a, %b
+  %ret = select <4 x i1> %cmp, <4 x double> zeroinitializer, <4 x double> < double 1.0, double 1.0, double 1.0, double 1.0 >
 	ret <4 x double> %ret
 }
 define <4 x float> @_Z3maxu2v4fu2v4f(<4 x float> %a, <4 x float> %b) nounwind {
@@ -265,6 +285,11 @@ define <4 x float> @_Z4signu2v4f(<4 x float> %a) nounwind {
 	%ret = select <4 x i1> %cmp0, <4 x float> < float 1.0, float 1.0, float 1.0, float 1.0 >, <4 x float> %y
 	ret <4 x float> %ret
 }
+define <4 x float> @_Z4stepu2v4fu2v4f(<4 x float> %a, <4 x float> %b) nounwind {
+  %cmp = fcmp olt <4 x float> %a, %b
+  %ret = select <4 x i1> %cmp, <4 x float> zeroinitializer, <4 x float> < float 1.0, float 1.0, float 1.0, float 1.0 >
+	ret <4 x float> %ret
+}
 define <4 x double> @_Z3maxu2v4du2v4d(<4 x double> %a, <4 x double> %b) nounwind {
 	%cmp = fcmp ogt <4 x double> %a, %b
 	%ret = select <4 x i1> %cmp, <4 x double> %a, <4 x double> %b
@@ -316,6 +341,11 @@ define <4 x double> @_Z4signu2v4d(<4 x double> %a) nounwind {
 	%x = select <4 x i1> %cmp2, <4 x double> zeroinitializer, <4 x double> %a
 	%y = select <4 x i1> %cmp1, <4 x double> < double -1.0, double -1.0, double -1.0, double -1.0 >, <4 x double> %x
 	%ret = select <4 x i1> %cmp0, <4 x double> < double 1.0, double 1.0, double 1.0, double 1.0 >, <4 x double> %y
+	ret <4 x double> %ret
+}
+define <4 x double> @_Z4stepu2v4du2v4d(<4 x double> %a, <4 x double> %b) nounwind {
+  %cmp = fcmp olt <4 x double> %a, %b
+  %ret = select <4 x i1> %cmp, <4 x double> zeroinitializer, <4 x double> < double 1.0, double 1.0, double 1.0, double 1.0 >
 	ret <4 x double> %ret
 }
 define <8 x float> @_Z3maxu2v8fu2v8f(<8 x float> %a, <8 x float> %b) nounwind {
@@ -371,6 +401,11 @@ define <8 x float> @_Z4signu2v8f(<8 x float> %a) nounwind {
 	%ret = select <8 x i1> %cmp0, <8 x float> < float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0 >, <8 x float> %y
 	ret <8 x float> %ret
 }
+define <8 x float> @_Z4stepu2v8fu2v8f(<8 x float> %a, <8 x float> %b) nounwind {
+  %cmp = fcmp olt <8 x float> %a, %b
+  %ret = select <8 x i1> %cmp, <8 x float> zeroinitializer, <8 x float> < float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0 >
+	ret <8 x float> %ret
+}
 define <8 x double> @_Z3maxu2v8du2v8d(<8 x double> %a, <8 x double> %b) nounwind {
 	%cmp = fcmp ogt <8 x double> %a, %b
 	%ret = select <8 x i1> %cmp, <8 x double> %a, <8 x double> %b
@@ -422,6 +457,11 @@ define <8 x double> @_Z4signu2v8d(<8 x double> %a) nounwind {
 	%x = select <8 x i1> %cmp2, <8 x double> zeroinitializer, <8 x double> %a
 	%y = select <8 x i1> %cmp1, <8 x double> < double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0 >, <8 x double> %x
 	%ret = select <8 x i1> %cmp0, <8 x double> < double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0 >, <8 x double> %y
+	ret <8 x double> %ret
+}
+define <8 x double> @_Z4stepu2v8du2v8d(<8 x double> %a, <8 x double> %b) nounwind {
+  %cmp = fcmp olt <8 x double> %a, %b
+  %ret = select <8 x i1> %cmp, <8 x double> zeroinitializer, <8 x double> < double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0 >
 	ret <8 x double> %ret
 }
 define <16 x float> @_Z3maxu3v16fu3v16f(<16 x float> %a, <16 x float> %b) nounwind {
@@ -477,6 +517,11 @@ define <16 x float> @_Z4signu3v16f(<16 x float> %a) nounwind {
 	%ret = select <16 x i1> %cmp0, <16 x float> < float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0 >, <16 x float> %y
 	ret <16 x float> %ret
 }
+define <16 x float> @_Z4stepu3v16fu3v16f(<16 x float> %a, <16 x float> %b) nounwind {
+  %cmp = fcmp olt <16 x float> %a, %b
+  %ret = select <16 x i1> %cmp, <16 x float> zeroinitializer, <16 x float> < float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0, float 1.0 >
+	ret <16 x float> %ret
+}
 define <16 x double> @_Z3maxu3v16du3v16d(<16 x double> %a, <16 x double> %b) nounwind {
 	%cmp = fcmp ogt <16 x double> %a, %b
 	%ret = select <16 x i1> %cmp, <16 x double> %a, <16 x double> %b
@@ -529,4 +574,41 @@ define <16 x double> @_Z4signu3v16d(<16 x double> %a) nounwind {
 	%y = select <16 x i1> %cmp1, <16 x double> < double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0, double -1.0 >, <16 x double> %x
 	%ret = select <16 x i1> %cmp0, <16 x double> < double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0 >, <16 x double> %y
 	ret <16 x double> %ret
+}
+define <16 x double> @_Z4stepu3v16du3v16d(<16 x double> %a, <16 x double> %b) nounwind {
+  %cmp = fcmp olt <16 x double> %a, %b
+  %ret = select <16 x i1> %cmp, <16 x double> zeroinitializer, <16 x double> < double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0, double 1.0 >
+	ret <16 x double> %ret
+}
+define <2 x float> @_Z7degreesu2v2f(<2 x float> %radians) nounwind uwtable readnone {
+  %ret = fmul <2 x float> %radians, <float 0x404CA5DC20000000, float 0x404CA5DC20000000>
+  ret <2 x float> %ret
+}
+define <16 x float> @_Z7degreesu3v16f(<16 x float> %radians) nounwind uwtable readnone {
+  %ret = fmul <16 x float> %radians, <float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000, float 0x404CA5DC20000000>
+  ret <16 x float> %ret
+}
+define <8 x double> @_Z7degreesu2v8d(<8 x double> %radians) nounwind uwtable readnone {
+  %ret = fmul <8 x double> %radians, <double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB>
+  ret <8 x double> %ret
+}
+define <16 x double> @_Z7degreesu3v16d(<16 x double> %radians) nounwind uwtable readnone {
+  %ret = fmul <16 x double> %radians, <double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB, double 0x404CA5DC1A63C1CB>
+  ret <16 x double> %ret
+}
+define <2 x float> @_Z7radiansu2v2f(<2 x float> %degrees) nounwind uwtable readnone {
+  %ret = fmul <2 x float> %degrees, <float 0x3F91DF46A0000000, float 0x3F91DF46A0000000>
+  ret <2x float> %ret
+}
+define <16 x float> @_Z7radiansu3v16f(<16 x float> %degrees) nounwind uwtable readnone {
+  %ret = fmul <16 x float> %degrees, <float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000, float 0x3F91DF46A0000000>
+  ret <16 x float> %ret
+}
+define <8 x double> @_Z7radiansu2v8d(<8 x double> %degrees) nounwind uwtable readnone {
+  %ret = fmul <8 x double> %degrees, <double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4>
+  ret <8 x double> %ret
+}
+define <16 x double> @_Z7radiansu3v16d(<16 x double> %degrees) nounwind uwtable readnone {
+  %ret = fmul <16 x double> %degrees, <double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4, double 0x3F91DF46A2529CE4>
+  ret <16 x double> %ret
 }
