@@ -45,6 +45,7 @@ foreach(FILE ${STDLIB_SOURCES})
                         PRE_BUILD
                         COMMAND clang -emit-llvm -o ${BITCODE_FILE} -O3 -ffast-math -march=native -c ${FILE}
                         WORKING_DIRECTORY ${FreeOCL_SOURCE_DIR}/stdlib)
+    install(FILES ${BITCODE_FILE} DESTINATION share/FreeOCL/stdlib/)
 endforeach(FILE)
 
 foreach(FILE ${STDLIB_BYTECODE_SOURCES})
@@ -53,4 +54,5 @@ foreach(FILE ${STDLIB_BYTECODE_SOURCES})
                         PRE_BUILD
                         COMMAND llvm-as -o=asm_${BITCODE_FILE} ${FILE}
                         WORKING_DIRECTORY ${FreeOCL_SOURCE_DIR}/stdlib)
+    install(FILES asm_${BITCODE_FILE} DESTINATION share/FreeOCL/stdlib/)
 endforeach(FILE)

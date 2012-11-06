@@ -30,9 +30,28 @@
 #include <llvm/Support/Threading.h>
 #include <iostream>
 #include <cstdio>
+#include <dirent.h>
 
 namespace FreeOCL
 {
+	std::string vm::get_path_to_stdlib()
+	{
+		const std::string path_suffix = "share/FreeOCL/stdlib";
+		const char *path_prefix[] = { "/usr/local/", "/usr/" };
+		for(size_t i = 0 ; i < sizeof(path_prefix) / sizeof(path_prefix[0]) ; ++i)
+		{
+			const std::string path = path_prefix[i] + path_suffix;
+			DIR *dir = opendir(path.c_str());
+			if (dir)
+			{
+				closedir(dir);
+				return path + '/';
+			}
+		}
+		std::cerr << "[FreeOCL] warning: could not find FreeOCL's OpenCL C builtin functions. Your FreeOCL installation may be broken." << std::endl;
+		return path_suffix;
+	}
+
 	vm::vm()
 	{
 		if (!llvm::llvm_is_multithreaded())
@@ -94,7 +113,7 @@ namespace FreeOCL
 										  "asm_relational.bc",
 										  "asm_vloadstore.bc"};
 
-		const std::string path_to_stdlib("/home/roland/progcpp/FreeOCL/branch/llvm/stdlib/");
+		const std::string &path_to_stdlib = get_path_to_stdlib();
 
 		module->dump();
 
@@ -177,7 +196,7 @@ namespace FreeOCL
 		target_opts.RealignStack = 1;
 		target_opts.UnsafeFPMath = 0;
 
-		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::None).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();
+		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::Aggressive).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();
 		if (!error.empty())
 		{
 			std::cerr << "LLVM error at engine creation: " << error << std::endl;

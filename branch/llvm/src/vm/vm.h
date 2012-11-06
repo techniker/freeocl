@@ -65,6 +65,7 @@ namespace FreeOCL
 
 	private:
 		llvm::Module *load_module(const std::string &filename);
+		static std::string get_path_to_stdlib();
 
 	private:
 		llvm::IRBuilder<> *builder;
