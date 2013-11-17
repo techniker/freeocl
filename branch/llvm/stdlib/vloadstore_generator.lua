@@ -132,7 +132,7 @@ for k, v in pairs(dims) do
 				if i > 0 then
 					out:write("U2A" .. i)
 				end
-				out:write("K" .. mangled_scalar_types[k2] .."(" .. t .. " %data, " .. mode .. " %offset, " .. ts .. "* %p) nounwind {\n")
+				out:write(mangled_scalar_types[k2] .."(" .. t .. " %data, " .. mode .. " %offset, " .. ts .. "* %p) nounwind {\n")
 				if v == 3 then
 					out:write("\t%x = extractelement " .. t .. " %data, i32 0\n")
 					out:write("\t%y = extractelement " .. t .. " %data, i32 1\n")

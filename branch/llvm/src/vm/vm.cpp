@@ -1,6 +1,6 @@
 #include "vm.h"
-#include <llvm/Module.h>
-#include <llvm/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/LLVMContext.h>
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Target/TargetOptions.h>
 #include <llvm/ExecutionEngine/JIT.h>
@@ -22,10 +22,10 @@
 #include <llvm/Transforms/Vectorize.h>
 #include <llvm/Transforms/IPO.h>
 #include <llvm/Transforms/Instrumentation.h>
-#include <llvm/DefaultPasses.h>
+//#include <llvm/DefaultPasses.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
-#include <llvm/LLVMContext.h>
-#include <llvm/DerivedTypes.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/DerivedTypes.h>
 #include <llvm/ExecutionEngine/JIT.h>
 #include <llvm/Support/Threading.h>
 #include <iostream>
@@ -87,7 +87,8 @@ namespace FreeOCL
 		if (engine)
 			return;
 
-		llvm::Linker linker("FreeOCL", "__FreeOCL_program__", get_context());
+//		llvm::Linker linker("FreeOCL", "__FreeOCL_program__", get_context());
+		llvm::Linker linker(module);
 
 		const char *modules_to_link[] = { "workitem.bc",
 										  "integer.bc",
@@ -117,7 +118,7 @@ namespace FreeOCL
 
 		module->dump();
 
-		linker.LinkInModule(module);
+//		linker.LinkInModule(module);
 		for(size_t i = 0 ; i < sizeof(modules_to_link) / sizeof(modules_to_link[0]) ; ++i)
 		{
 			char module_name[256];
@@ -128,10 +129,18 @@ namespace FreeOCL
 				std::cerr << "FreeOCL: error loading module '" << (path_to_stdlib + module_name) << "'" << std::endl;
 				exit(1);
 			}
-			linker.LinkInModule(module);
+//			linker.LinkInModule(module);
+			std::string error_msg;
+			if (linker.linkInModule(module, llvm::Linker::DestroySource, &error_msg))
+			{
+				std::cerr << "FreeOCL: error linking module '" << (path_to_stdlib + module_name) << "'" << std::endl
+						  << "LLVM error message: " << std::endl
+						  << error_msg << std::endl;
+				exit(1);
+			}
 		}
 
-		module = linker.releaseModule();
+//		module = linker.releaseModule();
 
 		llvm::PassManager passmanager;
 
@@ -139,7 +148,7 @@ namespace FreeOCL
 		{
 			passmanager.add(llvm::createBasicAliasAnalysisPass());
 			passmanager.add(llvm::createStripDeadPrototypesPass());
-			passmanager.add(llvm::createSimplifyLibCallsPass());
+//			passmanager.add(llvm::createSimplifyLibCallsPass());
 			passmanager.add(llvm::createPromoteMemoryToRegisterPass());
 
 			if (optimization_level >= 2)
@@ -193,7 +202,7 @@ namespace FreeOCL
 		target_opts.LessPreciseFPMADOption = 0;
 		target_opts.NoInfsFPMath = 0;
 		target_opts.NoNaNsFPMath = 0;
-		target_opts.RealignStack = 1;
+//		target_opts.RealignStack = 1;
 		target_opts.UnsafeFPMath = 0;
 
 		engine = llvm::EngineBuilder(module).setUseMCJIT(true).setOptLevel(llvm::CodeGenOpt::Aggressive).setTargetOptions(target_opts).setRelocationModel(llvm::Reloc::Default).setErrorStr(&error).create();

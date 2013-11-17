@@ -21,7 +21,7 @@
 #include <vm/vm.h>
 #include "array_type.h"
 #include <iostream>
-#include <llvm/Module.h>
+#include <llvm/IR/Module.h>
 
 namespace FreeOCL
 {

@@ -18,7 +18,7 @@
 #ifndef __FREEOCL_VM_VM_H__
 #define __FREEOCL_VM_VM_H__
 
-#include <llvm/IRBuilder.h>
+#include <llvm/IR/IRBuilder.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/PassManager.h>
 #include <utils/smartptr.h>

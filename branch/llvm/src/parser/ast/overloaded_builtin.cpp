@@ -26,7 +26,7 @@
 #include <stdexcept>
 #include <utils/set.h>
 #include <utils/string.h>
-#include <llvm/Function.h>
+#include <llvm/IR/Function.h>
 #include <vm/vm.h>
 
 using namespace std;

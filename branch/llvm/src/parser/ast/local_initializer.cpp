@@ -17,12 +17,12 @@
 */
 #include "local_initializer.h"
 #include <vm/vm.h>
-#include <llvm/GlobalVariable.h>
-#include <llvm/Function.h>
-#include <llvm/IRBuilder.h>
+#include <llvm/IR/GlobalVariable.h>
+#include <llvm/IR/Function.h>
+#include <llvm/IR/IRBuilder.h>
 #include "array_type.h"
 #include <iostream>
-#include <llvm/Module.h>
+#include <llvm/IR/Module.h>
 
 namespace FreeOCL
 {

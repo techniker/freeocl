@@ -21,6 +21,9 @@
 #include <atomic_ops.h>
 #include <utils/time.h>
 #include <iostream>
+#ifdef __SSE__
+#include <xmmintrin.h>
+#endif
 
 namespace FreeOCL
 {

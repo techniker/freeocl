@@ -21,9 +21,9 @@
 #include "overloaded_builtin.h"
 #include "native_type.h"
 #include <vm/vm.h>
-#include <llvm/Function.h>
-#include "llvm/Analysis/Verifier.h"
-#include <llvm/Module.h>
+#include <llvm/IR/Function.h>
+#include <llvm/Analysis/Verifier.h>
+#include <llvm/IR/Module.h>
 #include "struct_type.h"
 #include "array_type.h"
 #include "kernel.h"

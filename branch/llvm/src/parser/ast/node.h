@@ -21,7 +21,7 @@
 #include <ostream>
 #include "utils/smartptr.h"
 #include "utils/mutex.h"
-#include <llvm/IRBuilder.h>
+#include <llvm/IR/IRBuilder.h>
 
 namespace FreeOCL
 {

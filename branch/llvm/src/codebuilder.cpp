@@ -34,7 +34,7 @@
 #include <utility>
 #include <algorithm>
 #include "vm/vm.h"
-#include <llvm/Module.h>
+#include <llvm/IR/Module.h>
 #include <llvm/PassManager.h>
 #include <llvm/Analysis/Verifier.h>
 #include <llvm/Analysis/Passes.h>
@@ -44,8 +44,8 @@
 #include <llvm/Transforms/Scalar.h>
 #include <llvm/Transforms/IPO.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
-#include <llvm/LLVMContext.h>
-#include <llvm/DerivedTypes.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/DerivedTypes.h>
 #include <llvm/ExecutionEngine/JIT.h>
 
 namespace FreeOCL
@@ -364,8 +364,8 @@ namespace FreeOCL
 				p_vm->get_function_pass_manager()->add(llvm::createMemCpyOptPass());
 				p_vm->get_function_pass_manager()->add(llvm::createLazyValueInfoPass());
 				p_vm->get_function_pass_manager()->add(llvm::createScalarReplAggregatesPass());
-				p_vm->get_function_pass_manager()->add(llvm::createSimplifyLibCallsPass());
-				p_vm->get_function_pass_manager()->add(llvm::createBlockPlacementPass());
+//				p_vm->get_function_pass_manager()->add(llvm::createSimplifyLibCallsPass());
+//				p_vm->get_function_pass_manager()->add(llvm::createBlockPlacementPass());
 			}
 			if (optimization_level >= 3)
 			{

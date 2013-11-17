@@ -20,7 +20,7 @@
 #include "array_type.h"
 #include <vm/vm.h>
 #include "native_type.h"
-#include <llvm/Module.h>
+#include <llvm/IR/Module.h>
 
 namespace FreeOCL
 {

@@ -24,19 +24,19 @@ define <2 x i8> @_Z6vload2u2szPU2A3Kc(i64 %offset, i8* %p) nounwind {
 	%ret = load <2 x i8>* %src
 	ret <2 x i8> %ret
 }
-define void @_Z7vstore2u2v2cu2szPKc(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore2u2v2cu2szPc(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <2 x i8>*
 	%dst = getelementptr <2 x i8>* %ptr, i64 %offset
 	store <2 x i8> %data, <2 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2cu2szPU2A1Kc(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore2u2v2cu2szPU2A1c(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <2 x i8>*
 	%dst = getelementptr <2 x i8>* %ptr, i64 %offset
 	store <2 x i8> %data, <2 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2cu2szPU2A3Kc(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore2u2v2cu2szPU2A3c(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <2 x i8>*
 	%dst = getelementptr <2 x i8>* %ptr, i64 %offset
 	store <2 x i8> %data, <2 x i8>* %dst
@@ -66,19 +66,19 @@ define <2 x i8> @_Z6vload2u2szPU2A3Kh(i64 %offset, i8* %p) nounwind {
 	%ret = load <2 x i8>* %src
 	ret <2 x i8> %ret
 }
-define void @_Z7vstore2u2v2hu2szPKh(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore2u2v2hu2szPh(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <2 x i8>*
 	%dst = getelementptr <2 x i8>* %ptr, i64 %offset
 	store <2 x i8> %data, <2 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2hu2szPU2A1Kh(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore2u2v2hu2szPU2A1h(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <2 x i8>*
 	%dst = getelementptr <2 x i8>* %ptr, i64 %offset
 	store <2 x i8> %data, <2 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2hu2szPU2A3Kh(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore2u2v2hu2szPU2A3h(<2 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <2 x i8>*
 	%dst = getelementptr <2 x i8>* %ptr, i64 %offset
 	store <2 x i8> %data, <2 x i8>* %dst
@@ -108,19 +108,19 @@ define <2 x i16> @_Z6vload2u2szPU2A3Ks(i64 %offset, i16* %p) nounwind {
 	%ret = load <2 x i16>* %src
 	ret <2 x i16> %ret
 }
-define void @_Z7vstore2u2v2su2szPKs(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore2u2v2su2szPs(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <2 x i16>*
 	%dst = getelementptr <2 x i16>* %ptr, i64 %offset
 	store <2 x i16> %data, <2 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2su2szPU2A1Ks(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore2u2v2su2szPU2A1s(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <2 x i16>*
 	%dst = getelementptr <2 x i16>* %ptr, i64 %offset
 	store <2 x i16> %data, <2 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2su2szPU2A3Ks(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore2u2v2su2szPU2A3s(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <2 x i16>*
 	%dst = getelementptr <2 x i16>* %ptr, i64 %offset
 	store <2 x i16> %data, <2 x i16>* %dst
@@ -150,19 +150,19 @@ define <2 x i16> @_Z6vload2u2szPU2A3Kt(i64 %offset, i16* %p) nounwind {
 	%ret = load <2 x i16>* %src
 	ret <2 x i16> %ret
 }
-define void @_Z7vstore2u2v2tu2szPKt(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore2u2v2tu2szPt(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <2 x i16>*
 	%dst = getelementptr <2 x i16>* %ptr, i64 %offset
 	store <2 x i16> %data, <2 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2tu2szPU2A1Kt(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore2u2v2tu2szPU2A1t(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <2 x i16>*
 	%dst = getelementptr <2 x i16>* %ptr, i64 %offset
 	store <2 x i16> %data, <2 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2tu2szPU2A3Kt(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore2u2v2tu2szPU2A3t(<2 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <2 x i16>*
 	%dst = getelementptr <2 x i16>* %ptr, i64 %offset
 	store <2 x i16> %data, <2 x i16>* %dst
@@ -192,19 +192,19 @@ define <2 x i32> @_Z6vload2u2szPU2A3Ki(i64 %offset, i32* %p) nounwind {
 	%ret = load <2 x i32>* %src
 	ret <2 x i32> %ret
 }
-define void @_Z7vstore2u2v2iu2szPKi(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore2u2v2iu2szPi(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <2 x i32>*
 	%dst = getelementptr <2 x i32>* %ptr, i64 %offset
 	store <2 x i32> %data, <2 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2iu2szPU2A1Ki(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore2u2v2iu2szPU2A1i(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <2 x i32>*
 	%dst = getelementptr <2 x i32>* %ptr, i64 %offset
 	store <2 x i32> %data, <2 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2iu2szPU2A3Ki(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore2u2v2iu2szPU2A3i(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <2 x i32>*
 	%dst = getelementptr <2 x i32>* %ptr, i64 %offset
 	store <2 x i32> %data, <2 x i32>* %dst
@@ -234,19 +234,19 @@ define <2 x i32> @_Z6vload2u2szPU2A3Kj(i64 %offset, i32* %p) nounwind {
 	%ret = load <2 x i32>* %src
 	ret <2 x i32> %ret
 }
-define void @_Z7vstore2u2v2ju2szPKj(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore2u2v2ju2szPj(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <2 x i32>*
 	%dst = getelementptr <2 x i32>* %ptr, i64 %offset
 	store <2 x i32> %data, <2 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2ju2szPU2A1Kj(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore2u2v2ju2szPU2A1j(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <2 x i32>*
 	%dst = getelementptr <2 x i32>* %ptr, i64 %offset
 	store <2 x i32> %data, <2 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2ju2szPU2A3Kj(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore2u2v2ju2szPU2A3j(<2 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <2 x i32>*
 	%dst = getelementptr <2 x i32>* %ptr, i64 %offset
 	store <2 x i32> %data, <2 x i32>* %dst
@@ -276,19 +276,19 @@ define <2 x i64> @_Z6vload2u2szPU2A3Kl(i64 %offset, i64* %p) nounwind {
 	%ret = load <2 x i64>* %src
 	ret <2 x i64> %ret
 }
-define void @_Z7vstore2u2v2lu2szPKl(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore2u2v2lu2szPl(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <2 x i64>*
 	%dst = getelementptr <2 x i64>* %ptr, i64 %offset
 	store <2 x i64> %data, <2 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2lu2szPU2A1Kl(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore2u2v2lu2szPU2A1l(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <2 x i64>*
 	%dst = getelementptr <2 x i64>* %ptr, i64 %offset
 	store <2 x i64> %data, <2 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2lu2szPU2A3Kl(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore2u2v2lu2szPU2A3l(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <2 x i64>*
 	%dst = getelementptr <2 x i64>* %ptr, i64 %offset
 	store <2 x i64> %data, <2 x i64>* %dst
@@ -318,19 +318,19 @@ define <2 x i64> @_Z6vload2u2szPU2A3Km(i64 %offset, i64* %p) nounwind {
 	%ret = load <2 x i64>* %src
 	ret <2 x i64> %ret
 }
-define void @_Z7vstore2u2v2mu2szPKm(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore2u2v2mu2szPm(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <2 x i64>*
 	%dst = getelementptr <2 x i64>* %ptr, i64 %offset
 	store <2 x i64> %data, <2 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2mu2szPU2A1Km(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore2u2v2mu2szPU2A1m(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <2 x i64>*
 	%dst = getelementptr <2 x i64>* %ptr, i64 %offset
 	store <2 x i64> %data, <2 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2mu2szPU2A3Km(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore2u2v2mu2szPU2A3m(<2 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <2 x i64>*
 	%dst = getelementptr <2 x i64>* %ptr, i64 %offset
 	store <2 x i64> %data, <2 x i64>* %dst
@@ -360,19 +360,19 @@ define <2 x float> @_Z6vload2u2szPU2A3Kf(i64 %offset, float* %p) nounwind {
 	%ret = load <2 x float>* %src
 	ret <2 x float> %ret
 }
-define void @_Z7vstore2u2v2fu2szPKf(<2 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore2u2v2fu2szPf(<2 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <2 x float>*
 	%dst = getelementptr <2 x float>* %ptr, i64 %offset
 	store <2 x float> %data, <2 x float>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2fu2szPU2A1Kf(<2 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore2u2v2fu2szPU2A1f(<2 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <2 x float>*
 	%dst = getelementptr <2 x float>* %ptr, i64 %offset
 	store <2 x float> %data, <2 x float>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2fu2szPU2A3Kf(<2 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore2u2v2fu2szPU2A3f(<2 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <2 x float>*
 	%dst = getelementptr <2 x float>* %ptr, i64 %offset
 	store <2 x float> %data, <2 x float>* %dst
@@ -402,19 +402,19 @@ define <2 x double> @_Z6vload2u2szPU2A3Kd(i64 %offset, double* %p) nounwind {
 	%ret = load <2 x double>* %src
 	ret <2 x double> %ret
 }
-define void @_Z7vstore2u2v2du2szPKd(<2 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore2u2v2du2szPd(<2 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <2 x double>*
 	%dst = getelementptr <2 x double>* %ptr, i64 %offset
 	store <2 x double> %data, <2 x double>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2du2szPU2A1Kd(<2 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore2u2v2du2szPU2A1d(<2 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <2 x double>*
 	%dst = getelementptr <2 x double>* %ptr, i64 %offset
 	store <2 x double> %data, <2 x double>* %dst
 	ret void
 }
-define void @_Z7vstore2u2v2du2szPU2A3Kd(<2 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore2u2v2du2szPU2A3d(<2 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <2 x double>*
 	%dst = getelementptr <2 x double>* %ptr, i64 %offset
 	store <2 x double> %data, <2 x double>* %dst
@@ -480,7 +480,7 @@ define <4 x i8> @_Z6vload3u2szPU2A3Kc(i64 %offset, i8* %p) nounwind {
 	%ret = insertelement <4 x i8> %vy, i8 %z, i32 2
 	ret <4 x i8> %ret
 }
-define void @_Z7vstore3u2v3cu2szPKc(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore3u2v3cu2szPc(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%x = extractelement <4 x i8> %data, i32 0
 	%y = extractelement <4 x i8> %data, i32 1
 	%z = extractelement <4 x i8> %data, i32 2
@@ -495,7 +495,7 @@ define void @_Z7vstore3u2v3cu2szPKc(<4 x i8> %data, i64 %offset, i8* %p) nounwin
 	store i8 %z, i8* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3cu2szPU2A1Kc(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore3u2v3cu2szPU2A1c(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%x = extractelement <4 x i8> %data, i32 0
 	%y = extractelement <4 x i8> %data, i32 1
 	%z = extractelement <4 x i8> %data, i32 2
@@ -510,7 +510,7 @@ define void @_Z7vstore3u2v3cu2szPU2A1Kc(<4 x i8> %data, i64 %offset, i8* %p) nou
 	store i8 %z, i8* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3cu2szPU2A3Kc(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore3u2v3cu2szPU2A3c(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%x = extractelement <4 x i8> %data, i32 0
 	%y = extractelement <4 x i8> %data, i32 1
 	%z = extractelement <4 x i8> %data, i32 2
@@ -585,7 +585,7 @@ define <4 x i8> @_Z6vload3u2szPU2A3Kh(i64 %offset, i8* %p) nounwind {
 	%ret = insertelement <4 x i8> %vy, i8 %z, i32 2
 	ret <4 x i8> %ret
 }
-define void @_Z7vstore3u2v3hu2szPKh(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore3u2v3hu2szPh(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%x = extractelement <4 x i8> %data, i32 0
 	%y = extractelement <4 x i8> %data, i32 1
 	%z = extractelement <4 x i8> %data, i32 2
@@ -600,7 +600,7 @@ define void @_Z7vstore3u2v3hu2szPKh(<4 x i8> %data, i64 %offset, i8* %p) nounwin
 	store i8 %z, i8* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3hu2szPU2A1Kh(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore3u2v3hu2szPU2A1h(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%x = extractelement <4 x i8> %data, i32 0
 	%y = extractelement <4 x i8> %data, i32 1
 	%z = extractelement <4 x i8> %data, i32 2
@@ -615,7 +615,7 @@ define void @_Z7vstore3u2v3hu2szPU2A1Kh(<4 x i8> %data, i64 %offset, i8* %p) nou
 	store i8 %z, i8* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3hu2szPU2A3Kh(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore3u2v3hu2szPU2A3h(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%x = extractelement <4 x i8> %data, i32 0
 	%y = extractelement <4 x i8> %data, i32 1
 	%z = extractelement <4 x i8> %data, i32 2
@@ -690,7 +690,7 @@ define <4 x i16> @_Z6vload3u2szPU2A3Ks(i64 %offset, i16* %p) nounwind {
 	%ret = insertelement <4 x i16> %vy, i16 %z, i32 2
 	ret <4 x i16> %ret
 }
-define void @_Z7vstore3u2v3su2szPKs(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore3u2v3su2szPs(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%x = extractelement <4 x i16> %data, i32 0
 	%y = extractelement <4 x i16> %data, i32 1
 	%z = extractelement <4 x i16> %data, i32 2
@@ -705,7 +705,7 @@ define void @_Z7vstore3u2v3su2szPKs(<4 x i16> %data, i64 %offset, i16* %p) nounw
 	store i16 %z, i16* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3su2szPU2A1Ks(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore3u2v3su2szPU2A1s(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%x = extractelement <4 x i16> %data, i32 0
 	%y = extractelement <4 x i16> %data, i32 1
 	%z = extractelement <4 x i16> %data, i32 2
@@ -720,7 +720,7 @@ define void @_Z7vstore3u2v3su2szPU2A1Ks(<4 x i16> %data, i64 %offset, i16* %p) n
 	store i16 %z, i16* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3su2szPU2A3Ks(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore3u2v3su2szPU2A3s(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%x = extractelement <4 x i16> %data, i32 0
 	%y = extractelement <4 x i16> %data, i32 1
 	%z = extractelement <4 x i16> %data, i32 2
@@ -795,7 +795,7 @@ define <4 x i16> @_Z6vload3u2szPU2A3Kt(i64 %offset, i16* %p) nounwind {
 	%ret = insertelement <4 x i16> %vy, i16 %z, i32 2
 	ret <4 x i16> %ret
 }
-define void @_Z7vstore3u2v3tu2szPKt(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore3u2v3tu2szPt(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%x = extractelement <4 x i16> %data, i32 0
 	%y = extractelement <4 x i16> %data, i32 1
 	%z = extractelement <4 x i16> %data, i32 2
@@ -810,7 +810,7 @@ define void @_Z7vstore3u2v3tu2szPKt(<4 x i16> %data, i64 %offset, i16* %p) nounw
 	store i16 %z, i16* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3tu2szPU2A1Kt(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore3u2v3tu2szPU2A1t(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%x = extractelement <4 x i16> %data, i32 0
 	%y = extractelement <4 x i16> %data, i32 1
 	%z = extractelement <4 x i16> %data, i32 2
@@ -825,7 +825,7 @@ define void @_Z7vstore3u2v3tu2szPU2A1Kt(<4 x i16> %data, i64 %offset, i16* %p) n
 	store i16 %z, i16* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3tu2szPU2A3Kt(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore3u2v3tu2szPU2A3t(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%x = extractelement <4 x i16> %data, i32 0
 	%y = extractelement <4 x i16> %data, i32 1
 	%z = extractelement <4 x i16> %data, i32 2
@@ -900,7 +900,7 @@ define <4 x i32> @_Z6vload3u2szPU2A3Ki(i64 %offset, i32* %p) nounwind {
 	%ret = insertelement <4 x i32> %vy, i32 %z, i32 2
 	ret <4 x i32> %ret
 }
-define void @_Z7vstore3u2v3iu2szPKi(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore3u2v3iu2szPi(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%x = extractelement <4 x i32> %data, i32 0
 	%y = extractelement <4 x i32> %data, i32 1
 	%z = extractelement <4 x i32> %data, i32 2
@@ -915,7 +915,7 @@ define void @_Z7vstore3u2v3iu2szPKi(<4 x i32> %data, i64 %offset, i32* %p) nounw
 	store i32 %z, i32* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3iu2szPU2A1Ki(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore3u2v3iu2szPU2A1i(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%x = extractelement <4 x i32> %data, i32 0
 	%y = extractelement <4 x i32> %data, i32 1
 	%z = extractelement <4 x i32> %data, i32 2
@@ -930,7 +930,7 @@ define void @_Z7vstore3u2v3iu2szPU2A1Ki(<4 x i32> %data, i64 %offset, i32* %p) n
 	store i32 %z, i32* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3iu2szPU2A3Ki(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore3u2v3iu2szPU2A3i(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%x = extractelement <4 x i32> %data, i32 0
 	%y = extractelement <4 x i32> %data, i32 1
 	%z = extractelement <4 x i32> %data, i32 2
@@ -1005,7 +1005,7 @@ define <4 x i32> @_Z6vload3u2szPU2A3Kj(i64 %offset, i32* %p) nounwind {
 	%ret = insertelement <4 x i32> %vy, i32 %z, i32 2
 	ret <4 x i32> %ret
 }
-define void @_Z7vstore3u2v3ju2szPKj(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore3u2v3ju2szPj(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%x = extractelement <4 x i32> %data, i32 0
 	%y = extractelement <4 x i32> %data, i32 1
 	%z = extractelement <4 x i32> %data, i32 2
@@ -1020,7 +1020,7 @@ define void @_Z7vstore3u2v3ju2szPKj(<4 x i32> %data, i64 %offset, i32* %p) nounw
 	store i32 %z, i32* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3ju2szPU2A1Kj(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore3u2v3ju2szPU2A1j(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%x = extractelement <4 x i32> %data, i32 0
 	%y = extractelement <4 x i32> %data, i32 1
 	%z = extractelement <4 x i32> %data, i32 2
@@ -1035,7 +1035,7 @@ define void @_Z7vstore3u2v3ju2szPU2A1Kj(<4 x i32> %data, i64 %offset, i32* %p) n
 	store i32 %z, i32* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3ju2szPU2A3Kj(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore3u2v3ju2szPU2A3j(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%x = extractelement <4 x i32> %data, i32 0
 	%y = extractelement <4 x i32> %data, i32 1
 	%z = extractelement <4 x i32> %data, i32 2
@@ -1110,7 +1110,7 @@ define <4 x i64> @_Z6vload3u2szPU2A3Kl(i64 %offset, i64* %p) nounwind {
 	%ret = insertelement <4 x i64> %vy, i64 %z, i32 2
 	ret <4 x i64> %ret
 }
-define void @_Z7vstore3u2v3lu2szPKl(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore3u2v3lu2szPl(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%x = extractelement <4 x i64> %data, i32 0
 	%y = extractelement <4 x i64> %data, i32 1
 	%z = extractelement <4 x i64> %data, i32 2
@@ -1125,7 +1125,7 @@ define void @_Z7vstore3u2v3lu2szPKl(<4 x i64> %data, i64 %offset, i64* %p) nounw
 	store i64 %z, i64* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3lu2szPU2A1Kl(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore3u2v3lu2szPU2A1l(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%x = extractelement <4 x i64> %data, i32 0
 	%y = extractelement <4 x i64> %data, i32 1
 	%z = extractelement <4 x i64> %data, i32 2
@@ -1140,7 +1140,7 @@ define void @_Z7vstore3u2v3lu2szPU2A1Kl(<4 x i64> %data, i64 %offset, i64* %p) n
 	store i64 %z, i64* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3lu2szPU2A3Kl(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore3u2v3lu2szPU2A3l(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%x = extractelement <4 x i64> %data, i32 0
 	%y = extractelement <4 x i64> %data, i32 1
 	%z = extractelement <4 x i64> %data, i32 2
@@ -1215,7 +1215,7 @@ define <4 x i64> @_Z6vload3u2szPU2A3Km(i64 %offset, i64* %p) nounwind {
 	%ret = insertelement <4 x i64> %vy, i64 %z, i32 2
 	ret <4 x i64> %ret
 }
-define void @_Z7vstore3u2v3mu2szPKm(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore3u2v3mu2szPm(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%x = extractelement <4 x i64> %data, i32 0
 	%y = extractelement <4 x i64> %data, i32 1
 	%z = extractelement <4 x i64> %data, i32 2
@@ -1230,7 +1230,7 @@ define void @_Z7vstore3u2v3mu2szPKm(<4 x i64> %data, i64 %offset, i64* %p) nounw
 	store i64 %z, i64* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3mu2szPU2A1Km(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore3u2v3mu2szPU2A1m(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%x = extractelement <4 x i64> %data, i32 0
 	%y = extractelement <4 x i64> %data, i32 1
 	%z = extractelement <4 x i64> %data, i32 2
@@ -1245,7 +1245,7 @@ define void @_Z7vstore3u2v3mu2szPU2A1Km(<4 x i64> %data, i64 %offset, i64* %p) n
 	store i64 %z, i64* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3mu2szPU2A3Km(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore3u2v3mu2szPU2A3m(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%x = extractelement <4 x i64> %data, i32 0
 	%y = extractelement <4 x i64> %data, i32 1
 	%z = extractelement <4 x i64> %data, i32 2
@@ -1320,7 +1320,7 @@ define <4 x float> @_Z6vload3u2szPU2A3Kf(i64 %offset, float* %p) nounwind {
 	%ret = insertelement <4 x float> %vy, float %z, i32 2
 	ret <4 x float> %ret
 }
-define void @_Z7vstore3u2v3fu2szPKf(<4 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore3u2v3fu2szPf(<4 x float> %data, i64 %offset, float* %p) nounwind {
 	%x = extractelement <4 x float> %data, i32 0
 	%y = extractelement <4 x float> %data, i32 1
 	%z = extractelement <4 x float> %data, i32 2
@@ -1335,7 +1335,7 @@ define void @_Z7vstore3u2v3fu2szPKf(<4 x float> %data, i64 %offset, float* %p) n
 	store float %z, float* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3fu2szPU2A1Kf(<4 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore3u2v3fu2szPU2A1f(<4 x float> %data, i64 %offset, float* %p) nounwind {
 	%x = extractelement <4 x float> %data, i32 0
 	%y = extractelement <4 x float> %data, i32 1
 	%z = extractelement <4 x float> %data, i32 2
@@ -1350,7 +1350,7 @@ define void @_Z7vstore3u2v3fu2szPU2A1Kf(<4 x float> %data, i64 %offset, float* %
 	store float %z, float* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3fu2szPU2A3Kf(<4 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore3u2v3fu2szPU2A3f(<4 x float> %data, i64 %offset, float* %p) nounwind {
 	%x = extractelement <4 x float> %data, i32 0
 	%y = extractelement <4 x float> %data, i32 1
 	%z = extractelement <4 x float> %data, i32 2
@@ -1425,7 +1425,7 @@ define <4 x double> @_Z6vload3u2szPU2A3Kd(i64 %offset, double* %p) nounwind {
 	%ret = insertelement <4 x double> %vy, double %z, i32 2
 	ret <4 x double> %ret
 }
-define void @_Z7vstore3u2v3du2szPKd(<4 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore3u2v3du2szPd(<4 x double> %data, i64 %offset, double* %p) nounwind {
 	%x = extractelement <4 x double> %data, i32 0
 	%y = extractelement <4 x double> %data, i32 1
 	%z = extractelement <4 x double> %data, i32 2
@@ -1440,7 +1440,7 @@ define void @_Z7vstore3u2v3du2szPKd(<4 x double> %data, i64 %offset, double* %p)
 	store double %z, double* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3du2szPU2A1Kd(<4 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore3u2v3du2szPU2A1d(<4 x double> %data, i64 %offset, double* %p) nounwind {
 	%x = extractelement <4 x double> %data, i32 0
 	%y = extractelement <4 x double> %data, i32 1
 	%z = extractelement <4 x double> %data, i32 2
@@ -1455,7 +1455,7 @@ define void @_Z7vstore3u2v3du2szPU2A1Kd(<4 x double> %data, i64 %offset, double*
 	store double %z, double* %pz
 	ret void
 }
-define void @_Z7vstore3u2v3du2szPU2A3Kd(<4 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore3u2v3du2szPU2A3d(<4 x double> %data, i64 %offset, double* %p) nounwind {
 	%x = extractelement <4 x double> %data, i32 0
 	%y = extractelement <4 x double> %data, i32 1
 	%z = extractelement <4 x double> %data, i32 2
@@ -1494,19 +1494,19 @@ define <4 x i8> @_Z6vload4u2szPU2A3Kc(i64 %offset, i8* %p) nounwind {
 	%ret = load <4 x i8>* %src
 	ret <4 x i8> %ret
 }
-define void @_Z7vstore4u2v4cu2szPKc(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore4u2v4cu2szPc(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <4 x i8>*
 	%dst = getelementptr <4 x i8>* %ptr, i64 %offset
 	store <4 x i8> %data, <4 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4cu2szPU2A1Kc(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore4u2v4cu2szPU2A1c(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <4 x i8>*
 	%dst = getelementptr <4 x i8>* %ptr, i64 %offset
 	store <4 x i8> %data, <4 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4cu2szPU2A3Kc(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore4u2v4cu2szPU2A3c(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <4 x i8>*
 	%dst = getelementptr <4 x i8>* %ptr, i64 %offset
 	store <4 x i8> %data, <4 x i8>* %dst
@@ -1536,19 +1536,19 @@ define <4 x i8> @_Z6vload4u2szPU2A3Kh(i64 %offset, i8* %p) nounwind {
 	%ret = load <4 x i8>* %src
 	ret <4 x i8> %ret
 }
-define void @_Z7vstore4u2v4hu2szPKh(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore4u2v4hu2szPh(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <4 x i8>*
 	%dst = getelementptr <4 x i8>* %ptr, i64 %offset
 	store <4 x i8> %data, <4 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4hu2szPU2A1Kh(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore4u2v4hu2szPU2A1h(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <4 x i8>*
 	%dst = getelementptr <4 x i8>* %ptr, i64 %offset
 	store <4 x i8> %data, <4 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4hu2szPU2A3Kh(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore4u2v4hu2szPU2A3h(<4 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <4 x i8>*
 	%dst = getelementptr <4 x i8>* %ptr, i64 %offset
 	store <4 x i8> %data, <4 x i8>* %dst
@@ -1578,19 +1578,19 @@ define <4 x i16> @_Z6vload4u2szPU2A3Ks(i64 %offset, i16* %p) nounwind {
 	%ret = load <4 x i16>* %src
 	ret <4 x i16> %ret
 }
-define void @_Z7vstore4u2v4su2szPKs(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore4u2v4su2szPs(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <4 x i16>*
 	%dst = getelementptr <4 x i16>* %ptr, i64 %offset
 	store <4 x i16> %data, <4 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4su2szPU2A1Ks(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore4u2v4su2szPU2A1s(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <4 x i16>*
 	%dst = getelementptr <4 x i16>* %ptr, i64 %offset
 	store <4 x i16> %data, <4 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4su2szPU2A3Ks(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore4u2v4su2szPU2A3s(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <4 x i16>*
 	%dst = getelementptr <4 x i16>* %ptr, i64 %offset
 	store <4 x i16> %data, <4 x i16>* %dst
@@ -1620,19 +1620,19 @@ define <4 x i16> @_Z6vload4u2szPU2A3Kt(i64 %offset, i16* %p) nounwind {
 	%ret = load <4 x i16>* %src
 	ret <4 x i16> %ret
 }
-define void @_Z7vstore4u2v4tu2szPKt(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore4u2v4tu2szPt(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <4 x i16>*
 	%dst = getelementptr <4 x i16>* %ptr, i64 %offset
 	store <4 x i16> %data, <4 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4tu2szPU2A1Kt(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore4u2v4tu2szPU2A1t(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <4 x i16>*
 	%dst = getelementptr <4 x i16>* %ptr, i64 %offset
 	store <4 x i16> %data, <4 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4tu2szPU2A3Kt(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore4u2v4tu2szPU2A3t(<4 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <4 x i16>*
 	%dst = getelementptr <4 x i16>* %ptr, i64 %offset
 	store <4 x i16> %data, <4 x i16>* %dst
@@ -1662,19 +1662,19 @@ define <4 x i32> @_Z6vload4u2szPU2A3Ki(i64 %offset, i32* %p) nounwind {
 	%ret = load <4 x i32>* %src
 	ret <4 x i32> %ret
 }
-define void @_Z7vstore4u2v4iu2szPKi(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore4u2v4iu2szPi(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <4 x i32>*
 	%dst = getelementptr <4 x i32>* %ptr, i64 %offset
 	store <4 x i32> %data, <4 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4iu2szPU2A1Ki(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore4u2v4iu2szPU2A1i(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <4 x i32>*
 	%dst = getelementptr <4 x i32>* %ptr, i64 %offset
 	store <4 x i32> %data, <4 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4iu2szPU2A3Ki(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore4u2v4iu2szPU2A3i(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <4 x i32>*
 	%dst = getelementptr <4 x i32>* %ptr, i64 %offset
 	store <4 x i32> %data, <4 x i32>* %dst
@@ -1704,19 +1704,19 @@ define <4 x i32> @_Z6vload4u2szPU2A3Kj(i64 %offset, i32* %p) nounwind {
 	%ret = load <4 x i32>* %src
 	ret <4 x i32> %ret
 }
-define void @_Z7vstore4u2v4ju2szPKj(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore4u2v4ju2szPj(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <4 x i32>*
 	%dst = getelementptr <4 x i32>* %ptr, i64 %offset
 	store <4 x i32> %data, <4 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4ju2szPU2A1Kj(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore4u2v4ju2szPU2A1j(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <4 x i32>*
 	%dst = getelementptr <4 x i32>* %ptr, i64 %offset
 	store <4 x i32> %data, <4 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4ju2szPU2A3Kj(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore4u2v4ju2szPU2A3j(<4 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <4 x i32>*
 	%dst = getelementptr <4 x i32>* %ptr, i64 %offset
 	store <4 x i32> %data, <4 x i32>* %dst
@@ -1746,19 +1746,19 @@ define <4 x i64> @_Z6vload4u2szPU2A3Kl(i64 %offset, i64* %p) nounwind {
 	%ret = load <4 x i64>* %src
 	ret <4 x i64> %ret
 }
-define void @_Z7vstore4u2v4lu2szPKl(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore4u2v4lu2szPl(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <4 x i64>*
 	%dst = getelementptr <4 x i64>* %ptr, i64 %offset
 	store <4 x i64> %data, <4 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4lu2szPU2A1Kl(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore4u2v4lu2szPU2A1l(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <4 x i64>*
 	%dst = getelementptr <4 x i64>* %ptr, i64 %offset
 	store <4 x i64> %data, <4 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4lu2szPU2A3Kl(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore4u2v4lu2szPU2A3l(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <4 x i64>*
 	%dst = getelementptr <4 x i64>* %ptr, i64 %offset
 	store <4 x i64> %data, <4 x i64>* %dst
@@ -1788,19 +1788,19 @@ define <4 x i64> @_Z6vload4u2szPU2A3Km(i64 %offset, i64* %p) nounwind {
 	%ret = load <4 x i64>* %src
 	ret <4 x i64> %ret
 }
-define void @_Z7vstore4u2v4mu2szPKm(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore4u2v4mu2szPm(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <4 x i64>*
 	%dst = getelementptr <4 x i64>* %ptr, i64 %offset
 	store <4 x i64> %data, <4 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4mu2szPU2A1Km(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore4u2v4mu2szPU2A1m(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <4 x i64>*
 	%dst = getelementptr <4 x i64>* %ptr, i64 %offset
 	store <4 x i64> %data, <4 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4mu2szPU2A3Km(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore4u2v4mu2szPU2A3m(<4 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <4 x i64>*
 	%dst = getelementptr <4 x i64>* %ptr, i64 %offset
 	store <4 x i64> %data, <4 x i64>* %dst
@@ -1830,19 +1830,19 @@ define <4 x float> @_Z6vload4u2szPU2A3Kf(i64 %offset, float* %p) nounwind {
 	%ret = load <4 x float>* %src
 	ret <4 x float> %ret
 }
-define void @_Z7vstore4u2v4fu2szPKf(<4 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore4u2v4fu2szPf(<4 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <4 x float>*
 	%dst = getelementptr <4 x float>* %ptr, i64 %offset
 	store <4 x float> %data, <4 x float>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4fu2szPU2A1Kf(<4 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore4u2v4fu2szPU2A1f(<4 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <4 x float>*
 	%dst = getelementptr <4 x float>* %ptr, i64 %offset
 	store <4 x float> %data, <4 x float>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4fu2szPU2A3Kf(<4 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore4u2v4fu2szPU2A3f(<4 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <4 x float>*
 	%dst = getelementptr <4 x float>* %ptr, i64 %offset
 	store <4 x float> %data, <4 x float>* %dst
@@ -1872,19 +1872,19 @@ define <4 x double> @_Z6vload4u2szPU2A3Kd(i64 %offset, double* %p) nounwind {
 	%ret = load <4 x double>* %src
 	ret <4 x double> %ret
 }
-define void @_Z7vstore4u2v4du2szPKd(<4 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore4u2v4du2szPd(<4 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <4 x double>*
 	%dst = getelementptr <4 x double>* %ptr, i64 %offset
 	store <4 x double> %data, <4 x double>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4du2szPU2A1Kd(<4 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore4u2v4du2szPU2A1d(<4 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <4 x double>*
 	%dst = getelementptr <4 x double>* %ptr, i64 %offset
 	store <4 x double> %data, <4 x double>* %dst
 	ret void
 }
-define void @_Z7vstore4u2v4du2szPU2A3Kd(<4 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore4u2v4du2szPU2A3d(<4 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <4 x double>*
 	%dst = getelementptr <4 x double>* %ptr, i64 %offset
 	store <4 x double> %data, <4 x double>* %dst
@@ -1914,19 +1914,19 @@ define <8 x i8> @_Z6vload8u2szPU2A3Kc(i64 %offset, i8* %p) nounwind {
 	%ret = load <8 x i8>* %src
 	ret <8 x i8> %ret
 }
-define void @_Z7vstore8u2v8cu2szPKc(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore8u2v8cu2szPc(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <8 x i8>*
 	%dst = getelementptr <8 x i8>* %ptr, i64 %offset
 	store <8 x i8> %data, <8 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8cu2szPU2A1Kc(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore8u2v8cu2szPU2A1c(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <8 x i8>*
 	%dst = getelementptr <8 x i8>* %ptr, i64 %offset
 	store <8 x i8> %data, <8 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8cu2szPU2A3Kc(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore8u2v8cu2szPU2A3c(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <8 x i8>*
 	%dst = getelementptr <8 x i8>* %ptr, i64 %offset
 	store <8 x i8> %data, <8 x i8>* %dst
@@ -1956,19 +1956,19 @@ define <8 x i8> @_Z6vload8u2szPU2A3Kh(i64 %offset, i8* %p) nounwind {
 	%ret = load <8 x i8>* %src
 	ret <8 x i8> %ret
 }
-define void @_Z7vstore8u2v8hu2szPKh(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore8u2v8hu2szPh(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <8 x i8>*
 	%dst = getelementptr <8 x i8>* %ptr, i64 %offset
 	store <8 x i8> %data, <8 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8hu2szPU2A1Kh(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore8u2v8hu2szPU2A1h(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <8 x i8>*
 	%dst = getelementptr <8 x i8>* %ptr, i64 %offset
 	store <8 x i8> %data, <8 x i8>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8hu2szPU2A3Kh(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z7vstore8u2v8hu2szPU2A3h(<8 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <8 x i8>*
 	%dst = getelementptr <8 x i8>* %ptr, i64 %offset
 	store <8 x i8> %data, <8 x i8>* %dst
@@ -1998,19 +1998,19 @@ define <8 x i16> @_Z6vload8u2szPU2A3Ks(i64 %offset, i16* %p) nounwind {
 	%ret = load <8 x i16>* %src
 	ret <8 x i16> %ret
 }
-define void @_Z7vstore8u2v8su2szPKs(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore8u2v8su2szPs(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <8 x i16>*
 	%dst = getelementptr <8 x i16>* %ptr, i64 %offset
 	store <8 x i16> %data, <8 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8su2szPU2A1Ks(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore8u2v8su2szPU2A1s(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <8 x i16>*
 	%dst = getelementptr <8 x i16>* %ptr, i64 %offset
 	store <8 x i16> %data, <8 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8su2szPU2A3Ks(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore8u2v8su2szPU2A3s(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <8 x i16>*
 	%dst = getelementptr <8 x i16>* %ptr, i64 %offset
 	store <8 x i16> %data, <8 x i16>* %dst
@@ -2040,19 +2040,19 @@ define <8 x i16> @_Z6vload8u2szPU2A3Kt(i64 %offset, i16* %p) nounwind {
 	%ret = load <8 x i16>* %src
 	ret <8 x i16> %ret
 }
-define void @_Z7vstore8u2v8tu2szPKt(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore8u2v8tu2szPt(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <8 x i16>*
 	%dst = getelementptr <8 x i16>* %ptr, i64 %offset
 	store <8 x i16> %data, <8 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8tu2szPU2A1Kt(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore8u2v8tu2szPU2A1t(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <8 x i16>*
 	%dst = getelementptr <8 x i16>* %ptr, i64 %offset
 	store <8 x i16> %data, <8 x i16>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8tu2szPU2A3Kt(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z7vstore8u2v8tu2szPU2A3t(<8 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <8 x i16>*
 	%dst = getelementptr <8 x i16>* %ptr, i64 %offset
 	store <8 x i16> %data, <8 x i16>* %dst
@@ -2082,19 +2082,19 @@ define <8 x i32> @_Z6vload8u2szPU2A3Ki(i64 %offset, i32* %p) nounwind {
 	%ret = load <8 x i32>* %src
 	ret <8 x i32> %ret
 }
-define void @_Z7vstore8u2v8iu2szPKi(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore8u2v8iu2szPi(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <8 x i32>*
 	%dst = getelementptr <8 x i32>* %ptr, i64 %offset
 	store <8 x i32> %data, <8 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8iu2szPU2A1Ki(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore8u2v8iu2szPU2A1i(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <8 x i32>*
 	%dst = getelementptr <8 x i32>* %ptr, i64 %offset
 	store <8 x i32> %data, <8 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8iu2szPU2A3Ki(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore8u2v8iu2szPU2A3i(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <8 x i32>*
 	%dst = getelementptr <8 x i32>* %ptr, i64 %offset
 	store <8 x i32> %data, <8 x i32>* %dst
@@ -2124,19 +2124,19 @@ define <8 x i32> @_Z6vload8u2szPU2A3Kj(i64 %offset, i32* %p) nounwind {
 	%ret = load <8 x i32>* %src
 	ret <8 x i32> %ret
 }
-define void @_Z7vstore8u2v8ju2szPKj(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore8u2v8ju2szPj(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <8 x i32>*
 	%dst = getelementptr <8 x i32>* %ptr, i64 %offset
 	store <8 x i32> %data, <8 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8ju2szPU2A1Kj(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore8u2v8ju2szPU2A1j(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <8 x i32>*
 	%dst = getelementptr <8 x i32>* %ptr, i64 %offset
 	store <8 x i32> %data, <8 x i32>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8ju2szPU2A3Kj(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z7vstore8u2v8ju2szPU2A3j(<8 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <8 x i32>*
 	%dst = getelementptr <8 x i32>* %ptr, i64 %offset
 	store <8 x i32> %data, <8 x i32>* %dst
@@ -2166,19 +2166,19 @@ define <8 x i64> @_Z6vload8u2szPU2A3Kl(i64 %offset, i64* %p) nounwind {
 	%ret = load <8 x i64>* %src
 	ret <8 x i64> %ret
 }
-define void @_Z7vstore8u2v8lu2szPKl(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore8u2v8lu2szPl(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <8 x i64>*
 	%dst = getelementptr <8 x i64>* %ptr, i64 %offset
 	store <8 x i64> %data, <8 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8lu2szPU2A1Kl(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore8u2v8lu2szPU2A1l(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <8 x i64>*
 	%dst = getelementptr <8 x i64>* %ptr, i64 %offset
 	store <8 x i64> %data, <8 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8lu2szPU2A3Kl(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore8u2v8lu2szPU2A3l(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <8 x i64>*
 	%dst = getelementptr <8 x i64>* %ptr, i64 %offset
 	store <8 x i64> %data, <8 x i64>* %dst
@@ -2208,19 +2208,19 @@ define <8 x i64> @_Z6vload8u2szPU2A3Km(i64 %offset, i64* %p) nounwind {
 	%ret = load <8 x i64>* %src
 	ret <8 x i64> %ret
 }
-define void @_Z7vstore8u2v8mu2szPKm(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore8u2v8mu2szPm(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <8 x i64>*
 	%dst = getelementptr <8 x i64>* %ptr, i64 %offset
 	store <8 x i64> %data, <8 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8mu2szPU2A1Km(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore8u2v8mu2szPU2A1m(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <8 x i64>*
 	%dst = getelementptr <8 x i64>* %ptr, i64 %offset
 	store <8 x i64> %data, <8 x i64>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8mu2szPU2A3Km(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z7vstore8u2v8mu2szPU2A3m(<8 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <8 x i64>*
 	%dst = getelementptr <8 x i64>* %ptr, i64 %offset
 	store <8 x i64> %data, <8 x i64>* %dst
@@ -2250,19 +2250,19 @@ define <8 x float> @_Z6vload8u2szPU2A3Kf(i64 %offset, float* %p) nounwind {
 	%ret = load <8 x float>* %src
 	ret <8 x float> %ret
 }
-define void @_Z7vstore8u2v8fu2szPKf(<8 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore8u2v8fu2szPf(<8 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <8 x float>*
 	%dst = getelementptr <8 x float>* %ptr, i64 %offset
 	store <8 x float> %data, <8 x float>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8fu2szPU2A1Kf(<8 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore8u2v8fu2szPU2A1f(<8 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <8 x float>*
 	%dst = getelementptr <8 x float>* %ptr, i64 %offset
 	store <8 x float> %data, <8 x float>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8fu2szPU2A3Kf(<8 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z7vstore8u2v8fu2szPU2A3f(<8 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <8 x float>*
 	%dst = getelementptr <8 x float>* %ptr, i64 %offset
 	store <8 x float> %data, <8 x float>* %dst
@@ -2292,19 +2292,19 @@ define <8 x double> @_Z6vload8u2szPU2A3Kd(i64 %offset, double* %p) nounwind {
 	%ret = load <8 x double>* %src
 	ret <8 x double> %ret
 }
-define void @_Z7vstore8u2v8du2szPKd(<8 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore8u2v8du2szPd(<8 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <8 x double>*
 	%dst = getelementptr <8 x double>* %ptr, i64 %offset
 	store <8 x double> %data, <8 x double>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8du2szPU2A1Kd(<8 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore8u2v8du2szPU2A1d(<8 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <8 x double>*
 	%dst = getelementptr <8 x double>* %ptr, i64 %offset
 	store <8 x double> %data, <8 x double>* %dst
 	ret void
 }
-define void @_Z7vstore8u2v8du2szPU2A3Kd(<8 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z7vstore8u2v8du2szPU2A3d(<8 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <8 x double>*
 	%dst = getelementptr <8 x double>* %ptr, i64 %offset
 	store <8 x double> %data, <8 x double>* %dst
@@ -2334,19 +2334,19 @@ define <16 x i8> @_Z7vload16u2szPU2A3Kc(i64 %offset, i8* %p) nounwind {
 	%ret = load <16 x i8>* %src
 	ret <16 x i8> %ret
 }
-define void @_Z8vstore16u3v16cu2szPKc(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z8vstore16u3v16cu2szPc(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <16 x i8>*
 	%dst = getelementptr <16 x i8>* %ptr, i64 %offset
 	store <16 x i8> %data, <16 x i8>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16cu2szPU2A1Kc(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z8vstore16u3v16cu2szPU2A1c(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <16 x i8>*
 	%dst = getelementptr <16 x i8>* %ptr, i64 %offset
 	store <16 x i8> %data, <16 x i8>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16cu2szPU2A3Kc(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z8vstore16u3v16cu2szPU2A3c(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <16 x i8>*
 	%dst = getelementptr <16 x i8>* %ptr, i64 %offset
 	store <16 x i8> %data, <16 x i8>* %dst
@@ -2376,19 +2376,19 @@ define <16 x i8> @_Z7vload16u2szPU2A3Kh(i64 %offset, i8* %p) nounwind {
 	%ret = load <16 x i8>* %src
 	ret <16 x i8> %ret
 }
-define void @_Z8vstore16u3v16hu2szPKh(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z8vstore16u3v16hu2szPh(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <16 x i8>*
 	%dst = getelementptr <16 x i8>* %ptr, i64 %offset
 	store <16 x i8> %data, <16 x i8>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16hu2szPU2A1Kh(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z8vstore16u3v16hu2szPU2A1h(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <16 x i8>*
 	%dst = getelementptr <16 x i8>* %ptr, i64 %offset
 	store <16 x i8> %data, <16 x i8>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16hu2szPU2A3Kh(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
+define void @_Z8vstore16u3v16hu2szPU2A3h(<16 x i8> %data, i64 %offset, i8* %p) nounwind {
 	%ptr = bitcast i8* %p to <16 x i8>*
 	%dst = getelementptr <16 x i8>* %ptr, i64 %offset
 	store <16 x i8> %data, <16 x i8>* %dst
@@ -2418,19 +2418,19 @@ define <16 x i16> @_Z7vload16u2szPU2A3Ks(i64 %offset, i16* %p) nounwind {
 	%ret = load <16 x i16>* %src
 	ret <16 x i16> %ret
 }
-define void @_Z8vstore16u3v16su2szPKs(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z8vstore16u3v16su2szPs(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <16 x i16>*
 	%dst = getelementptr <16 x i16>* %ptr, i64 %offset
 	store <16 x i16> %data, <16 x i16>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16su2szPU2A1Ks(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z8vstore16u3v16su2szPU2A1s(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <16 x i16>*
 	%dst = getelementptr <16 x i16>* %ptr, i64 %offset
 	store <16 x i16> %data, <16 x i16>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16su2szPU2A3Ks(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z8vstore16u3v16su2szPU2A3s(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <16 x i16>*
 	%dst = getelementptr <16 x i16>* %ptr, i64 %offset
 	store <16 x i16> %data, <16 x i16>* %dst
@@ -2460,19 +2460,19 @@ define <16 x i16> @_Z7vload16u2szPU2A3Kt(i64 %offset, i16* %p) nounwind {
 	%ret = load <16 x i16>* %src
 	ret <16 x i16> %ret
 }
-define void @_Z8vstore16u3v16tu2szPKt(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z8vstore16u3v16tu2szPt(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <16 x i16>*
 	%dst = getelementptr <16 x i16>* %ptr, i64 %offset
 	store <16 x i16> %data, <16 x i16>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16tu2szPU2A1Kt(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z8vstore16u3v16tu2szPU2A1t(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <16 x i16>*
 	%dst = getelementptr <16 x i16>* %ptr, i64 %offset
 	store <16 x i16> %data, <16 x i16>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16tu2szPU2A3Kt(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
+define void @_Z8vstore16u3v16tu2szPU2A3t(<16 x i16> %data, i64 %offset, i16* %p) nounwind {
 	%ptr = bitcast i16* %p to <16 x i16>*
 	%dst = getelementptr <16 x i16>* %ptr, i64 %offset
 	store <16 x i16> %data, <16 x i16>* %dst
@@ -2502,19 +2502,19 @@ define <16 x i32> @_Z7vload16u2szPU2A3Ki(i64 %offset, i32* %p) nounwind {
 	%ret = load <16 x i32>* %src
 	ret <16 x i32> %ret
 }
-define void @_Z8vstore16u3v16iu2szPKi(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z8vstore16u3v16iu2szPi(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <16 x i32>*
 	%dst = getelementptr <16 x i32>* %ptr, i64 %offset
 	store <16 x i32> %data, <16 x i32>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16iu2szPU2A1Ki(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z8vstore16u3v16iu2szPU2A1i(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <16 x i32>*
 	%dst = getelementptr <16 x i32>* %ptr, i64 %offset
 	store <16 x i32> %data, <16 x i32>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16iu2szPU2A3Ki(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z8vstore16u3v16iu2szPU2A3i(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <16 x i32>*
 	%dst = getelementptr <16 x i32>* %ptr, i64 %offset
 	store <16 x i32> %data, <16 x i32>* %dst
@@ -2544,19 +2544,19 @@ define <16 x i32> @_Z7vload16u2szPU2A3Kj(i64 %offset, i32* %p) nounwind {
 	%ret = load <16 x i32>* %src
 	ret <16 x i32> %ret
 }
-define void @_Z8vstore16u3v16ju2szPKj(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z8vstore16u3v16ju2szPj(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <16 x i32>*
 	%dst = getelementptr <16 x i32>* %ptr, i64 %offset
 	store <16 x i32> %data, <16 x i32>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16ju2szPU2A1Kj(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z8vstore16u3v16ju2szPU2A1j(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <16 x i32>*
 	%dst = getelementptr <16 x i32>* %ptr, i64 %offset
 	store <16 x i32> %data, <16 x i32>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16ju2szPU2A3Kj(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
+define void @_Z8vstore16u3v16ju2szPU2A3j(<16 x i32> %data, i64 %offset, i32* %p) nounwind {
 	%ptr = bitcast i32* %p to <16 x i32>*
 	%dst = getelementptr <16 x i32>* %ptr, i64 %offset
 	store <16 x i32> %data, <16 x i32>* %dst
@@ -2586,19 +2586,19 @@ define <16 x i64> @_Z7vload16u2szPU2A3Kl(i64 %offset, i64* %p) nounwind {
 	%ret = load <16 x i64>* %src
 	ret <16 x i64> %ret
 }
-define void @_Z8vstore16u3v16lu2szPKl(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z8vstore16u3v16lu2szPl(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <16 x i64>*
 	%dst = getelementptr <16 x i64>* %ptr, i64 %offset
 	store <16 x i64> %data, <16 x i64>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16lu2szPU2A1Kl(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z8vstore16u3v16lu2szPU2A1l(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <16 x i64>*
 	%dst = getelementptr <16 x i64>* %ptr, i64 %offset
 	store <16 x i64> %data, <16 x i64>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16lu2szPU2A3Kl(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z8vstore16u3v16lu2szPU2A3l(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <16 x i64>*
 	%dst = getelementptr <16 x i64>* %ptr, i64 %offset
 	store <16 x i64> %data, <16 x i64>* %dst
@@ -2628,19 +2628,19 @@ define <16 x i64> @_Z7vload16u2szPU2A3Km(i64 %offset, i64* %p) nounwind {
 	%ret = load <16 x i64>* %src
 	ret <16 x i64> %ret
 }
-define void @_Z8vstore16u3v16mu2szPKm(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z8vstore16u3v16mu2szPm(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <16 x i64>*
 	%dst = getelementptr <16 x i64>* %ptr, i64 %offset
 	store <16 x i64> %data, <16 x i64>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16mu2szPU2A1Km(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z8vstore16u3v16mu2szPU2A1m(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <16 x i64>*
 	%dst = getelementptr <16 x i64>* %ptr, i64 %offset
 	store <16 x i64> %data, <16 x i64>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16mu2szPU2A3Km(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
+define void @_Z8vstore16u3v16mu2szPU2A3m(<16 x i64> %data, i64 %offset, i64* %p) nounwind {
 	%ptr = bitcast i64* %p to <16 x i64>*
 	%dst = getelementptr <16 x i64>* %ptr, i64 %offset
 	store <16 x i64> %data, <16 x i64>* %dst
@@ -2670,19 +2670,19 @@ define <16 x float> @_Z7vload16u2szPU2A3Kf(i64 %offset, float* %p) nounwind {
 	%ret = load <16 x float>* %src
 	ret <16 x float> %ret
 }
-define void @_Z8vstore16u3v16fu2szPKf(<16 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z8vstore16u3v16fu2szPf(<16 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <16 x float>*
 	%dst = getelementptr <16 x float>* %ptr, i64 %offset
 	store <16 x float> %data, <16 x float>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16fu2szPU2A1Kf(<16 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z8vstore16u3v16fu2szPU2A1f(<16 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <16 x float>*
 	%dst = getelementptr <16 x float>* %ptr, i64 %offset
 	store <16 x float> %data, <16 x float>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16fu2szPU2A3Kf(<16 x float> %data, i64 %offset, float* %p) nounwind {
+define void @_Z8vstore16u3v16fu2szPU2A3f(<16 x float> %data, i64 %offset, float* %p) nounwind {
 	%ptr = bitcast float* %p to <16 x float>*
 	%dst = getelementptr <16 x float>* %ptr, i64 %offset
 	store <16 x float> %data, <16 x float>* %dst
@@ -2712,19 +2712,19 @@ define <16 x double> @_Z7vload16u2szPU2A3Kd(i64 %offset, double* %p) nounwind {
 	%ret = load <16 x double>* %src
 	ret <16 x double> %ret
 }
-define void @_Z8vstore16u3v16du2szPKd(<16 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z8vstore16u3v16du2szPd(<16 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <16 x double>*
 	%dst = getelementptr <16 x double>* %ptr, i64 %offset
 	store <16 x double> %data, <16 x double>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16du2szPU2A1Kd(<16 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z8vstore16u3v16du2szPU2A1d(<16 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <16 x double>*
 	%dst = getelementptr <16 x double>* %ptr, i64 %offset
 	store <16 x double> %data, <16 x double>* %dst
 	ret void
 }
-define void @_Z8vstore16u3v16du2szPU2A3Kd(<16 x double> %data, i64 %offset, double* %p) nounwind {
+define void @_Z8vstore16u3v16du2szPU2A3d(<16 x double> %data, i64 %offset, double* %p) nounwind {
 	%ptr = bitcast double* %p to <16 x double>*
 	%dst = getelementptr <16 x double>* %ptr, i64 %offset
 	store <16 x double> %data, <16 x double>* %dst

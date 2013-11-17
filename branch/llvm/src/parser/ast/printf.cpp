@@ -19,7 +19,7 @@
 #include "pointer_type.h"
 #include "native_type.h"
 #include <vm/vm.h>
-#include <llvm/Function.h>
+#include <llvm/IR/Function.h>
 
 namespace FreeOCL
 {

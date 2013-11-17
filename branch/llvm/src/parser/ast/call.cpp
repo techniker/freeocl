@@ -19,9 +19,9 @@
 #include "native_type.h"
 #include "array_type.h"
 #include <vm/vm.h>
-#include <llvm/Function.h>
+#include <llvm/IR/Function.h>
 #include <iostream>
-#include <llvm/Module.h>
+#include <llvm/IR/Module.h>
 
 namespace FreeOCL
 {
