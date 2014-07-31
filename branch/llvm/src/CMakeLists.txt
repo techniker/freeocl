@@ -128,7 +128,9 @@ add_library(FreeOCL SHARED ${SOURCES} ${PARSER_SOURCES} ${VM_SOURCES} ${UTILS_SO
 target_link_libraries(FreeOCL ${LLVM_LIBRARIES})
 
 # Installation and packaging process
-install(TARGETS FreeOCL LIBRARY DESTINATION lib)
+if(NOT (CMAKE_SYSTEM_NAME STREQUAL "Windows"))
+	install(TARGETS FreeOCL LIBRARY DESTINATION lib${LIB_SUFFIX})
+endif(NOT (CMAKE_SYSTEM_NAME STREQUAL "Windows"))
 
 
 add_subdirectory(icd)
