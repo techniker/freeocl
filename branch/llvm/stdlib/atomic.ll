@@ -73,11 +73,13 @@ define i32 @_Z10atomic_decPU2A1j(i32* %p) nounwind {
 }
 
 define i32 @_Z14atomic_cmpxchgPU2A1iii(i32* %p, i32 %cmp, i32 %val) nounwind {
-    %ret = cmpxchg volatile i32* %p, i32 %cmp, i32 %val monotonic
+    %ret0 = cmpxchg volatile i32* %p, i32 %cmp, i32 %val monotonic monotonic
+    %ret = extractvalue { i32, i1 } %ret0, 0
     ret i32 %ret
 }
 define i32 @_Z14atomic_cmpxchgPU2A1jjj(i32* %p, i32 %cmp, i32 %val) nounwind {
-    %ret = cmpxchg volatile i32* %p, i32 %cmp, i32 %val monotonic
+    %ret0 = cmpxchg volatile i32* %p, i32 %cmp, i32 %val monotonic monotonic
+    %ret = extractvalue { i32, i1 } %ret0, 0
     ret i32 %ret
 }
 
@@ -180,11 +182,13 @@ define i64 @_Z10atomic_decPU2A1m(i64* %p) nounwind {
 }
 
 define i64 @_Z14atomic_cmpxchgPU2A1lll(i64* %p, i64 %cmp, i64 %val) nounwind {
-    %ret = cmpxchg volatile i64* %p, i64 %cmp, i64 %val monotonic
+    %ret0 = cmpxchg volatile i64* %p, i64 %cmp, i64 %val monotonic monotonic
+    %ret = extractvalue { i64, i1 } %ret0, 0
     ret i64 %ret
 }
 define i64 @_Z14atomic_cmpxchgPU2A1mmm(i64* %p, i64 %cmp, i64 %val) nounwind {
-    %ret = cmpxchg volatile i64* %p, i64 %cmp, i64 %val monotonic
+    %ret0 = cmpxchg volatile i64* %p, i64 %cmp, i64 %val monotonic monotonic
+    %ret = extractvalue { i64, i1 } %ret0, 0
     ret i64 %ret
 }
 
@@ -281,11 +285,13 @@ define i32 @_Z8atom_decPU2A1j(i32* %p) nounwind {
 }
 
 define i32 @_Z12atom_cmpxchgPU2A1iii(i32* %p, i32 %cmp, i32 %val) nounwind {
-    %ret = cmpxchg i32* %p, i32 %cmp, i32 %val monotonic
+    %ret0 = cmpxchg i32* %p, i32 %cmp, i32 %val monotonic monotonic
+    %ret = extractvalue { i32, i1 } %ret0, 0
     ret i32 %ret
 }
 define i32 @_Z12atom_cmpxchgPU2A1jjj(i32* %p, i32 %cmp, i32 %val) nounwind {
-    %ret = cmpxchg i32* %p, i32 %cmp, i32 %val monotonic
+    %ret0 = cmpxchg i32* %p, i32 %cmp, i32 %val monotonic monotonic
+    %ret = extractvalue { i32, i1 } %ret0, 0
     ret i32 %ret
 }
 
@@ -381,11 +387,13 @@ define i64 @_Z8atom_decPU2A1m(i64* %p) nounwind {
 }
 
 define i64 @_Z12atom_cmpxchgPU2A1lll(i64* %p, i64 %cmp, i64 %val) nounwind {
-    %ret = cmpxchg i64* %p, i64 %cmp, i64 %val monotonic
+    %ret0 = cmpxchg i64* %p, i64 %cmp, i64 %val monotonic monotonic
+    %ret = extractvalue { i64, i1 } %ret0, 0
     ret i64 %ret
 }
 define i64 @_Z12atom_cmpxchgPU2A1mmm(i64* %p, i64 %cmp, i64 %val) nounwind {
-    %ret = cmpxchg i64* %p, i64 %cmp, i64 %val monotonic
+    %ret0 = cmpxchg i64* %p, i64 %cmp, i64 %val monotonic monotonic
+    %ret = extractvalue { i64, i1 } %ret0, 0
     ret i64 %ret
 }
 

@@ -7,13 +7,13 @@
 #include <llvm/ExecutionEngine/Interpreter.h>
 #include <llvm/Target/TargetJITInfo.h>
 #include <llvm/ExecutionEngine/JITMemoryManager.h>
-#include <llvm/Linker.h>
+#include <llvm/Linker/Linker.h>
 #include <llvm/Support/raw_os_ostream.h>
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/Support/MemoryBuffer.h>
-#include <llvm/Support/system_error.h>
+//#include <llvm/Support/system_error.h>
 #include <llvm/PassManager.h>
-#include <llvm/Analysis/Verifier.h>
+#include <llvm/IR/Verifier.h>
 #include <llvm/Analysis/Passes.h>
 //#include <llvm/Target/TargetData.h>
 #include <llvm/Target/TargetOptions.h>
@@ -54,8 +54,8 @@ namespace FreeOCL
 
 	vm::vm()
 	{
-		if (!llvm::llvm_is_multithreaded())
-			llvm::llvm_start_multithreaded();
+//		if (!llvm::llvm_is_multithreaded())
+//			llvm::llvm_start_multithreaded();
 
 		llvm::InitializeNativeTarget();
 
@@ -243,12 +243,21 @@ namespace FreeOCL
 
 	llvm::Module *vm::load_module(const std::string &filename)
 	{
-		llvm::OwningPtr<llvm::MemoryBuffer> buffer;
-		llvm::MemoryBuffer::getFile(filename, buffer);
-		llvm::Module *module = llvm::ParseBitcodeFile(buffer.get(), get_context());
-		if (module)
-			module->setModuleIdentifier(filename);
-		return module;
+        llvm::ErrorOr<std::unique_ptr<llvm::MemoryBuffer> > buffer = llvm::MemoryBuffer::getFile(filename);
+        if (buffer.getError())
+        {
+            std::cerr << buffer.getError() << std::endl;
+            return NULL;
+        }
+        llvm::ErrorOr<llvm::Module*> module = llvm::parseBitcodeFile(buffer.get().get(), get_context());
+        if (module.getError())
+        {
+            std::cerr << module.getError() << std::endl;
+            return NULL;
+        }
+        if (module)
+            module.get()->setModuleIdentifier(filename);
+        return module.get();
 	}
 
 	llvm::Function *vm::get_registered_function(const std::string &function_name) const
