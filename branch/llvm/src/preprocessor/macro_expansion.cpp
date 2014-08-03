@@ -20,7 +20,7 @@
 
 namespace FreeOCL
 {
-	bool preprocessor::valid_chunk_for_macro_expansion(std::string text)
+	bool preprocessor::valid_chunk_for_macro_expansion(const std::string &text)
 	{
 		std::string word;
 		for(size_t i = 0 ; i < text.size() ; ++i)
@@ -91,110 +91,129 @@ namespace FreeOCL
 		return true;
 	}
 
-	std::string preprocessor::macro_expansion(std::string text, const set<std::string> &forbidden, const bool b_defined_rule)
+    std::string preprocessor::macro_expansion(const std::string &text, const set<std::string> &processed_macros, const bool b_defined_rule)
 	{
-		set<std::string> processed_macros(forbidden);
-		bool b_can_leave;
-		std::string ret;
+        std::string ret;
 		std::string word;
 		std::string value;
-		ret.reserve(text.size());
-		do
-		{
-			ret.clear();
-			b_can_leave = true;
-			bool b_last_was_defined = false;
-			set<std::string> processed_during_last_step;
-			for(size_t i = 0 ; i < text.size() ; ++i)
-			{
-				char c = text[i];
-				if (isalpha(c) || c == '_')
-				{
-					word.clear();
-					for(; i < text.size() && (isalnum(text[i]) || text[i] == '_') ; ++i)
-						word += text[i];
-					--i;
+        bool b_last_was_defined = false;
+        ret.reserve(text.size());
+        for(size_t i = 0 ; i < text.size() ; ++i)
+        {
+            char c = text[i];
+            if (isalpha(c) || c == '_')
+            {
+                word.clear();
+                for(; i < text.size() && (isalnum(text[i]) || text[i] == '_') ; ++i)
+                    word += text[i];
+                --i;
+				while(!word.empty())
 					if (macros.count(word) && processed_macros.count(word) == 0
 							&& (!b_last_was_defined || !b_defined_rule))
 					{
 						const macro &m = macros[word];
-						processed_during_last_step.insert(word);
+						set<std::string> already_expanded(processed_macros);
+						already_expanded.insert(word);
+						const size_t prev_ret_size = ret.size();
 						if (m.params.empty())
-							ret += m.value;
+							ret += macro_expansion(m.value, already_expanded);
 						else
 						{
 							++i;
+							for(; i < text.size() && isspace(text[i]) ; ++i)
+								word += text[i];
 							if (i >= text.size() || text[i] != '(')
 							{
 								--i;
 								ret += word;
+								word.clear();
 								continue;
-							}
-							++i;
-							std::vector<std::string> args;
-							args.reserve(m.params.size());
-							while(i < text.size() && text[i] != ')')
-							{
-								value.clear();
-								if (text[i] == ',')
-									++i;
-								while(i < text.size() && isspace(text[i]))	++i;
-								int p_level = 0;
-								bool b_in_string = false;
-								bool b_escaped = false;
-								for(; i < text.size() && ((text[i] != ',' && text[i] != ')') || p_level > 0 || b_in_string) ; ++i)
-								{
-									if (text[i] == '"' && !b_escaped)
-										b_in_string ^= true;
-									b_escaped = (text[i] == '\\');
-									if (!b_in_string)
-									{
-										if (text[i] == '(')
-											++p_level;
-										else if (text[i] == ')')
-											--p_level;
-									}
-									value += text[i];
-								}
-								while(!value.empty() && isspace(*value.rbegin()))
-									value.erase(value.size() - 1);
-
-								set<std::string> already_expanded(processed_macros);
-								already_expanded.insert(word);
-								args.push_back(macro_expansion(value, already_expanded));
-							}
-
-							if (m.params.size() == 1 && m.params.front().empty())
-							{
-								if (args.size() > 0)
-									error("wrong number of macro parameters (" + to_string(args.size()) + " but none expected)");
-								ret += m.value;
 							}
 							else
 							{
-								if (args.size() != m.params.size())
-									error("wrong number of macro parameters (" + to_string(args.size()) + " but " + to_string(m.params.size()) + " expected)");
-								ret += parameters_substitution(m.value, m.params, args);
+								++i;
+								std::vector<std::string> args;
+								args.reserve(m.params.size());
+								while(i < text.size() && text[i] != ')')
+								{
+									value.clear();
+									if (text[i] == ',')
+										++i;
+									while(i < text.size() && isspace(text[i]))	++i;
+									int p_level = 0;
+									bool b_in_string = false;
+									bool b_escaped = false;
+									for(; i < text.size() && ((text[i] != ',' && text[i] != ')') || p_level > 0 || b_in_string) ; ++i)
+									{
+										if (text[i] == '"' && !b_escaped)
+											b_in_string ^= true;
+										b_escaped = (text[i] == '\\');
+										if (!b_in_string)
+										{
+											if (text[i] == '(')
+												++p_level;
+											else if (text[i] == ')')
+												--p_level;
+										}
+										value += text[i];
+									}
+									while(!value.empty() && isspace(*value.rbegin()))
+										value.erase(value.size() - 1);
+
+									args.push_back(value);
+								}
+
+								if (m.params.size() == 1 && m.params.front().empty())
+								{
+									if (args.size() > 0)
+										error("wrong number of macro parameters (" + to_string(args.size()) + " but none expected)");
+									ret += m.value;
+								}
+								else
+								{
+									if (args.size() != m.params.size())
+										error("wrong number of macro parameters (" + to_string(args.size()) + " but " + to_string(m.params.size()) + " expected)");
+									ret += macro_expansion(parameters_substitution(m.value, m.params, args), already_expanded);
+								}
 							}
 						}
-						b_can_leave = false;
+
+						const std::string orig_word = word;
+						word.clear();
+						if (!ret.empty())
+						{
+							int j;
+							for(j = ret.size() - 1 ; j >= prev_ret_size ; --j)
+							{
+								c = ret[j];
+								if (isspace(c))
+								{
+									if (word.empty())
+										continue;
+									break;
+								}
+								if (isalnum(c) || c == '_')
+									word = c + word;
+								else
+									break;
+							}
+							if (word == orig_word)
+								word.clear();
+							if (!word.empty())
+								ret.resize(j + 1);
+						}
 					}
 					else
 					{
 						ret += word;
 						b_last_was_defined = (word == "defined");
+						word.clear();
 					}
-				}
-				else
-					ret += c;
-			}
-			if (!b_can_leave)
-			{
-				processed_macros.insert(processed_during_last_step.begin(), processed_during_last_step.end());
-				text.swap(ret);
-			}
-		} while(!b_can_leave);
-		return ret;
+            }
+            else
+                ret += c;
+        }
+        return ret;
 	}
 
 	std::string preprocessor::parameters_substitution(const std::string &s,
